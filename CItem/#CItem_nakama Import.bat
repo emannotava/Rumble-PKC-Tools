@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_nakama.py" import "CItem_nakama.json" "CItem_nakama.pkc"

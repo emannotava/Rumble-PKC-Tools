@@ -1,0 +1,388 @@
+{
+	"format": "citem-nakama-semantic-json-1",
+	"source_basename": "CItem_nakama.pkc",
+	"embedded_scripts": {
+		"event_item_sequence": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc",
+			"CEvent_battleroyal_begin.pkc"
+		],
+		"money_item_script": "CItem_money.pkc",
+		"dummy_ball_script": "CDummy_ball.pkc"
+	},
+	"common_messages": {
+		"dynamic_category_base_high": 393219,
+		"dynamic_category_base_low": 393216,
+		"difficulty_rank_labels": [
+			393216,
+			393217,
+			393218,
+			393219,
+			393220,
+			393221,
+			393222,
+			393223
+		],
+		"team_box_full": 458961,
+		"low_battery": 65556
+	},
+	"energy_visuals": {
+		"tiers": [
+			{
+				"threshold_lt": 100,
+				"model_brres": "poke_energy_4.brres",
+				"loop_motion": "poke_energy_4__loop"
+			},
+			{
+				"threshold_lt": 10,
+				"model_brres": "poke_energy_3.brres",
+				"loop_motion": "poke_energy_3__loop"
+			},
+			{
+				"threshold_lt": 1,
+				"model_brres": "poke_energy_2.brres",
+				"loop_motion": "poke_energy_2__loop"
+			},
+			{
+				"threshold_lt": null,
+				"model_brres": "poke_energy_1.brres",
+				"loop_motion": "poke_energy_1__loop"
+			}
+		]
+	},
+	"terminal_visuals": {
+		"show_on_init": 1,
+		"dir_deg": 0.0,
+		"model_brres": "terminal_nakama.brres",
+		"password_found_token": "PasswordFound",
+		"fall_motion": "terminal_nakama__fall"
+	},
+	"additional_message_ids": [
+		{
+			"pc": "0x0E72",
+			"message_id": 393224
+		},
+		{
+			"pc": "0x0E76",
+			"message_id": 393225
+		},
+		{
+			"pc": "0x0E7A",
+			"message_id": 393226
+		},
+		{
+			"pc": "0x0E7E",
+			"message_id": 393227
+		},
+		{
+			"pc": "0x0E8D",
+			"message_id": 393232
+		},
+		{
+			"pc": "0x0E91",
+			"message_id": 393233
+		},
+		{
+			"pc": "0x0E95",
+			"message_id": 393234
+		},
+		{
+			"pc": "0x0E99",
+			"message_id": 393235
+		},
+		{
+			"pc": "0x0EA2",
+			"message_id": 393236
+		},
+		{
+			"pc": "0x19E1",
+			"message_id": 458871
+		},
+		{
+			"pc": "0x1A48",
+			"message_id": 458873
+		},
+		{
+			"pc": "0x1A5D",
+			"message_id": 458872
+		},
+		{
+			"pc": "0x1B7A",
+			"message_id": 458874
+		},
+		{
+			"pc": "0x1B9C",
+			"message_id": 458875
+		},
+		{
+			"pc": "0x1C35",
+			"message_id": 458876
+		},
+		{
+			"pc": "0x1C5A",
+			"message_id": 458877
+		},
+		{
+			"pc": "0x1C7F",
+			"message_id": 458878
+		},
+		{
+			"pc": "0x1D06",
+			"message_id": 458880
+		},
+		{
+			"pc": "0x1D09",
+			"message_id": 458881
+		},
+		{
+			"pc": "0x1D0F",
+			"message_id": 458882
+		},
+		{
+			"pc": "0x1D12",
+			"message_id": 458883
+		},
+		{
+			"pc": "0x1D21",
+			"message_id": 458884
+		},
+		{
+			"pc": "0x1D24",
+			"message_id": 458885
+		},
+		{
+			"pc": "0x1D2A",
+			"message_id": 458886
+		},
+		{
+			"pc": "0x1D2D",
+			"message_id": 458887
+		},
+		{
+			"pc": "0x1D38",
+			"message_id": 458888
+		},
+		{
+			"pc": "0x1D5C",
+			"message_id": 458888
+		},
+		{
+			"pc": "0x1D76",
+			"message_id": 458888
+		},
+		{
+			"pc": "0x1DE7",
+			"message_id": 458889
+		},
+		{
+			"pc": "0x1DF7",
+			"message_id": 458890
+		}
+	],
+	"field_indexes": {
+		"waza_desc": [
+			{
+				"pc": "0x08A6",
+				"field_index": 3
+			},
+			{
+				"pc": "0x08AA",
+				"field_index": 4
+			},
+			{
+				"pc": "0x08AE",
+				"field_index": 5
+			},
+			{
+				"pc": "0x08B2",
+				"field_index": 6
+			},
+			{
+				"pc": "0x08B6",
+				"field_index": 8
+			},
+			{
+				"pc": "0x1068",
+				"field_index": 40
+			},
+			{
+				"pc": "0x106C",
+				"field_index": 13
+			},
+			{
+				"pc": "0x1070",
+				"field_index": 11
+			},
+			{
+				"pc": "0x112C",
+				"field_index": 9
+			},
+			{
+				"pc": "0x122A",
+				"field_index": 9
+			},
+			{
+				"pc": "0x1254",
+				"field_index": 9
+			},
+			{
+				"pc": "0x1382",
+				"field_index": 9
+			},
+			{
+				"pc": "0x13AC",
+				"field_index": 9
+			},
+			{
+				"pc": "0x13D6",
+				"field_index": 9
+			},
+			{
+				"pc": "0x1405",
+				"field_index": 9
+			},
+			{
+				"pc": "0x1433",
+				"field_index": 9
+			}
+		],
+		"ppr_get": [
+			{
+				"pc": "0x00B5",
+				"field_index": 9
+			},
+			{
+				"pc": "0x0AEB",
+				"field_index": 0
+			},
+			{
+				"pc": "0x0B01",
+				"field_index": 5
+			},
+			{
+				"pc": "0x0B5B",
+				"field_index": 1
+			},
+			{
+				"pc": "0x0B71",
+				"field_index": 6
+			},
+			{
+				"pc": "0x0B8B",
+				"field_index": 8
+			},
+			{
+				"pc": "0x0B95",
+				"field_index": 16
+			},
+			{
+				"pc": "0x0BBF",
+				"field_index": 17
+			},
+			{
+				"pc": "0x0C5C",
+				"field_index": 14
+			},
+			{
+				"pc": "0x0C6F",
+				"field_index": 7
+			},
+			{
+				"pc": "0x0D05",
+				"field_index": 14
+			},
+			{
+				"pc": "0x0D47",
+				"field_index": 0
+			},
+			{
+				"pc": "0x0D4B",
+				"field_index": 1
+			},
+			{
+				"pc": "0x0D4F",
+				"field_index": 16
+			},
+			{
+				"pc": "0x0D53",
+				"field_index": 14
+			}
+		],
+		"waza_level_sections": [
+			{
+				"pc_segment": "0x1213",
+				"segment": 128,
+				"pc_section": "0x1214",
+				"section_id": -3
+			},
+			{
+				"pc_segment": "0x1241",
+				"segment": 128,
+				"pc_section": "0x1242",
+				"section_id": -2
+			},
+			{
+				"pc_segment": "0x136B",
+				"segment": 128,
+				"pc_section": "0x136C",
+				"section_id": -3
+			},
+			{
+				"pc_segment": "0x1399",
+				"segment": 128,
+				"pc_section": "0x139A",
+				"section_id": -2
+			},
+			{
+				"pc_segment": "0x13C3",
+				"segment": 128,
+				"pc_section": "0x13C4",
+				"section_id": -4
+			},
+			{
+				"pc_segment": "0x13F2",
+				"segment": 128,
+				"pc_section": "0x13F3",
+				"section_id": -1
+			},
+			{
+				"pc_segment": "0x1420",
+				"segment": 128,
+				"pc_section": "0x1421",
+				"section_id": -5
+			}
+		]
+	},
+	"gameplay_constants": {
+		"team_box_capacity": 1000,
+		"low_battery_controller_index": 4,
+		"dummy_ball_spawn_height": [
+			1.0,
+			1.0,
+			1.0
+		],
+		"dummy_ball_spawn_dir_deg": [
+			180,
+			180,
+			180
+		],
+		"nandsave_wait_frames": [
+			30,
+			30
+		]
+	}
+}

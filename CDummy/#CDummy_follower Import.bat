@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_follower.py" import "CDummy_follower.json" "CDummy_follower.pkc"

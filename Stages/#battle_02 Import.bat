@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.battle_02.py" import "battle_02.json" "battle_02.pkc"

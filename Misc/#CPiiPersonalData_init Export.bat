@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CPiiPersonalData_init.py" export "CPiiPersonalData_init.pkc"

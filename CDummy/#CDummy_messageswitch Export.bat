@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_messageswitch.py" export "CDummy_messageswitch.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_ticket.py" export "CItem_ticket.pkc"

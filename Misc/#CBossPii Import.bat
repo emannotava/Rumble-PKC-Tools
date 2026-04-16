@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CBossPii.py" import "CBossPii.json" "CBossPii.pkc"

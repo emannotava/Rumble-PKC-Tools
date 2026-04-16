@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_door_open.py" export "CEvent_door_open.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_boss_neji.py" import "CItem_boss_neji.json" "CItem_boss_neji.pkc"

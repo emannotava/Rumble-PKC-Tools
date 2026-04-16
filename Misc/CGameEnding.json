@@ -1,0 +1,91 @@
+{
+	"format": "cgameending-semantic-json-1",
+	"source_basename": "CGameEnding.pkc",
+	"embedded_event_scripts": [
+		"CEvent_prologue.pkc",
+		"CEvent_prologue2.pkc",
+		"CEvent_boss_appear.pkc",
+		"CEvent_boss_die.pkc",
+		"CEvent_clear.pkc",
+		"CEvent_battleroyal_clear.pkc",
+		"CEvent_lose.pkc",
+		"CEvent_warp.pkc",
+		"CEvent_warppoint_open.pkc",
+		"CEvent_battleroyal_open.pkc",
+		"CEvent_nextgrade_open.pkc",
+		"CEvent_door_open.pkc",
+		"CEvent_guest_appear.pkc",
+		"CEvent_battleroyal_begin.pkc",
+		"CEvent_battleroyal_defeat.pkc",
+		"CEvent_battleroyal_prize.pkc",
+		"CEvent_battleroyal_begin.pkc"
+	],
+	"money_item_script": "CItem_money.pkc",
+	"opening_sequence": {
+		"bgm_domestic": 622,
+		"bgm_international": 841,
+		"event_name": "ending",
+		"model_brres": "/event/ending.arc/ending.brres",
+		"motion_open": "ending_01",
+		"motion_request": "ending_02",
+		"widescreen_move": "ending_02_wide_idou",
+		"widescreen_loop": "ending_02_wide_loop",
+		"normal_move": "ending_02_normal_idou",
+		"normal_loop": "ending_02_normal_loop",
+		"placement_event": "ending",
+		"placement_group": "pokemon_haiti",
+		"placement_target": "POKEMON",
+		"placement_species_min": 1,
+		"placement_species_max": 149
+	},
+	"staff_roll_text_ids": {
+		"domestic": [
+			458992,
+			458994,
+			458996,
+			458998
+		],
+		"international": [
+			458992,
+			458993,
+			458994,
+			458995,
+			458996,
+			458997,
+			458998
+		]
+	},
+	"check_and_prompt": {
+		"required_flag": 31,
+		"cancelled_label": "Cancelled"
+	},
+	"epilogue_sequence": {
+		"assets": {
+			"follower_script": "CDummy_follower.pkc",
+			"event_name": "epilogue",
+			"main_model_brres": "/event/epilogue.arc/epilogue.brres",
+			"main_motion": "epilogue",
+			"neji_model_brres": "../event/epilogue.arc/epilogue_neji.brres",
+			"neji_motion": "epilogue_neji",
+			"null_animation_brres": "/event/epilogue.arc/event.brres",
+			"null_target_motion": "Pii_ROOT_epilogue",
+			"ground_motion_primary": "epilogue",
+			"ground_motion_secondary": "epilogue",
+			"face_target_node": "neji"
+		},
+		"timing_and_audio": {
+			"epilogue_bgm": 623,
+			"epilogue_start_se": 829,
+			"effect_id_a": 55,
+			"effect_id_b": 54,
+			"sequence_wait_frames": [
+				220,
+				241,
+				260,
+				313,
+				348,
+				391
+			]
+		}
+	}
+}

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_door_open.py" import "CEvent_door_open.json" "CEvent_door_open.pkc"

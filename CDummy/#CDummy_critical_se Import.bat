@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_critical_se.py" import "CDummy_critical_se.json" "CDummy_critical_se.pkc"

@@ -1,0 +1,97 @@
+{
+	"format": "cevent-warp-semantic-json-1",
+	"source_basename": "CEvent_warp.pkc",
+	"embedded_scripts": {
+		"linked_event_scripts": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc",
+			"CEvent_battleroyal_begin.pkc"
+		],
+		"money_item_script": "CItem_money.pkc"
+	},
+	"battle_royal_choice": {
+		"message_mids": [
+			458850,
+			458851,
+			458852,
+			458853,
+			458854
+		],
+		"scan_player_index": 1,
+		"choice_default_index": 1
+	},
+	"stage_progression": {
+		"map_status_flag_a": 1,
+		"map_status_flag_b": 2,
+		"unlock_flag_id": 7,
+		"round_clear_stat_id": 9,
+		"round_clear_stat_add": 1,
+		"endstage_success_flag": 0,
+		"endstage_success_reason": 1,
+		"endstage_fallback_flag": 0,
+		"endstage_fallback_reason": 0
+	},
+	"warp_motions": {
+		"rank_s": {
+			"begin": "warppoint_S__begin",
+			"loop": "warppoint_S__loop",
+			"end": "warppoint_S__end"
+		},
+		"rank_a": {
+			"begin": "warppoint_A__begin",
+			"loop": "warppoint_A__loop",
+			"end": "warppoint_A__end"
+		},
+		"rank_b": {
+			"begin": "warppoint_B__begin",
+			"loop": "warppoint_B__loop",
+			"end": "warppoint_B__end"
+		},
+		"rank_c": {
+			"begin": "warppoint_C__begin",
+			"loop": "warppoint_C__loop",
+			"end": "warppoint_C__end"
+		},
+		"default_large": {
+			"begin": "warppoint__begin",
+			"loop": "warppoint__loop",
+			"end": "warppoint__end"
+		},
+		"default_small": {
+			"begin": "warppoint_small__begin",
+			"loop": "warppoint_small__loop",
+			"end": "warppoint_small__end"
+		}
+	},
+	"warp_effects": {
+		"integers": {
+			"start_loop_se_id": 58,
+			"primary_motion_id": 107,
+			"teleport_se_id": 36,
+			"teleport_effect_id": 9,
+			"teleport_effect_dir_deg": 180,
+			"finish_motion_id": 108
+		},
+		"floats": {
+			"distance_ceiling": 9999.900390625,
+			"dir_blend_factor": 0.10000000149011612
+		},
+		"runtime_motion_ids": {
+			"warp_animation_motion_id": 107
+		}
+	}
+}

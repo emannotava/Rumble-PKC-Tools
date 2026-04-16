@@ -1,0 +1,141 @@
+{
+	"format": "citem-semantic-json-2",
+	"source_basename": "CItem_collection.pkc",
+	"variant": "collection",
+	"embedded_scripts": {
+		"newitem_sequence": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CItem_money.pkc"
+		],
+		"model_brres": "terminal_collection.brres",
+		"fall_motion": "terminal_collection__fall"
+	},
+	"messages": {
+		"dynamic_category_base_high": 393219,
+		"dynamic_category_base_low": 393216,
+		"difficulty_rank_labels": [
+			393216,
+			393217,
+			393218,
+			393219,
+			393220,
+			393221,
+			393222,
+			393223
+		],
+		"team_box_full": 458961,
+		"low_battery": 65556,
+		"init_balloon": 458868,
+		"multiplayer_prompt": null
+	},
+	"flags": {
+		"availability_flag": 9,
+		"open_gate_flag": 3,
+		"fall_animation_flag": 4
+	},
+	"dialogs": {
+		"team_box_capacity": 1000,
+		"low_battery_controller_index": 4,
+		"register_message_balloon_slot": 1
+	},
+	"waza_desc_fields": [
+		3,
+		4,
+		5,
+		6,
+		8
+	],
+	"tables": {
+		"random_weight_triples": [
+			[
+				95,
+				5,
+				0
+			],
+			[
+				80,
+				20,
+				0
+			],
+			[
+				59,
+				40,
+				1
+			],
+			[
+				42,
+				55,
+				3
+			],
+			[
+				23,
+				70,
+				7
+			],
+			[
+				10,
+				80,
+				10
+			],
+			[
+				10,
+				75,
+				15
+			],
+			[
+				10,
+				70,
+				20
+			],
+			[
+				10,
+				65,
+				25
+			]
+		],
+		"random_weight_outputs": {
+			"first": 1,
+			"second": 10,
+			"third": 100,
+			"fallback": 0
+		},
+		"stage_value_table_a": [
+			150,
+			400,
+			800,
+			1200,
+			2000,
+			2500,
+			3500,
+			4000,
+			4500
+		],
+		"stage_value_table_b": [
+			500,
+			1500,
+			3000,
+			5000,
+			8000,
+			10000,
+			13000,
+			15000,
+			18000
+		]
+	}
+}

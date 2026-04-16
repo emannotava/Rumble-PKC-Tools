@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_soundtest.py" import "CItem_soundtest.json" "CItem_soundtest.pkc"

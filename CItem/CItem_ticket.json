@@ -1,0 +1,100 @@
+{
+	"format": "citem-ticket-semantic-json-1",
+	"source_basename": "CItem_ticket.pkc",
+	"embedded_scripts": {
+		"newitem_sequence": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CItem_money.pkc"
+		]
+	},
+	"common_messages": {
+		"dynamic_category_base_high": 393219,
+		"dynamic_category_base_low": 393216,
+		"difficulty_rank_labels": [
+			393216,
+			393217,
+			393218,
+			393219,
+			393220,
+			393221,
+			393222,
+			393223
+		]
+	},
+	"energy_visuals": {
+		"tiers": [
+			{
+				"threshold_lt": 100,
+				"model_brres": "poke_energy_4.brres",
+				"loop_motion": "poke_energy_4__loop"
+			},
+			{
+				"threshold_lt": 10,
+				"model_brres": "poke_energy_3.brres",
+				"loop_motion": "poke_energy_3__loop"
+			},
+			{
+				"threshold_lt": 1,
+				"model_brres": "poke_energy_2.brres",
+				"loop_motion": "poke_energy_2__loop"
+			},
+			{
+				"threshold_lt": null,
+				"model_brres": "poke_energy_1.brres",
+				"loop_motion": "poke_energy_1__loop"
+			}
+		]
+	},
+	"text_tables": {
+		"ticket_name": {
+			"min_inclusive": 0,
+			"max_inclusive": 18,
+			"base_mid": 262144,
+			"index_subtract": 0
+		},
+		"ticket_description": {
+			"min_inclusive": 0,
+			"max_inclusive": 18,
+			"base_mid": 262162,
+			"index_subtract": 0
+		},
+		"move_name": {
+			"min_inclusive": 0,
+			"max_inclusive": 496,
+			"base_mid": 196608,
+			"index_subtract": 1
+		},
+		"move_description": {
+			"min_inclusive": 0,
+			"max_inclusive": 496,
+			"base_mid": 327681,
+			"index_subtract": 1
+		}
+	},
+	"item_visuals": {
+		"item_model_brres": "item_ticket.brres",
+		"world_label_category_id": 2,
+		"world_label_mid": 458895,
+		"world_label_sound_se": 34,
+		"hover_offset_start": 0.10000000149011612,
+		"hover_offset_step": 0.009999999776482582,
+		"post_label_step": 0.029999999329447746,
+		"landing_sound_se": 85
+	}
+}

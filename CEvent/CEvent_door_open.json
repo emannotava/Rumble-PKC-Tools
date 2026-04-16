@@ -1,0 +1,51 @@
+{
+	"format": "cevent-door-open-semantic-json-1",
+	"source_basename": "CEvent_door_open.pkc",
+	"embedded_scripts": {
+		"linked_event_scripts": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc"
+		],
+		"extra_event_script": "CEvent_battleroyal_begin.pkc",
+		"money_item_script": "CItem_money.pkc"
+	},
+	"message_window": {
+		"message_wait_frames": 90,
+		"message_mid": 458860
+	},
+	"gate_sequence": {
+		"strings": {
+			"gate_open_motion": "gate__open",
+			"gate_loop_motion": "gate__open_loop",
+			"follower_script": "CDummy_follower.pkc",
+			"ground_attr_path": ""
+		},
+		"integers": {
+			"pre_open_hold_frames": 60,
+			"start_se_id": 819,
+			"show_post_effect_id": 3,
+			"show_post_effect_hold_frames": 350,
+			"set_flag_id": 5,
+			"map_status_flag": 8
+		},
+		"floats": {
+			"pre_open_scale": 5.0,
+			"pre_open_step": 0.014999999664723873,
+			"ground_attr_step": 0.019999999552965164
+		}
+	}
+}

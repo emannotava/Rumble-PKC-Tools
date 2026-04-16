@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CPiiPersonalData_init.py" import "CPiiPersonalData_init.json" "CPiiPersonalData_init.pkc"

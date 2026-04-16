@@ -1,0 +1,11 @@
+{
+	"format": "cdummy-test-semantic-json-1",
+	"source_basename": "CDummy_test.pkc",
+	"model_setup": {
+		"piiprop_field_index": 9,
+		"show_on_init": 1,
+		"model_brres": "item_smell_ball.brres",
+		"rotation_cycle_deg": 360,
+		"rotation_step_multiplier": 2
+	}
+}

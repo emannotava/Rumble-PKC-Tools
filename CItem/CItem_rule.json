@@ -1,0 +1,54 @@
+{
+	"format": "citem-rule-semantic-json-1",
+	"source_basename": "CItem_rule.pkc",
+	"embedded_scripts": {
+		"newitem_sequence": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CItem_money.pkc"
+		]
+	},
+	"common_messages": {
+		"dynamic_category_base_high": 393219,
+		"dynamic_category_base_low": 393216,
+		"difficulty_rank_labels": [
+			393216,
+			393217,
+			393218,
+			393219,
+			393220,
+			393221,
+			393222,
+			393223
+		],
+		"low_battery": 65556
+	},
+	"ui_flow": {
+		"low_battery_pad_index": 4,
+		"show_on_init": 1,
+		"dir_deg": 0.0,
+		"pause_se_test_id": 9,
+		"balloon_slot": 1,
+		"init_balloon_mid": 458893,
+		"player_message_mid": 458894,
+		"gating_flag": 3,
+		"one_time_flag": 17,
+		"set_one_time_flag": 17,
+		"message_wait_frames": 90
+	}
+}

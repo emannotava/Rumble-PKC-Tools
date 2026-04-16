@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CStageCamera.py" import "CStageCamera.json" "CStageCamera.pkc"

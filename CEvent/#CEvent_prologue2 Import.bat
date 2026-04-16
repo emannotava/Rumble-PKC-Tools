@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_prologue2.py" import "CEvent_prologue2.json" "CEvent_prologue2.pkc"

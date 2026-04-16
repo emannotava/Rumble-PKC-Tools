@@ -1,0 +1,144 @@
+{
+	"format": "cdummy-critical-se-semantic-json-1",
+	"source_basename": "CDummy_critical_se.pkc",
+	"embedded_event_scripts": [
+		"CEvent_prologue.pkc",
+		"CEvent_prologue2.pkc",
+		"CEvent_boss_appear.pkc",
+		"CEvent_boss_die.pkc",
+		"CEvent_clear.pkc",
+		"CEvent_battleroyal_clear.pkc",
+		"CEvent_lose.pkc",
+		"CEvent_warp.pkc",
+		"CEvent_warppoint_open.pkc",
+		"CEvent_battleroyal_open.pkc",
+		"CEvent_nextgrade_open.pkc",
+		"CEvent_door_open.pkc",
+		"CEvent_guest_appear.pkc",
+		"CEvent_battleroyal_begin.pkc",
+		"CEvent_battleroyal_defeat.pkc",
+		"CEvent_battleroyal_prize.pkc",
+		"CEvent_battleroyal_begin.pkc"
+	],
+	"money_item_script": "CItem_money.pkc",
+	"spawn_randomization": {
+		"offset_angle_a": 0.12999999523162842,
+		"offset_radius_a": 0.07000000029802322,
+		"facing_angle": 180,
+		"speed_min": 0.09000000357627869,
+		"speed_max": 0.11999999731779099,
+		"height_min": 0.029999999329447746,
+		"height_max": 0.05999999865889549,
+		"dir_min": 0,
+		"dir_max": 359
+	},
+	"new_obj_register_slots": [
+		11,
+		12,
+		13
+	],
+	"common_tables": {
+		"random_weight_triples": [
+			[
+				95,
+				5,
+				0
+			],
+			[
+				80,
+				20,
+				0
+			],
+			[
+				59,
+				40,
+				1
+			],
+			[
+				42,
+				55,
+				3
+			],
+			[
+				23,
+				70,
+				7
+			],
+			[
+				10,
+				80,
+				10
+			],
+			[
+				10,
+				75,
+				15
+			],
+			[
+				10,
+				70,
+				20
+			],
+			[
+				10,
+				65,
+				25
+			]
+		],
+		"random_weight_outputs": {
+			"first": 1,
+			"second": 10,
+			"third": 100,
+			"fallback": 0
+		},
+		"stage_value_table_a": [
+			150,
+			400,
+			800,
+			1200,
+			2000,
+			2500,
+			3500,
+			4000,
+			4500
+		],
+		"stage_value_table_b": [
+			500,
+			1500,
+			3000,
+			5000,
+			8000,
+			10000,
+			13000,
+			15000,
+			18000
+		]
+	},
+	"difficulty_rank_labels": [
+		393216,
+		393217,
+		393218,
+		393219,
+		393220,
+		393221,
+		393222,
+		393223
+	],
+	"waza_desc_fields": [
+		3,
+		4,
+		5,
+		6,
+		8
+	],
+	"critical_sound": {
+		"camera_object_index": 0,
+		"camera_mode": 1,
+		"register_source_object": 0,
+		"start_se_arg": 1,
+		"se_id": 27,
+		"clear_register_object": 0,
+		"clear_register_slot": 0,
+		"stop_register_slot": 0
+	}
+}

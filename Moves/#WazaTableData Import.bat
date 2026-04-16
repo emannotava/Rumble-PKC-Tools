@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.WazaTableData.py" import "WazaTableData.json" "WazaTableData.pkc"

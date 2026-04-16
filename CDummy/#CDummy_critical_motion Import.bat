@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_critical_motion.py" import "CDummy_critical_motion.json" "CDummy_critical_motion.pkc"

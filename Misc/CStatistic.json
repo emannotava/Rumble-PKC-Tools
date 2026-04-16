@@ -1,0 +1,231 @@
+{
+	"format": "cstatistic-semantic-json-1",
+	"source_basename": "CStatistic.pkc",
+	"rows": [
+		{
+			"row_index": 0,
+			"pc_call": "0x0005",
+			"pc_stat_id": "0x0002",
+			"stat_id": -200,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0004",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 1,
+			"pc_call": "0x000A",
+			"pc_stat_id": "0x0007",
+			"stat_id": -199,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0009",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 2,
+			"pc_call": "0x000F",
+			"pc_stat_id": "0x000C",
+			"stat_id": 1,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x000E",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 3,
+			"pc_call": "0x0014",
+			"pc_stat_id": "0x0011",
+			"stat_id": 2,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0013",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 4,
+			"pc_call": "0x0019",
+			"pc_stat_id": "0x0016",
+			"stat_id": 3,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0018",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 5,
+			"pc_call": "0x001E",
+			"pc_stat_id": "0x001B",
+			"stat_id": 4,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x001D",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 6,
+			"pc_call": "0x0023",
+			"pc_stat_id": "0x0020",
+			"stat_id": 5,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0022",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 7,
+			"pc_call": "0x0027",
+			"pc_stat_id": "0x0025",
+			"stat_id": 6,
+			"encoding": "push_int",
+			"pc_value": "0x0026",
+			"stop_value": 999
+		},
+		{
+			"row_index": 8,
+			"pc_call": "0x002B",
+			"pc_stat_id": "0x0029",
+			"stat_id": 7,
+			"encoding": "push_int",
+			"pc_value": "0x002A",
+			"stop_value": 999999
+		},
+		{
+			"row_index": 9,
+			"pc_call": "0x002F",
+			"pc_stat_id": "0x002D",
+			"stat_id": 8,
+			"encoding": "push_int",
+			"pc_value": "0x002E",
+			"stop_value": 999999
+		},
+		{
+			"row_index": 10,
+			"pc_call": "0x0034",
+			"pc_stat_id": "0x0031",
+			"stat_id": 9,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0033",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 11,
+			"pc_call": "0x0039",
+			"pc_stat_id": "0x0036",
+			"stat_id": 10,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0038",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 12,
+			"pc_call": "0x003E",
+			"pc_stat_id": "0x003B",
+			"stat_id": 11,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x003D",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 13,
+			"pc_call": "0x0043",
+			"pc_stat_id": "0x0040",
+			"stat_id": 12,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0042",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 14,
+			"pc_call": "0x0048",
+			"pc_stat_id": "0x0045",
+			"stat_id": 13,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0047",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 15,
+			"pc_call": "0x004D",
+			"pc_stat_id": "0x004A",
+			"stat_id": -100,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x004C",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 16,
+			"pc_call": "0x0052",
+			"pc_stat_id": "0x004F",
+			"stat_id": -99,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0051",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 17,
+			"pc_call": "0x0057",
+			"pc_stat_id": "0x0054",
+			"stat_id": 15,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0056",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 18,
+			"pc_call": "0x005C",
+			"pc_stat_id": "0x0059",
+			"stat_id": 16,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x005B",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 19,
+			"pc_call": "0x0061",
+			"pc_stat_id": "0x005E",
+			"stat_id": 17,
+			"encoding": "legacy_opcode_0x00",
+			"pc_value": "0x0060",
+			"stop_value": 9999999
+		},
+		{
+			"row_index": 20,
+			"pc_call": "0x0066",
+			"pc_stat_id": "0x0063",
+			"stat_id": -98,
+			"encoding": "legacy_opcode_0x3B",
+			"pc_value": "0x0065",
+			"stop_value": 10144255
+		},
+		{
+			"row_index": 21,
+			"pc_call": "0x006B",
+			"pc_stat_id": "0x0068",
+			"stat_id": 14,
+			"encoding": "legacy_opcode_0x3B",
+			"pc_value": "0x006A",
+			"stop_value": 10144255
+		},
+		{
+			"row_index": 22,
+			"pc_call": "0x0070",
+			"pc_stat_id": "0x006D",
+			"stat_id": 18,
+			"encoding": "legacy_opcode_0x3B",
+			"pc_value": "0x006F",
+			"stop_value": 10144255
+		},
+		{
+			"row_index": 23,
+			"pc_call": "0x0075",
+			"pc_stat_id": "0x0072",
+			"stat_id": 19,
+			"encoding": "legacy_opcode_0x3B",
+			"pc_value": "0x0074",
+			"stop_value": 10144255
+		},
+		{
+			"row_index": 24,
+			"pc_call": "0x007A",
+			"pc_stat_id": "0x0077",
+			"stat_id": 20,
+			"encoding": "legacy_opcode_0x3B",
+			"pc_value": "0x0079",
+			"stop_value": 10144255
+		}
+	]
+}

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CPlayerPii.py" export "CPlayerPii.pkc"

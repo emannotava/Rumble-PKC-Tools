@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_door.py" export "CDummy_door.pkc"

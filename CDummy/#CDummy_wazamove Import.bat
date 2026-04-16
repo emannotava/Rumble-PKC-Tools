@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_wazamove.py" import "CDummy_wazamove.json" "CDummy_wazamove.pkc"

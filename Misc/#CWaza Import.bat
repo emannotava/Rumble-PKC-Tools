@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CWaza.py" import "CWaza.json" "CWaza.pkc"

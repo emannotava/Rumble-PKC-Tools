@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_soundtest.py" export "CItem_soundtest.pkc"

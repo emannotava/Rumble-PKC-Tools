@@ -1,0 +1,784 @@
+{
+	"format": "stageworld-semantic-json-2",
+	"source_basename": "terminal_03.pkc",
+	"camera_setup": {
+		"setxyz_pc_units": 1518,
+		"rotate_pc_units": 1526,
+		"fovy_pc_units": 1531,
+		"position": [
+			0.0,
+			10.0,
+			9.44350528717041
+		],
+		"rotation_degrees": [
+			-45.0,
+			0,
+			0
+		],
+		"fovy": 20.256166458129883
+	},
+	"explicit_warpzone": {
+		"make_map_id_pc_units": 4363,
+		"new_warpzone_pc_units": 4391,
+		"warp_script": "CDummy_warpzone.pkc",
+		"warp_owner_expr": "GetThisObject()",
+		"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), 4, 7, 5)",
+		"destination_literal_args": [
+			null,
+			4,
+			7,
+			5
+		]
+	},
+	"spawn_access": {
+		"stage_desc_targets": [
+			{
+				"pc_units": 5800,
+				"args": [
+					"access(0, 560)",
+					"access(0, 561)",
+					"GetStageType(GetCurrentMID())"
+				]
+			},
+			{
+				"pc_units": 6661,
+				"args": [
+					"GetStageDifficulty(GetCurrentMID())",
+					"GetStageGrade(GetCurrentMID())",
+					"access(1, 0)"
+				]
+			},
+			{
+				"pc_units": 6671,
+				"args": [
+					"1",
+					"GetExtraBR_CurrentRound()",
+					"access(1, 0)"
+				]
+			}
+		],
+		"map_desc_targets": [
+			{
+				"pc_units": 5803,
+				"args": [
+					"access(0, 562)"
+				]
+			},
+			{
+				"pc_units": 6718,
+				"args": [
+					"2"
+				]
+			},
+			{
+				"pc_units": 6759,
+				"args": [
+					"access(1, 2)"
+				]
+			},
+			{
+				"pc_units": 7072,
+				"args": [
+					"2"
+				]
+			}
+		],
+		"map_enemy_row_size_pcs": [
+			5805,
+			6721,
+			6761,
+			7074
+		],
+		"map_enemy_column_reads": [
+			{
+				"pc_units": 5828,
+				"row_expr": "access(1, 18)",
+				"column_expr": "6",
+				"column_literal": 6
+			},
+			{
+				"pc_units": 5895,
+				"row_expr": "access(1, 18)",
+				"column_expr": "6",
+				"column_literal": 6
+			},
+			{
+				"pc_units": 5899,
+				"row_expr": "access(1, 18)",
+				"column_expr": "0",
+				"column_literal": 0
+			},
+			{
+				"pc_units": 5935,
+				"row_expr": "access(1, 18)",
+				"column_expr": "2",
+				"column_literal": 2
+			},
+			{
+				"pc_units": 5941,
+				"row_expr": "access(1, 18)",
+				"column_expr": "0",
+				"column_literal": 0
+			},
+			{
+				"pc_units": 5949,
+				"row_expr": "access(1, 18)",
+				"column_expr": "3",
+				"column_literal": 3
+			},
+			{
+				"pc_units": 5974,
+				"row_expr": "access(1, 18)",
+				"column_expr": "2",
+				"column_literal": 2
+			},
+			{
+				"pc_units": 5981,
+				"row_expr": "access(1, 18)",
+				"column_expr": "3",
+				"column_literal": 3
+			},
+			{
+				"pc_units": 5988,
+				"row_expr": "access(1, 18)",
+				"column_expr": "3",
+				"column_literal": 3
+			},
+			{
+				"pc_units": 5994,
+				"row_expr": "access(1, 18)",
+				"column_expr": "1",
+				"column_literal": 1
+			},
+			{
+				"pc_units": 6021,
+				"row_expr": "access(1, 18)",
+				"column_expr": "5",
+				"column_literal": 5
+			},
+			{
+				"pc_units": 6061,
+				"row_expr": "access(1, 18)",
+				"column_expr": "0",
+				"column_literal": 0
+			},
+			{
+				"pc_units": 6115,
+				"row_expr": "access(1, 18)",
+				"column_expr": "4",
+				"column_literal": 4
+			},
+			{
+				"pc_units": 6781,
+				"row_expr": "access(1, 4)",
+				"column_expr": "2",
+				"column_literal": 2
+			},
+			{
+				"pc_units": 6793,
+				"row_expr": "access(1, 4)",
+				"column_expr": "6",
+				"column_literal": 6
+			},
+			{
+				"pc_units": 6802,
+				"row_expr": "access(1, 4)",
+				"column_expr": "0",
+				"column_literal": 0
+			},
+			{
+				"pc_units": 6821,
+				"row_expr": "access(1, 4)",
+				"column_expr": "1",
+				"column_literal": 1
+			},
+			{
+				"pc_units": 7114,
+				"row_expr": "access(1, 3)",
+				"column_expr": "2",
+				"column_literal": 2
+			},
+			{
+				"pc_units": 7120,
+				"row_expr": "access(1, 3)",
+				"column_expr": "0",
+				"column_literal": 0
+			}
+		],
+		"unique_map_enemy_columns": [
+			6,
+			0,
+			2,
+			3,
+			1,
+			5,
+			4
+		]
+	},
+	"transition_markers": [
+		{
+			"make_map_id_pc_units": 7967,
+			"setzx_pc_units": 7975,
+			"object_expr": "call_imm_4433(0)",
+			"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), GetStageGrade(GetCurrentMID()), 1, 1)",
+			"destination_literal_args": [
+				null,
+				null,
+				1,
+				1
+			],
+			"position": [
+				-2,
+				-4
+			]
+		},
+		{
+			"make_map_id_pc_units": 7983,
+			"setzx_pc_units": 7990,
+			"object_expr": "call_imm_4433(0)",
+			"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), GetStageGrade(GetCurrentMID()), 4, 1)",
+			"destination_literal_args": [
+				null,
+				null,
+				4,
+				1
+			],
+			"position": [
+				-2,
+				4
+			]
+		},
+		{
+			"make_map_id_pc_units": 7998,
+			"setzx_pc_units": 8006,
+			"object_expr": "call_imm_4433(0)",
+			"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), GetStageGrade(GetCurrentMID()), 5, 1)",
+			"destination_literal_args": [
+				null,
+				null,
+				5,
+				1
+			],
+			"position": [
+				1.7000000476837158,
+				-4
+			]
+		},
+		{
+			"make_map_id_pc_units": 8014,
+			"setzx_pc_units": 8021,
+			"object_expr": "call_imm_4433(0)",
+			"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), GetStageGrade(GetCurrentMID()), 6, 1)",
+			"destination_literal_args": [
+				null,
+				null,
+				6,
+				1
+			],
+			"position": [
+				1.7000000476837158,
+				4
+			]
+		},
+		{
+			"make_map_id_pc_units": 8029,
+			"setzx_pc_units": 8037,
+			"object_expr": "call_imm_4433(0)",
+			"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), GetStageGrade(GetCurrentMID()), 2, 1)",
+			"destination_literal_args": [
+				null,
+				null,
+				2,
+				1
+			],
+			"position": [
+				5.5,
+				-4
+			]
+		},
+		{
+			"make_map_id_pc_units": 8045,
+			"setzx_pc_units": 8052,
+			"object_expr": "call_imm_4433(0)",
+			"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), GetStageGrade(GetCurrentMID()), 3, 1)",
+			"destination_literal_args": [
+				null,
+				null,
+				3,
+				1
+			],
+			"position": [
+				5.5,
+				4
+			]
+		},
+		{
+			"make_map_id_pc_units": 8060,
+			"setzx_pc_units": 8068,
+			"object_expr": "call_imm_4433(0)",
+			"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), GetStageGrade(GetCurrentMID()), 7, 1)",
+			"destination_literal_args": [
+				null,
+				null,
+				7,
+				1
+			],
+			"position": [
+				-8.899999618530273,
+				0
+			]
+		},
+		{
+			"make_map_id_pc_units": 8075,
+			"setzx_pc_units": 8084,
+			"object_expr": "call_imm_4433(0)",
+			"destination_expr": "MakeMapID(GetStageDifficulty(GetCurrentMID()), 2, 0, 1)",
+			"destination_literal_args": [
+				null,
+				2,
+				0,
+				1
+			],
+			"position": [
+				-6.400000095367432,
+				5.599999904632568
+			]
+		}
+	],
+	"initial_event_scripts": [
+		{
+			"pc_units": 918,
+			"script": "CEvent_prologue.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 924,
+			"script": "CEvent_prologue2.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 930,
+			"script": "CEvent_boss_appear.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 936,
+			"script": "CEvent_boss_die.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 942,
+			"script": "CEvent_clear.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 948,
+			"script": "CEvent_battleroyal_clear.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 954,
+			"script": "CEvent_lose.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 960,
+			"script": "CEvent_warp.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 966,
+			"script": "CEvent_warppoint_open.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 972,
+			"script": "CEvent_battleroyal_open.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 978,
+			"script": "CEvent_nextgrade_open.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 984,
+			"script": "CEvent_door_open.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 990,
+			"script": "CEvent_guest_appear.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 996,
+			"script": "CEvent_battleroyal_begin.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 1002,
+			"script": "CEvent_battleroyal_defeat.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 1008,
+			"script": "CEvent_battleroyal_prize.pkc",
+			"owner_expr": "access(1, 0)"
+		},
+		{
+			"pc_units": 1036,
+			"script": "CEvent_battleroyal_begin.pkc",
+			"owner_expr": "access(1, 0)"
+		}
+	],
+	"created_objects": [
+		{
+			"pc_units": 918,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_prologue.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_prologue.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_prologue.pkc"
+		},
+		{
+			"pc_units": 924,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_prologue2.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_prologue2.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_prologue2.pkc"
+		},
+		{
+			"pc_units": 930,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_boss_appear.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_boss_appear.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_boss_appear.pkc"
+		},
+		{
+			"pc_units": 936,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_boss_die.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_boss_die.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_boss_die.pkc"
+		},
+		{
+			"pc_units": 942,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_clear.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_clear.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_clear.pkc"
+		},
+		{
+			"pc_units": 948,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_battleroyal_clear.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_battleroyal_clear.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_battleroyal_clear.pkc"
+		},
+		{
+			"pc_units": 954,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_lose.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_lose.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_lose.pkc"
+		},
+		{
+			"pc_units": 960,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_warp.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_warp.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_warp.pkc"
+		},
+		{
+			"pc_units": 966,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_warppoint_open.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_warppoint_open.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_warppoint_open.pkc"
+		},
+		{
+			"pc_units": 972,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_battleroyal_open.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_battleroyal_open.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_battleroyal_open.pkc"
+		},
+		{
+			"pc_units": 978,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_nextgrade_open.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_nextgrade_open.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_nextgrade_open.pkc"
+		},
+		{
+			"pc_units": 984,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_door_open.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_door_open.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_door_open.pkc"
+		},
+		{
+			"pc_units": 990,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_guest_appear.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_guest_appear.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_guest_appear.pkc"
+		},
+		{
+			"pc_units": 996,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_battleroyal_begin.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_battleroyal_begin.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_battleroyal_begin.pkc"
+		},
+		{
+			"pc_units": 1002,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_battleroyal_defeat.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_battleroyal_defeat.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_battleroyal_defeat.pkc"
+		},
+		{
+			"pc_units": 1008,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_battleroyal_prize.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_battleroyal_prize.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_battleroyal_prize.pkc"
+		},
+		{
+			"pc_units": 1036,
+			"constructor": "NewItem",
+			"expr": "NewItem('CEvent_battleroyal_begin.pkc', access(1, 0))",
+			"args": [
+				"'CEvent_battleroyal_begin.pkc'",
+				"access(1, 0)"
+			],
+			"resource": "CEvent_battleroyal_begin.pkc"
+		},
+		{
+			"pc_units": 1889,
+			"constructor": "NewItem",
+			"expr": "NewItem('CItem_money.pkc', GetThisObject())",
+			"args": [
+				"'CItem_money.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_money.pkc"
+		},
+		{
+			"pc_units": 4313,
+			"constructor": "NewItem",
+			"expr": "NewItem('CDummy_critical_motion.pkc', GetThisObject())",
+			"args": [
+				"'CDummy_critical_motion.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CDummy_critical_motion.pkc"
+		},
+		{
+			"pc_units": 4322,
+			"constructor": "NewItem",
+			"expr": "NewItem('CDummy_critical_se.pkc', GetThisObject())",
+			"args": [
+				"'CDummy_critical_se.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CDummy_critical_se.pkc"
+		},
+		{
+			"pc_units": 4391,
+			"constructor": "NewWarpZone",
+			"expr": "NewWarpZone('CDummy_warpzone.pkc', GetThisObject())",
+			"args": [
+				"'CDummy_warpzone.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CDummy_warpzone.pkc"
+		},
+		{
+			"pc_units": 4406,
+			"constructor": "NewItem",
+			"expr": "NewItem('CDummy_messageswitch.pkc', GetThisObject())",
+			"args": [
+				"'CDummy_messageswitch.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CDummy_messageswitch.pkc"
+		},
+		{
+			"pc_units": 4436,
+			"constructor": "NewItem",
+			"expr": "NewItem('CDummy_bossevent.pkc', GetThisObject())",
+			"args": [
+				"'CDummy_bossevent.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CDummy_bossevent.pkc"
+		},
+		{
+			"pc_units": 4624,
+			"constructor": "NewItem",
+			"expr": "NewItem('CDummy_generator.pkc', GetThisObject())",
+			"args": [
+				"'CDummy_generator.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CDummy_generator.pkc"
+		},
+		{
+			"pc_units": 5167,
+			"constructor": "NewItem",
+			"expr": "NewItem('CDummy_checkpoint.pkc', GetThisObject())",
+			"args": [
+				"'CDummy_checkpoint.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CDummy_checkpoint.pkc"
+		},
+		{
+			"pc_units": 6466,
+			"constructor": "NewItem",
+			"expr": "NewItem('CDummy_idle.pkc', GetThisObject())",
+			"args": [
+				"'CDummy_idle.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CDummy_idle.pkc"
+		},
+		{
+			"pc_units": 7323,
+			"constructor": "NewItem",
+			"expr": "NewItem()",
+			"args": []
+		},
+		{
+			"pc_units": 7381,
+			"constructor": "NewItem",
+			"expr": "NewItem('CItem_door.pkc', GetThisObject())",
+			"args": [
+				"'CItem_door.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_door.pkc"
+		},
+		{
+			"pc_units": 7489,
+			"constructor": "NewFacility",
+			"expr": "NewFacility('CItem_organization.pkc', GetThisObject())",
+			"args": [
+				"'CItem_organization.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_organization.pkc"
+		},
+		{
+			"pc_units": 7500,
+			"constructor": "NewFacility",
+			"expr": "NewFacility('CItem_multi.pkc', GetThisObject())",
+			"args": [
+				"'CItem_multi.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_multi.pkc"
+		},
+		{
+			"pc_units": 7511,
+			"constructor": "NewFacility",
+			"expr": "NewFacility('CItem_collection.pkc', GetThisObject())",
+			"args": [
+				"'CItem_collection.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_collection.pkc"
+		},
+		{
+			"pc_units": 7521,
+			"constructor": "NewFacility",
+			"expr": "NewFacility('CItem_information.pkc', GetThisObject())",
+			"args": [
+				"'CItem_information.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_information.pkc"
+		},
+		{
+			"pc_units": 7531,
+			"constructor": "NewFacility",
+			"expr": "NewFacility('CItem_nakama.pkc', GetThisObject())",
+			"args": [
+				"'CItem_nakama.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_nakama.pkc"
+		},
+		{
+			"pc_units": 7542,
+			"constructor": "NewFacility",
+			"expr": "NewFacility('CItem_box.pkc', GetThisObject())",
+			"args": [
+				"'CItem_box.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_box.pkc"
+		},
+		{
+			"pc_units": 7552,
+			"constructor": "NewFacility",
+			"expr": "NewFacility('CItem_wazagatya.pkc', GetThisObject())",
+			"args": [
+				"'CItem_wazagatya.pkc'",
+				"GetThisObject()"
+			],
+			"resource": "CItem_wazagatya.pkc"
+		}
+	],
+	"call_record_count": 890
+}

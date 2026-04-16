@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CWaza.py" export "CWaza.pkc"

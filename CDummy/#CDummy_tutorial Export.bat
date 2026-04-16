@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_tutorial.py" export "CDummy_tutorial.pkc"

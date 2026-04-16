@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_money.py" export "CItem_money.pkc"

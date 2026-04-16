@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.furnace.py" import "furnace.json" "furnace.pkc"

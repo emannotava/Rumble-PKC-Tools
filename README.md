@@ -6,3 +6,5 @@ they're all derived from a script made by my friend mv, his script didn't really
 
 Most of the tools in here are AI generated, which I know might be looked down upon, but my goal was to be able to fix some important issues in this game, my goal was NOT to create proper tools.
 I figured I'd just mention it right here instead of having someone eventually figure out.
+
+Eventually the idea is to merge this all into 1 tool, but as each PKC file is vastly different from another, for the time being there's a separate tool for each PKC

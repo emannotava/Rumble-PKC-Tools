@@ -1,0 +1,93 @@
+{
+	"format": "citem-money-semantic-json-1",
+	"source_basename": "CItem_money.pkc",
+	"embedded_scripts": {
+		"newitem_sequence": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc",
+			"CEvent_battleroyal_begin.pkc"
+		],
+		"self_script_name": "CItem_money.pkc"
+	},
+	"common_messages": {
+		"dynamic_category_base_high": 393219,
+		"dynamic_category_base_low": 393216,
+		"difficulty_rank_labels": [
+			393216,
+			393217,
+			393218,
+			393219,
+			393220,
+			393221,
+			393222,
+			393223
+		]
+	},
+	"waza_desc_fields": [
+		3,
+		4,
+		5,
+		6,
+		8
+	],
+	"reward_amount_table": {
+		"normal": [
+			15,
+			20,
+			28,
+			36
+		],
+		"advanced": [
+			38,
+			40,
+			42,
+			44
+		],
+		"ex_single": 100
+	},
+	"energy_visuals": {
+		"tiers": [
+			{
+				"threshold_lt": 100,
+				"model_brres": "poke_energy_4.brres",
+				"loop_motion": "poke_energy_4__loop"
+			},
+			{
+				"threshold_lt": 10,
+				"model_brres": "poke_energy_3.brres",
+				"loop_motion": "poke_energy_3__loop"
+			},
+			{
+				"threshold_lt": 1,
+				"model_brres": "poke_energy_2.brres",
+				"loop_motion": "poke_energy_2__loop"
+			},
+			{
+				"threshold_lt": null,
+				"model_brres": "poke_energy_1.brres",
+				"loop_motion": "poke_energy_1__loop"
+			}
+		]
+	},
+	"effects_and_sounds": {
+		"battle_royal_post_effect": 6,
+		"pickup_effect_id": 76,
+		"normal_fall_se": 85,
+		"battle_royal_fall_se": 99,
+		"pickup_se": 38
+	}
+}

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.ToyBoxRecipe.py" export "ToyBoxRecipe.pkc"

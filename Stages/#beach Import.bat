@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.beach.py" import "beach.json" "beach.pkc"

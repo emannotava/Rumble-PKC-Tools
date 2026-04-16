@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_tutorial.py" import "CDummy_tutorial.json" "CDummy_tutorial.pkc"

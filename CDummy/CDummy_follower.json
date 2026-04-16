@@ -1,0 +1,17 @@
+{
+	"format": "cdummy-follower-semantic-json-1",
+	"source_basename": "CDummy_follower.pkc",
+	"math_helpers": {
+		"random_average_divisor": 3.0,
+		"pow_exponent_a": 3.0,
+		"pow_exponent_b": 3.0,
+		"round_bias_subtract": 0.5,
+		"round_bias_add": 0.49000000953674316
+	},
+	"pii_prop_lookup": {
+		"field_index": 9
+	},
+	"lifecycle": {
+		"show_on_init": 0
+	}
+}

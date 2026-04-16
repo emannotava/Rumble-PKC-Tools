@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_grade_neji.py" export "CItem_grade_neji.pkc"

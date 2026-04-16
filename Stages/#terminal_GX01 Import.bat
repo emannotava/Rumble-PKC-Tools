@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.terminal_GX01.py" import "terminal_GX01.json" "terminal_GX01.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_idle.py" import "CDummy_idle.json" "CDummy_idle.pkc"

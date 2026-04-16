@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.beach.py" export "beach.pkc"

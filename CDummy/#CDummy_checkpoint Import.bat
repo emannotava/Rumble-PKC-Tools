@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_checkpoint.py" import "CDummy_checkpoint.json" "CDummy_checkpoint.pkc"

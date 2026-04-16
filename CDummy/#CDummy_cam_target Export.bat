@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_cam_target.py" export "CDummy_cam_target.pkc"

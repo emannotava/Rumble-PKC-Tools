@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_boss_die.py" export "CEvent_boss_die.pkc"

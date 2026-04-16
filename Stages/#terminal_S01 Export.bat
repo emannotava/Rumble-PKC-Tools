@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.terminal_S01.py" export "terminal_S01.pkc"

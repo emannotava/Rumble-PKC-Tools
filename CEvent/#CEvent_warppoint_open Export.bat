@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_warppoint_open.py" export "CEvent_warppoint_open.pkc"

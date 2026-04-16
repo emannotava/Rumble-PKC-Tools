@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_money.py" import "CItem_money.json" "CItem_money.pkc"

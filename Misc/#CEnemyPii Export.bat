@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEnemyPii.py" export "CEnemyPii.pkc"

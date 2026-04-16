@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.DebugCreateStrongPii.py" import "DebugCreateStrongPii.json" "DebugCreateStrongPii.pkc"

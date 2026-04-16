@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.tower.py" import "tower.json" "tower.pkc"

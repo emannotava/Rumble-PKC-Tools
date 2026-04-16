@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.PiiPropData.py" import "PiiPropData.json" "PiiPropData.pkc"

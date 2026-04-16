@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_bossevent.py" import "CDummy_bossevent.json" "CDummy_bossevent.pkc"

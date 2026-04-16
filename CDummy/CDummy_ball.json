@@ -1,0 +1,562 @@
+{
+	"format": "cdummy-ball-semantic-json-1",
+	"source_basename": "CDummy_ball.pkc",
+	"embedded_event_scripts": [
+		"CEvent_prologue.pkc",
+		"CEvent_prologue2.pkc",
+		"CEvent_boss_appear.pkc",
+		"CEvent_boss_die.pkc",
+		"CEvent_clear.pkc",
+		"CEvent_battleroyal_clear.pkc",
+		"CEvent_lose.pkc",
+		"CEvent_warp.pkc",
+		"CEvent_warppoint_open.pkc",
+		"CEvent_battleroyal_open.pkc",
+		"CEvent_nextgrade_open.pkc",
+		"CEvent_door_open.pkc",
+		"CEvent_guest_appear.pkc",
+		"CEvent_battleroyal_begin.pkc",
+		"CEvent_battleroyal_defeat.pkc",
+		"CEvent_battleroyal_prize.pkc",
+		"CEvent_battleroyal_begin.pkc"
+	],
+	"money_item_scripts": [
+		"CItem_money.pkc",
+		"CItem_money.pkc"
+	],
+	"energy_visuals": {
+		"tiers": [
+			{
+				"threshold_lt": 100,
+				"model_brres": "poke_energy_4.brres",
+				"loop_motion": "poke_energy_4__loop"
+			},
+			{
+				"threshold_lt": 10,
+				"model_brres": "poke_energy_3.brres",
+				"loop_motion": "poke_energy_3__loop"
+			},
+			{
+				"threshold_lt": 1,
+				"model_brres": "poke_energy_2.brres",
+				"loop_motion": "poke_energy_2__loop"
+			},
+			{
+				"threshold_lt": null,
+				"model_brres": "poke_energy_1.brres",
+				"loop_motion": "poke_energy_1__loop"
+			}
+		]
+	},
+	"watch_visuals": {
+		"heal_model_brres": "heal_nejimaki.brres",
+		"watch_model_brres": "watch.brres",
+		"watch_motion": "watch"
+	},
+	"reward_rows": [
+		{
+			"group": 0,
+			"difficulty": 1,
+			"slot": 0,
+			"value_a": 0,
+			"value_b": 85,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 1,
+			"slot": 1,
+			"value_a": 10,
+			"value_b": 90,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 1,
+			"slot": 2,
+			"value_a": 20,
+			"value_b": 95,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 1,
+			"slot": 3,
+			"value_a": 30,
+			"value_b": 110,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 1,
+			"slot": 4,
+			"value_a": 40,
+			"value_b": 130,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 1,
+			"slot": 5,
+			"value_a": 50,
+			"value_b": 170,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 1,
+			"slot": 6,
+			"value_a": 60,
+			"value_b": 180,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 2,
+			"slot": 0,
+			"value_a": 80,
+			"value_b": 180,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 2,
+			"slot": 1,
+			"value_a": 80,
+			"value_b": 180,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 2,
+			"slot": 2,
+			"value_a": 100,
+			"value_b": 200,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 2,
+			"slot": 3,
+			"value_a": 100,
+			"value_b": 230,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 2,
+			"slot": 4,
+			"value_a": 130,
+			"value_b": 250,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 2,
+			"slot": 5,
+			"value_a": 130,
+			"value_b": 320,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 2,
+			"slot": 6,
+			"value_a": 150,
+			"value_b": 330,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 3,
+			"slot": 0,
+			"value_a": 150,
+			"value_b": 330,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 3,
+			"slot": 1,
+			"value_a": 150,
+			"value_b": 350,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 3,
+			"slot": 2,
+			"value_a": 200,
+			"value_b": 400,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 3,
+			"slot": 3,
+			"value_a": 200,
+			"value_b": 430,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 3,
+			"slot": 4,
+			"value_a": 250,
+			"value_b": 450,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 3,
+			"slot": 5,
+			"value_a": 250,
+			"value_b": 520,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 3,
+			"slot": 6,
+			"value_a": 320,
+			"value_b": 530,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 4,
+			"slot": 0,
+			"value_a": 350,
+			"value_b": 530,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 4,
+			"slot": 1,
+			"value_a": 350,
+			"value_b": 550,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 4,
+			"slot": 2,
+			"value_a": 400,
+			"value_b": 600,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 4,
+			"slot": 3,
+			"value_a": 400,
+			"value_b": 630,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 4,
+			"slot": 4,
+			"value_a": 450,
+			"value_b": 650,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 4,
+			"slot": 5,
+			"value_a": 450,
+			"value_b": 720,
+			"call_target": 6280
+		},
+		{
+			"group": 0,
+			"difficulty": 4,
+			"slot": 6,
+			"value_a": 520,
+			"value_b": 730,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 1,
+			"slot": 0,
+			"value_a": 600,
+			"value_b": 930,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 1,
+			"slot": 1,
+			"value_a": 650,
+			"value_b": 950,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 1,
+			"slot": 2,
+			"value_a": 700,
+			"value_b": 1000,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 1,
+			"slot": 3,
+			"value_a": 800,
+			"value_b": 1030,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 1,
+			"slot": 4,
+			"value_a": 850,
+			"value_b": 1050,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 1,
+			"slot": 5,
+			"value_a": 900,
+			"value_b": 1120,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 1,
+			"slot": 6,
+			"value_a": 930,
+			"value_b": 1130,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 2,
+			"slot": 0,
+			"value_a": 950,
+			"value_b": 1130,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 2,
+			"slot": 1,
+			"value_a": 950,
+			"value_b": 1150,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 2,
+			"slot": 2,
+			"value_a": 1000,
+			"value_b": 1200,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 2,
+			"slot": 3,
+			"value_a": 1000,
+			"value_b": 1230,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 2,
+			"slot": 4,
+			"value_a": 1050,
+			"value_b": 1250,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 2,
+			"slot": 5,
+			"value_a": 1050,
+			"value_b": 1320,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 2,
+			"slot": 6,
+			"value_a": 1130,
+			"value_b": 1330,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 3,
+			"slot": 0,
+			"value_a": 1150,
+			"value_b": 1330,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 3,
+			"slot": 1,
+			"value_a": 1150,
+			"value_b": 1400,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 3,
+			"slot": 2,
+			"value_a": 1200,
+			"value_b": 1500,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 3,
+			"slot": 3,
+			"value_a": 1200,
+			"value_b": 1530,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 3,
+			"slot": 4,
+			"value_a": 1300,
+			"value_b": 1550,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 3,
+			"slot": 5,
+			"value_a": 1300,
+			"value_b": 1620,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 3,
+			"slot": 6,
+			"value_a": 1420,
+			"value_b": 1630,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 4,
+			"slot": 0,
+			"value_a": 1450,
+			"value_b": 1630,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 4,
+			"slot": 1,
+			"value_a": 1450,
+			"value_b": 1700,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 4,
+			"slot": 2,
+			"value_a": 1450,
+			"value_b": 1750,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 4,
+			"slot": 3,
+			"value_a": 1500,
+			"value_b": 1800,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 4,
+			"slot": 4,
+			"value_a": 1500,
+			"value_b": 1830,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 4,
+			"slot": 5,
+			"value_a": 1600,
+			"value_b": 1880,
+			"call_target": 6280
+		},
+		{
+			"group": 1,
+			"difficulty": 4,
+			"slot": 6,
+			"value_a": 1710,
+			"value_b": 1900,
+			"call_target": 6280
+		},
+		{
+			"group": 2,
+			"difficulty": 1,
+			"slot": 0,
+			"value_a": 1710,
+			"value_b": 9999,
+			"call_target": 6280
+		},
+		{
+			"group": 2,
+			"difficulty": 1,
+			"slot": 1,
+			"value_a": 1720,
+			"value_b": 9999,
+			"call_target": 6280
+		},
+		{
+			"group": 2,
+			"difficulty": 1,
+			"slot": 2,
+			"value_a": 1730,
+			"value_b": 9999,
+			"call_target": 6280
+		},
+		{
+			"group": 2,
+			"difficulty": 1,
+			"slot": 3,
+			"value_a": 1740,
+			"value_b": 9999,
+			"call_target": 6280
+		},
+		{
+			"group": 2,
+			"difficulty": 1,
+			"slot": 4,
+			"value_a": 1760,
+			"value_b": 9999,
+			"call_target": 6280
+		},
+		{
+			"group": 2,
+			"difficulty": 1,
+			"slot": 5,
+			"value_a": 1780,
+			"value_b": 9999,
+			"call_target": 6280
+		},
+		{
+			"group": 2,
+			"difficulty": 1,
+			"slot": 6,
+			"value_a": 1800,
+			"value_b": 9999,
+			"call_target": 6280
+		}
+	]
+}

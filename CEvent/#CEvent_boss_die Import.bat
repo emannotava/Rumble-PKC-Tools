@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_boss_die.py" import "CEvent_boss_die.json" "CEvent_boss_die.pkc"

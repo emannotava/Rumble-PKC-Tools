@@ -1,0 +1,102 @@
+{
+	"format": "ncwz-semantic-json-1",
+	"source_basename": "CWaza.pkc",
+	"embedded_scripts": {
+		"event_scripts": {
+			"prologue": "CEvent_prologue.pkc",
+			"prologue2": "CEvent_prologue2.pkc",
+			"boss_appear": "CEvent_boss_appear.pkc",
+			"boss_die": "CEvent_boss_die.pkc",
+			"clear": "CEvent_clear.pkc",
+			"battleroyal_clear": "CEvent_battleroyal_clear.pkc",
+			"lose": "CEvent_lose.pkc",
+			"warp": "CEvent_warp.pkc",
+			"warppoint_open": "CEvent_warppoint_open.pkc",
+			"battleroyal_open": "CEvent_battleroyal_open.pkc",
+			"nextgrade_open": "CEvent_nextgrade_open.pkc",
+			"door_open": "CEvent_door_open.pkc",
+			"guest_appear": "CEvent_guest_appear.pkc",
+			"battleroyal_begin": "CEvent_battleroyal_begin.pkc",
+			"battleroyal_defeat": "CEvent_battleroyal_defeat.pkc",
+			"battleroyal_prize": "CEvent_battleroyal_prize.pkc",
+			"battleroyal_begin_repeat": "CEvent_battleroyal_begin.pkc"
+		},
+		"money_item_script": "CItem_money.pkc",
+		"follower_helper_script": "CDummy_follower.pkc"
+	},
+	"follower_behavior": {
+		"attachment_node": "HEAD",
+		"spawn_sound_se": 833,
+		"spawn_effect_id": 682,
+		"spawn_effect_dir_deg": 0,
+		"voice_fallback_waza_desc_field": 35,
+		"detail_waza_desc_fields": [
+			1,
+			4,
+			5,
+			7,
+			6,
+			8,
+			27,
+			16
+		],
+		"register_angle_offset_deg": 180.0,
+		"register_blend_base_deg": 235.0,
+		"pokemon_voice_exception_moves": [
+			"MOVE_GROWL",
+			"MOVE_HOWL",
+			"MOVE_HYPER_VOICE",
+			"MOVE_ROAR"
+		]
+	},
+	"common_messages": {
+		"dynamic_category_base_high": 393219,
+		"dynamic_category_base_low": 393216,
+		"difficulty_rank_labels": [
+			393216,
+			393217,
+			393218,
+			393219,
+			393220,
+			393221,
+			393222,
+			393223
+		]
+	},
+	"common_field_indexes": {
+		"collection_type_field": 9,
+		"attack_field": 0,
+		"boss_attack_multiplier_field": 5,
+		"defense_field": 1,
+		"boss_defense_multiplier_field": 6,
+		"boss_speed_override_field": 8,
+		"speed_field": 16,
+		"boss_scalar_field": 17,
+		"hp_field": 14,
+		"boss_hp_multiplier_field": 7,
+		"level_formula_hp_field": 14,
+		"waza_desc_preview_fields": [
+			3,
+			4,
+			5,
+			6,
+			8
+		],
+		"ppd_register_slots": [
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			7,
+			8,
+			6,
+			9,
+			10,
+			11,
+			12,
+			13
+		]
+	}
+}

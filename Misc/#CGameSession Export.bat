@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CGameSession.py" export "CGameSession.pkc"

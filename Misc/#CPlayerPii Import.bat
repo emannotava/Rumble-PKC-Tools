@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CPlayerPii.py" import "CPlayerPii.json" "CPlayerPii.pkc"

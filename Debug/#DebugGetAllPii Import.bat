@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.DebugGetAllPii.py" import "DebugGetAllPii.json" "DebugGetAllPii.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_wazagatya.py" import "CItem_wazagatya.json" "CItem_wazagatya.pkc"

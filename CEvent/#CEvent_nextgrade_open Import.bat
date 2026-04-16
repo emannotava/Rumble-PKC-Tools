@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_nextgrade_open.py" import "CEvent_nextgrade_open.json" "CEvent_nextgrade_open.pkc"

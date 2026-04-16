@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_critical_motion.py" export "CDummy_critical_motion.pkc"

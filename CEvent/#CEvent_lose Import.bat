@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_lose.py" import "CEvent_lose.json" "CEvent_lose.pkc"

@@ -1,0 +1,60 @@
+{
+	"format": "cevent-boss-die-semantic-json-1",
+	"source_basename": "CEvent_boss_die.pkc",
+	"embedded_scripts": {
+		"linked_event_scripts": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc",
+			"CEvent_battleroyal_begin.pkc"
+		],
+		"money_item_script": "CItem_money.pkc",
+		"follower_script": "CDummy_follower.pkc"
+	},
+	"spawn_and_effects": {
+		"integers": {
+			"follower_spawn_se_id": 823,
+			"initial_wait_frames": 50,
+			"post_effect_delay_frames": 30,
+			"post_effect_id": 7,
+			"post_effect_wait_frames": 60,
+			"final_cleanup_wait_frames": 30
+		},
+		"floats": {
+			"post_effect_scale": 0.10000000149011612,
+			"final_cleanup_effect_scale": 0.10000000149011612
+		}
+	},
+	"motion_sequence": {
+		"integers": {
+			"intro_motion_id": 95,
+			"intro_request_id": 0,
+			"main_motion_id": 101,
+			"main_replay_motion_id": 101,
+			"request_motion_id": 104,
+			"secondary_replay_motion_id": 101,
+			"secondary_request_motion_id": 104
+		},
+		"floats": {
+			"intro_motion_speed": 0.5,
+			"scale_start": 1.0
+		}
+	},
+	"audio_pitch": {
+		"pitch_multiplier_primary": 3.0,
+		"pitch_multiplier_secondary": 3.0
+	}
+}

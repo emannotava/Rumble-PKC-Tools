@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_rule.py" import "CItem_rule.json" "CItem_rule.pkc"

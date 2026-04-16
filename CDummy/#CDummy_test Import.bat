@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_test.py" import "CDummy_test.json" "CDummy_test.pkc"

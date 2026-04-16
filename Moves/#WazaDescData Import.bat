@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.WazaDescData.py" import "WazaDescData.json" "WazaDescData.pkc"

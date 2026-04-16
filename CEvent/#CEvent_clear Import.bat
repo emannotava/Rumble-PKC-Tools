@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_clear.py" import "CEvent_clear.json" "CEvent_clear.pkc"

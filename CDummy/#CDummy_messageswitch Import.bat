@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_messageswitch.py" import "CDummy_messageswitch.json" "CDummy_messageswitch.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CGameEnding.py" export "CGameEnding.pkc"

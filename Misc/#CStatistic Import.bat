@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CStatistic.py" import "CStatistic.json" "CStatistic.pkc"

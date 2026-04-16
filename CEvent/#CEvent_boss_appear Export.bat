@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_boss_appear.py" export "CEvent_boss_appear.pkc"

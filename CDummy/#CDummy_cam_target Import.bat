@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_cam_target.py" import "CDummy_cam_target.json" "CDummy_cam_target.pkc"

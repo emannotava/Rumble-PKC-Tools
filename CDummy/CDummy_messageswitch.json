@@ -1,0 +1,122 @@
+{
+	"format": "cdummy-messageswitch-semantic-json-1",
+	"source_basename": "CDummy_messageswitch.pkc",
+	"embedded_event_scripts": [
+		"CEvent_prologue.pkc",
+		"CEvent_prologue2.pkc",
+		"CEvent_boss_appear.pkc",
+		"CEvent_boss_die.pkc",
+		"CEvent_clear.pkc",
+		"CEvent_battleroyal_clear.pkc",
+		"CEvent_lose.pkc",
+		"CEvent_warp.pkc",
+		"CEvent_warppoint_open.pkc",
+		"CEvent_battleroyal_open.pkc",
+		"CEvent_nextgrade_open.pkc",
+		"CEvent_door_open.pkc",
+		"CEvent_guest_appear.pkc",
+		"CEvent_battleroyal_begin.pkc",
+		"CEvent_battleroyal_defeat.pkc",
+		"CEvent_battleroyal_prize.pkc",
+		"CEvent_battleroyal_begin.pkc"
+	],
+	"money_item_script": "CItem_money.pkc",
+	"common_tables": {
+		"random_weight_triples": [
+			[
+				95,
+				5,
+				0
+			],
+			[
+				80,
+				20,
+				0
+			],
+			[
+				59,
+				40,
+				1
+			],
+			[
+				42,
+				55,
+				3
+			],
+			[
+				23,
+				70,
+				7
+			],
+			[
+				10,
+				80,
+				10
+			],
+			[
+				10,
+				75,
+				15
+			],
+			[
+				10,
+				70,
+				20
+			],
+			[
+				10,
+				65,
+				25
+			]
+		],
+		"random_weight_outputs": {
+			"first": 1,
+			"second": 10,
+			"third": 100,
+			"fallback": 0
+		},
+		"stage_value_table_a": [
+			150,
+			400,
+			800,
+			1200,
+			2000,
+			2500,
+			3500,
+			4000,
+			4500
+		],
+		"stage_value_table_b": [
+			500,
+			1500,
+			3000,
+			5000,
+			8000,
+			10000,
+			13000,
+			15000,
+			18000
+		]
+	},
+	"difficulty_rank_labels": [
+		393216,
+		393217,
+		393218,
+		393219,
+		393220,
+		393221,
+		393222,
+		393223
+	],
+	"waza_desc_fields": [
+		3,
+		4,
+		5,
+		6,
+		8
+	],
+	"message_switch_behavior": {
+		"leave_init_state": 0,
+		"show_on_init": 1
+	}
+}

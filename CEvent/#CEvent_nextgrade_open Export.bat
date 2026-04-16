@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_nextgrade_open.py" export "CEvent_nextgrade_open.pkc"

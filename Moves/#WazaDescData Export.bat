@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.WazaDescData.py" export "WazaDescData.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_door.py" export "CItem_door.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_idle.py" export "CDummy_idle.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_collection.py" import "CItem_collection.json" "CItem_collection.pkc"

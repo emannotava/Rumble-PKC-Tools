@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_door.py" import "CDummy_door.json" "CDummy_door.pkc"

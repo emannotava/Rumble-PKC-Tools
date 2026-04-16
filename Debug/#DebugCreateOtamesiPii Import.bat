@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.DebugCreateOtamesiPii.py" import "DebugCreateOtamesiPii.json" "DebugCreateOtamesiPii.pkc"

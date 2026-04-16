@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_ticket.py" import "CItem_ticket.json" "CItem_ticket.pkc"

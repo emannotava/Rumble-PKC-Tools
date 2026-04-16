@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.WazaTableData.py" export "WazaTableData.pkc"

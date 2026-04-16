@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_wazagatya.py" export "CItem_wazagatya.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_battleroyal_open.py" import "CEvent_battleroyal_open.json" "CEvent_battleroyal_open.pkc"

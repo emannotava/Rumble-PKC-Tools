@@ -1,0 +1,7 @@
+{
+	"format": "cdummy-idle-semantic-json-1",
+	"source_basename": "CDummy_idle.pkc",
+	"lifecycle": {
+		"show_on_init": 0
+	}
+}

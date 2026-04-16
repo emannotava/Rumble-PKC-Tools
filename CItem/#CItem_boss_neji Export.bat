@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_boss_neji.py" export "CItem_boss_neji.pkc"

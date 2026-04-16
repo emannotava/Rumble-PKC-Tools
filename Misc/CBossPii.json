@@ -1,0 +1,146 @@
+{
+	"format": "ncbp-semantic-json-1",
+	"source_basename": "CBossPii.pkc",
+	"embedded_scripts": {
+		"event_scripts": {
+			"prologue": "CEvent_prologue.pkc",
+			"prologue2": "CEvent_prologue2.pkc",
+			"boss_appear": "CEvent_boss_appear.pkc",
+			"boss_die": "CEvent_boss_die.pkc",
+			"clear": "CEvent_clear.pkc",
+			"battleroyal_clear": "CEvent_battleroyal_clear.pkc",
+			"lose": "CEvent_lose.pkc",
+			"warp": "CEvent_warp.pkc",
+			"warppoint_open": "CEvent_warppoint_open.pkc",
+			"battleroyal_open": "CEvent_battleroyal_open.pkc",
+			"nextgrade_open": "CEvent_nextgrade_open.pkc",
+			"door_open": "CEvent_door_open.pkc",
+			"guest_appear": "CEvent_guest_appear.pkc",
+			"battleroyal_begin": "CEvent_battleroyal_begin.pkc",
+			"battleroyal_defeat": "CEvent_battleroyal_defeat.pkc",
+			"battleroyal_prize": "CEvent_battleroyal_prize.pkc",
+			"battleroyal_begin_repeat": "CEvent_battleroyal_begin.pkc"
+		},
+		"money_item_script": "CItem_money.pkc",
+		"wazamove_helper_script": "CDummy_wazamove.pkc",
+		"ball_helper_script": "CDummy_ball.pkc"
+	},
+	"common_messages": {
+		"dynamic_category_base_high": 393219,
+		"dynamic_category_base_low": 393216,
+		"difficulty_rank_labels": [
+			393216,
+			393217,
+			393218,
+			393219,
+			393220,
+			393221,
+			393222,
+			393223
+		]
+	},
+	"common_field_indexes": {
+		"collection_type_field": 9,
+		"attack_field": 0,
+		"boss_attack_multiplier_field": 5,
+		"defense_field": 1,
+		"boss_defense_multiplier_field": 6,
+		"boss_speed_override_field": 8,
+		"speed_field": 16,
+		"boss_scalar_field": 17,
+		"hp_field": 14,
+		"boss_hp_multiplier_field": 7,
+		"level_formula_hp_field": 14,
+		"waza_desc_preview_fields": [
+			3,
+			4,
+			5,
+			6,
+			8
+		],
+		"ppd_register_slots": [
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			7,
+			8,
+			6,
+			9,
+			10,
+			11,
+			12,
+			13
+		]
+	},
+	"wazamove_spawn": {
+		"combo_count_stat_id": 6,
+		"damage_stat_id": 7,
+		"wazamove_field_primary": 30,
+		"wazamove_field_secondary": 29,
+		"detail_waza_desc_fields": [
+			41,
+			39,
+			40,
+			38
+		],
+		"helper_eval_waza_desc_fields": [
+			13,
+			2,
+			2,
+			36,
+			24,
+			23,
+			21,
+			26,
+			16
+		],
+		"new_obj_register_slots_first": [
+			0,
+			1,
+			2,
+			3,
+			5,
+			6
+		],
+		"new_obj_register_slots_second": [
+			0,
+			1,
+			2,
+			3,
+			5,
+			6
+		],
+		"new_obj_register_slots_third": [
+			0,
+			1,
+			2,
+			3,
+			5,
+			6
+		],
+		"angle_table_degrees": [
+			90.0,
+			145.0,
+			215.0,
+			270.0
+		],
+		"new_obj_register_default_scales": [
+			1.0,
+			1.0
+		]
+	},
+	"ball_spawn": {
+		"setxyz_y_offset": [
+			0.30000001192092896
+		],
+		"turn_offset_deg": [
+			180.0
+		],
+		"model_scale": [
+			9.999999747378752e-05
+		]
+	}
+}

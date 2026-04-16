@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CItem_information.py" export "CItem_information.pkc"

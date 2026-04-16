@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_guest_appear.py" import "CEvent_guest_appear.json" "CEvent_guest_appear.pkc"

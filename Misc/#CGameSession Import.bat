@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CGameSession.py" import "CGameSession.json" "CGameSession.pkc"

@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_generator.py" export "CDummy_generator.pkc"

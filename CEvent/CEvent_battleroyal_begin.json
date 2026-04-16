@@ -1,0 +1,110 @@
+{
+	"format": "cevent-battleroyal-begin-semantic-json-1",
+	"source_basename": "CEvent_battleroyal_begin.pkc",
+	"embedded_scripts": {
+		"linked_event_scripts": [
+			"CEvent_prologue.pkc",
+			"CEvent_prologue2.pkc",
+			"CEvent_boss_appear.pkc",
+			"CEvent_boss_die.pkc",
+			"CEvent_clear.pkc",
+			"CEvent_battleroyal_clear.pkc",
+			"CEvent_lose.pkc",
+			"CEvent_warp.pkc",
+			"CEvent_warppoint_open.pkc",
+			"CEvent_battleroyal_open.pkc",
+			"CEvent_nextgrade_open.pkc",
+			"CEvent_door_open.pkc",
+			"CEvent_guest_appear.pkc",
+			"CEvent_battleroyal_begin.pkc",
+			"CEvent_battleroyal_defeat.pkc",
+			"CEvent_battleroyal_prize.pkc",
+			"CEvent_battleroyal_begin.pkc"
+		],
+		"money_item_script": "CItem_money.pkc"
+	},
+	"rival_resources": {
+		"rival_model_brres": [
+			"R_SYAWAAZU",
+			"R_SANDAASU",
+			"R_BUUSUTAA",
+			"R_HUUDHIN",
+			"R_KAIRIKII",
+			"R_GENGAA",
+			"R_GOROONYA",
+			"R_HUSIGIBANA",
+			"R_KAMEKKUSU",
+			"R_RIZAADON",
+			"R_FAIYAA",
+			"R_SANDAA",
+			"R_HURIIZAA",
+			"R_MYUUTUU",
+			"R_ROTOMU_NORMAL",
+			"R_ROTOMU_HEAT",
+			"R_ROTOMU_WASH",
+			"R_ROTOMU_FROST",
+			"R_ROTOMU_SPIN",
+			"R_ROTOMU_CUT",
+			"R_RAMUPARUDO",
+			"R_TORIDEPUSU",
+			"R_BUUBAAN",
+			"R_EREKIBURU",
+			"R_DODAITOSU",
+			"R_ENPERUTO",
+			"R_GOUKAZARU",
+			"R_DAAKURAI",
+			"R_DHIARUGA",
+			"R_PARUKIA",
+			"R_GIRATHINA"
+		]
+	},
+	"layout_assets": {
+		"world_camera_motion": "br_begin",
+		"dummy_script": "CDummy_follower.pkc",
+		"opening_sequence_name": "br_beginning",
+		"archive_path": "event/br_begin.arc/event2d.arc",
+		"main_layout_name": "beginning",
+		"main_state_begin": "begin",
+		"main_state_end": "end",
+		"notice_layout_name": "beginning_notice",
+		"notice_label_requirement": "REQUIREMENT",
+		"notice_state_begin": "begin",
+		"notice_state_loop": "loop",
+		"rival_layout_name": "beginning_rival",
+		"rival_label_type": "TYPE",
+		"rival_label_ap": "AP",
+		"rival_label_dp": "DP",
+		"rival_state_begin1": "begin1",
+		"rival_state_begin2": "begin2",
+		"rival_state_normal": "normal",
+		"rival_state_end": "end"
+	},
+	"ui_labels": {
+		"grade": "GRADE",
+		"area": "AREA",
+		"prize": "PRIZE"
+	},
+	"audio": {
+		"opening_se": 840,
+		"notice_open_se": 826,
+		"rival_begin1_se": 97,
+		"rival_begin2_se": 98,
+		"rival_normal_se": 98
+	},
+	"stat_thresholds": {
+		"ap_rank_thresholds_desc": [
+			153,
+			134,
+			100,
+			70,
+			1
+		],
+		"dp_rank_thresholds_desc": [
+			130,
+			110,
+			83,
+			59,
+			1
+		]
+	}
+}

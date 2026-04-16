@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_battleroyal_defeat.py" export "CEvent_battleroyal_defeat.pkc"

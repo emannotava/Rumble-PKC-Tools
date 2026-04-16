@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.battle_08.py" export "battle_08.pkc"

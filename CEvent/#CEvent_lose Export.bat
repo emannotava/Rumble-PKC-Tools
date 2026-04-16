@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CEvent_lose.py" export "CEvent_lose.pkc"

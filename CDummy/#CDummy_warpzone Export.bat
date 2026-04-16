@@ -1,0 +1,1 @@
+python ".\Scripts\pyPKCTool.CDummy_warpzone.py" export "CDummy_warpzone.pkc"
