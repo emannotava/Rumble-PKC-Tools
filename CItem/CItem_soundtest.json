@@ -1,8 +1,0 @@
-{
-	"format": "citem-soundtest-semantic-json-1",
-	"source_basename": "CItem_soundtest.pkc",
-	"script": {
-		"function_prologue_payload_u32": 0,
-		"is_empty_stub": true
-	}
-}
