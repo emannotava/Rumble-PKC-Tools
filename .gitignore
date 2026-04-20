@@ -1,2 +1,4 @@
 *.pkc
 *.json
+*.out
+/Editors With GUIs/Scripts/__pycache__
