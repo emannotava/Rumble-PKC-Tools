@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import math
 import os
-import random
 import struct
 import tkinter as tk
 from dataclasses import dataclass
@@ -9,12 +8,108 @@ from tkinter import filedialog, messagebox, ttk
 from typing import Dict, List, Optional, Tuple
 
 
-MIN_OPEN_BINARY_SIZE = 0x3E7BA0
 RECORD_BITS = 224
 RECORD_SIZE = RECORD_BITS // 8
+ARCHIVE_POINTER_BASE_PRIMARY = 0x80003F00
+ARCHIVE_POINTER_BASE_FALLBACK = 0x800D33C0
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ICON_DIR = os.path.join(SCRIPT_DIR, "icon")
+FALLBACK_ICON_NAME = "_fallback.png"
+FALLBACK_MAIN_ICON_NAME = "_fallback_main.png"
+FALLBACK_SIDEBAR_ICON_NAME = "_fallback_side.png"
+MAIN_ICON_SIZE = 128
+SIDEBAR_ICON_SIZE = 48
+SIDEBAR_ROWHEIGHT = 52
+
+TYPE_VALUE_TO_NAME = {
+	0x00: "Normal",
+	0x04: "Fighting",
+	0x08: "Flying",
+	0x0C: "Poison",
+	0x10: "Ground",
+	0x14: "Rock",
+	0x18: "Bug",
+	0x1C: "Ghost",
+	0x20: "Steel",
+	0x24: "???",
+	0x28: "Fire",
+	0x2C: "Water",
+	0x30: "Grass",
+	0x34: "Electric",
+	0x38: "Psychic",
+	0x3C: "Ice",
+	0x40: "Dragon",
+	0x44: "Dark",
+}
+TYPE_NAME_TO_VALUE = {value: key for key, value in TYPE_VALUE_TO_NAME.items()}
+TYPE_COMBO_VALUES = [TYPE_VALUE_TO_NAME[key] for key in sorted(TYPE_VALUE_TO_NAME)]
+
+ANM_TYPE_VALUE_TO_NAME = {
+	0: "bird",
+	1: "bound",
+	2: "butterfly",
+	3: "fish",
+	4: "float",
+	5: "fourleg",
+	6: "glide",
+	7: "insect",
+	8: "nomove",
+	9: "rolling",
+	10: "seal",
+	11: "slime",
+	12: "twoleg",
+}
+ANM_TYPE_NAME_TO_VALUE = {value: key for key, value in ANM_TYPE_VALUE_TO_NAME.items()}
+ANM_TYPE_COMBO_VALUES = [ANM_TYPE_VALUE_TO_NAME[key] for key in sorted(ANM_TYPE_VALUE_TO_NAME)]
+
+GENDER_RATIO_VALUE_TO_NAME = {
+	0: "100% Male",
+	31: "87.5% Male",
+	63: "75% Male",
+	127: "50% Male",
+	191: "25% Male",
+	254: "0% Male",
+	255: "Genderless",
+}
+GENDER_RATIO_NAME_TO_VALUE = {value: key for key, value in GENDER_RATIO_VALUE_TO_NAME.items()}
+GENDER_RATIO_COMBO_VALUES = [GENDER_RATIO_VALUE_TO_NAME[key] for key in sorted(GENDER_RATIO_VALUE_TO_NAME)]
+
+SPECIAL_SCALE_FIELD_NAME = "f16_ScaleModifier"
 
 EMBEDDED_LOGIC_TEXT = """Int_NDexID;Int_FormID;Int_AnmType;Int_FlyHeight;Int_Unk1;f16_ScaleModifier;Int_Unk2;Int_Unk3;Int_Type1;Int_Type2;Int_GenderRatio;f16_UnkFloat;f32_MaleArchiveNameStringPointer;f32_FemaleArchiveNameStringPointer;f32__deprecated__WalkSpeedCoEff;f32_WalkAnmRate
 9 Bits;5 Bits;6 Bits;5 Bits;7 Bits;16 Bits;3 Bits;4 Bits;8 Bits;8 Bits;9 Bits;16 Bits;32 Bits;32 Bits;32 Bits;32 Bits"""
+
+EMBEDDED_NEW_FORMAT_IDENTIFIER = "NewFormat"
+EMBEDDED_LOGIC_TEXT_NEW_FORMAT = """Str_NewFormatIdentifier;Int_NDexID;Int_FormID;Str_AnmType;Int_FlyHeight;Int_Unk1;f16_ScaleModifier;Int_Unk2;Int_Unk3;Int_Type1;Int_Type2;Int_GenderRatio;f16_UnkFloat;f32_MaleArchiveNameString;f32_FemaleArchiveNameString;f32__deprecated__WalkSpeedCoEff;f32_WalkAnmRate
+72 Bits;16 Bits;8 Bits;288 Bits;8 Bits;8 Bits;16 Bits;8 Bits;8 Bits;8 Bits;8 Bits;16 Bits;16 Bits;512 Bits;512 Bits;32 Bits;32 Bits"""
+
+NEW_FORMAT_IDENTIFIER_BYTES = EMBEDDED_NEW_FORMAT_IDENTIFIER.encode("ascii")
+NEW_FORMAT_RECORD_SIZE = 196
+NEW_FORMAT_ANMTYPE_MAX_CHARS = 36
+NEW_FORMAT_ARCHIVE_MAX_CHARS = 64
+NEW_FORMAT_FIELD_OFFSETS = {
+	"Int_NDexID": (9, 2),
+	"Int_FormID": (11, 1),
+	"Str_AnmType": (12, 36),
+	"Int_FlyHeight": (48, 1),
+	"Int_Unk1": (49, 1),
+	"f16_ScaleModifier": (50, 2),
+	"Int_Unk2": (52, 1),
+	"Int_Unk3": (53, 1),
+	"Int_Type1": (54, 1),
+	"Int_Type2": (55, 1),
+	"Int_GenderRatio": (56, 2),
+	"f16_UnkFloat": (58, 2),
+	"f32_MaleArchiveNameString": (60, 64),
+	"f32_FemaleArchiveNameString": (124, 64),
+	"f32__deprecated__WalkSpeedCoEff": (188, 4),
+	"f32_WalkAnmRate": (192, 4),
+}
+LEGACY_POINTER_FIELD_NAMES = {
+	"f32_MaleArchiveNameStringPointer",
+	"f32_FemaleArchiveNameStringPointer",
+}
 
 EMBEDDED_OFFSETS_TEXT = """Offset;Male_Archive_String_Name_Pointer;Male_Archive_String_Name_Substitute;Female_Archive_String_Name_Pointer;Female_Archive_String_Name_Substitute;NAME
 35A088;803B8730;3B4830;803B8730;3B4830;Bulbasaur
@@ -80,7 +175,7 @@ EMBEDDED_OFFSETS_TEXT = """Offset;Male_Archive_String_Name_Pointer;Male_Archive_
 35A718;804B7C58;3E4898;804B7C58;3E4898;Poliwhirl
 35A734;803B8930;3B4A30;803B8930;3B4A30;Poliwrath
 35A750;804B7C60;3E48A0;804B7C60;3E48A0;Abra
-35A76C;803B893C;3B4A3C;803B8948;3B4A48;Kadabra
+35A76C;803B8954;3B4A3C;803B8960;3B4A48;Kadabra
 35A788;803B8954;3B4A54;803B8960;3B4A60;Alakazam
 35A7A4;803B896C;3B4A6C;803B896C;3B4A6C;Machop
 35A7C0;803B8978;3B4A78;803B8978;3B4A78;Machoke
@@ -576,79 +671,894 @@ EMBEDDED_OFFSETS_TEXT = """Offset;Male_Archive_String_Name_Pointer;Male_Archive_
 35DD58;803B9D58;3B5E58;803B9D58;3B5E58;Arceus-Dark
 35DD74;803B9D64;3B5E64;803B9D64;3B5E64;Egg
 35DD90;803B9D74;3B5E74;803B9D74;3B5E74;Egg-Manaphy
-35DDAC;803B9D64;3B5E64;803B9D64;3B5E64;Bad Egg"""
+35DDAC;803B9D64;3B5E64;803B9D64;3B5E64;Bad Egg
+3E7BA0;0;0;0;0;#0003,01 Venusaur, Form 01
+3E7C70;0;0;0;0;#0003,02 Venusaur, Form 02
+3E7D40;0;0;0;0;#0006,01 Charizard, Form 01
+3E7E10;0;0;0;0;#0006,02 Charizard, Form 02
+3E7EE0;0;0;0;0;#0006,03 Charizard, Form 03
+3E7FB0;0;0;0;0;#0009,01 Blastoise, Form 01
+3E8080;0;0;0;0;#0009,02 Blastoise, Form 02
+3E8150;0;0;0;0;#0012,01 Butterfree, Form 01
+3E8220;0;0;0;0;#0012,02 Butterfree, Form 02
+3E82F0;0;0;0;0;#0015,01 Beedrill, Form 01
+3E83C0;0;0;0;0;#0018,01 Pidgeot, Form 01
+3E8490;0;0;0;0;#0019,01 Rattata, Form 01
+3E8560;0;0;0;0;#0020,01 Raticate, Form 01
+3E8630;0;0;0;0;#0025,01 Pikachu, Form 01
+3E8700;0;0;0;0;#0025,02 Pikachu, Form 02
+3E87D0;0;0;0;0;#0026,01 Raichu, Form 01
+3E88A0;0;0;0;0;#0026,02 Raichu, Form 02
+3E8970;0;0;0;0;#0026,03 Raichu, Form 03
+3E8A40;0;0;0;0;#0027,01 Sandshrew, Form 01
+3E8B10;0;0;0;0;#0028,01 Sandslash, Form 01
+3E8BE0;0;0;0;0;#0037,01 Vulpix, Form 01
+3E8CB0;0;0;0;0;#0038,01 Ninetales, Form 01
+3E8D80;0;0;0;0;#0050,01 Diglett, Form 01
+3E8E50;0;0;0;0;#0051,01 Dugtrio, Form 01
+3E8F20;0;0;0;0;#0052,01 Meowth, Form 01
+3E8FF0;0;0;0;0;#0052,02 Meowth, Form 02
+3E90C0;0;0;0;0;#0052,03 Meowth, Form 03
+3E9190;0;0;0;0;#0053,01 Persian, Form 01
+3E9260;0;0;0;0;#0058,01 Growlithe, Form 01
+3E9330;0;0;0;0;#0059,01 Arcanine, Form 01
+3E9400;0;0;0;0;#0065,01 Alakazam, Form 01
+3E94D0;0;0;0;0;#0068,01 Machamp, Form 01
+3E95A0;0;0;0;0;#0071,01 Victreebel, Form 01
+3E9670;0;0;0;0;#0074,01 Geodude, Form 01
+3E9740;0;0;0;0;#0075,01 Graveler, Form 01
+3E9810;0;0;0;0;#0076,01 Golem, Form 01
+3E98E0;0;0;0;0;#0077,01 Ponyta, Form 01
+3E99B0;0;0;0;0;#0078,01 Rapidash, Form 01
+3E9A80;0;0;0;0;#0079,01 Slowpoke, Form 01
+3E9B50;0;0;0;0;#0080,01 Slowbro, Form 01
+3E9C20;0;0;0;0;#0080,02 Slowbro, Form 02
+3E9CF0;0;0;0;0;#0083,01 Farfetch'd, Form 01
+3E9DC0;0;0;0;0;#0088,01 Grimer, Form 01
+3E9E90;0;0;0;0;#0089,01 Muk, Form 01
+3E9F60;0;0;0;0;#0094,01 Gengar, Form 01
+3EA030;0;0;0;0;#0094,02 Gengar, Form 02
+3EA100;0;0;0;0;#0095,01 Onix, Form 01
+3EA1D0;0;0;0;0;#0099,01 Kingler, Form 01
+3EA2A0;0;0;0;0;#0100,01 Voltorb, Form 01
+3EA370;0;0;0;0;#0101,01 Electrode, Form 01
+3EA440;0;0;0;0;#0103,01 Exeggutor, Form 01
+3EA510;0;0;0;0;#0105,01 Marowak, Form 01
+3EA5E0;0;0;0;0;#0110,01 Weezing, Form 01
+3EA6B0;0;0;0;0;#0115,01 Kangaskhan, Form 01
+3EA780;0;0;0;0;#0121,01 Starmie, Form 01
+3EA850;0;0;0;0;#0122,01 Mr. Mime, Form 01
+3EA920;0;0;0;0;#0124,01 Jynx, Form 01
+3EA9F0;0;0;0;0;#0127,01 Pinsir, Form 01
+3EAAC0;0;0;0;0;#0128,01 Tauros, Form 01
+3EAB90;0;0;0;0;#0128,02 Tauros, Form 02
+3EAC60;0;0;0;0;#0128,03 Tauros, Form 03
+3EAD30;0;0;0;0;#0130,01 Gyarados, Form 01
+3EAE00;0;0;0;0;#0131,01 Lapras, Form 01
+3EAED0;0;0;0;0;#0133,01 Eevee, Form 01
+3EAFA0;0;0;0;0;#0143,01 Snorlax, Form 01
+3EB070;0;0;0;0;#0143,02 Snorlax, Form 02
+3EB140;0;0;0;0;#0144,01 Articuno, Form 01
+3EB210;0;0;0;0;#0145,01 Zapdos, Form 01
+3EB2E0;0;0;0;0;#0146,01 Moltres, Form 01
+3EB3B0;0;0;0;0;#0149,01 Dragonite, Form 01
+3EB480;0;0;0;0;#0150,01 Mewtwo, Form 01
+3EB550;0;0;0;0;#0150,02 Mewtwo, Form 02
+3EB620;0;0;0;0;#0154,01 Meganium, Form 01
+3EB6F0;0;0;0;0;#0157,01 Typhlosion, Form 01
+3EB7C0;0;0;0;0;#0160,01 Feraligatr, Form 01
+3EB890;0;0;0;0;#0181,01 Ampharos, Form 01
+3EB960;0;0;0;0;#0194,01 Wooper, Form 01
+3EBA30;0;0;0;0;#0199,01 Slowking, Form 01
+3EBB00;0;0;0;0;#0208,01 Steelix, Form 01
+3EBBD0;0;0;0;0;#0208,02 Steelix, Form 02
+3EBCA0;0;0;0;0;#0208,03 Steelix, Form 03
+3EBD70;0;0;0;0;#0211,01 Qwilfish, Form 01
+3EBE40;0;0;0;0;#0212,01 Scizor, Form 01
+3EBF10;0;0;0;0;#0214,01 Heracross, Form 01
+3EBFE0;0;0;0;0;#0215,01 Sneasel, Form 01
+3EC0B0;0;0;0;0;#0222,01 Corsola, Form 01
+3EC180;0;0;0;0;#0227,01 Skarmory, Form 01
+3EC250;0;0;0;0;#0229,01 Houndoom, Form 01
+3EC320;0;0;0;0;#0235,01 Smeargle, Form 01
+3EC3F0;0;0;0;0;#0248,01 Tyranitar, Form 01
+3EC4C0;0;0;0;0;#0249,01 Lugia, Form 01
+3EC590;0;0;0;0;#0250,01 Ho-Oh, Form 01
+3EC660;0;0;0;0;#0254,01 Sceptile, Form 01
+3EC730;0;0;0;0;#0257,01 Blaziken, Form 01
+3EC800;0;0;0;0;#0260,01 Swampert, Form 01
+3EC8D0;0;0;0;0;#0263,01 Zigzagoon, Form 01
+3EC9A0;0;0;0;0;#0264,01 Linoone, Form 01
+3ECA70;0;0;0;0;#0269,01 Dustox, Form 01
+3ECB40;0;0;0;0;#0282,01 Gardevoir, Form 01
+3ECC10;0;0;0;0;#0302,01 Sableye, Form 01
+3ECCE0;0;0;0;0;#0303,01 Mawile, Form 01
+3ECDB0;0;0;0;0;#0306,01 Aggron, Form 01
+3ECE80;0;0;0;0;#0308,01 Medicham, Form 01
+3ECF50;0;0;0;0;#0310,01 Manectric, Form 01
+3ED020;0;0;0;0;#0319,01 Sharpedo, Form 01
+3ED0F0;0;0;0;0;#0323,01 Camerupt, Form 01
+3ED1C0;0;0;0;0;#0330,01 Flygon, Form 01
+3ED290;0;0;0;0;#0334,01 Altaria, Form 01
+3ED360;0;0;0;0;#0354,01 Banette, Form 01
+3ED430;0;0;0;0;#0358,01 Chimecho, Form 01
+3ED500;0;0;0;0;#0359,01 Absol, Form 01
+3ED5D0;0;0;0;0;#0359,02 Absol, Form 02
+3ED6A0;0;0;0;0;#0362,01 Glalie, Form 01
+3ED770;0;0;0;0;#0373,01 Salamence, Form 01
+3ED840;0;0;0;0;#0376,01 Metagross, Form 01
+3ED910;0;0;0;0;#0380,01 Latias, Form 01
+3ED9E0;0;0;0;0;#0381,01 Latios, Form 01
+3EDAB0;0;0;0;0;#0382,01 Kyogre, Form 01
+3EDB80;0;0;0;0;#0383,01 Groudon, Form 01
+3EDC50;0;0;0;0;#0384,01 Rayquaza, Form 01
+3EDD20;0;0;0;0;#0398,01 Staraptor, Form 01
+3EDDF0;0;0;0;0;#0428,01 Lopunny, Form 01
+3EDEC0;0;0;0;0;#0445,01 Garchomp, Form 01
+3EDF90;0;0;0;0;#0448,01 Lucario, Form 01
+3EE060;0;0;0;0;#0448,02 Lucario, Form 02
+3EE130;0;0;0;0;#0460,01 Abomasnow, Form 01
+3EE200;0;0;0;0;#0465,01 Tangrowth, Form 01
+3EE2D0;0;0;0;0;#0475,01 Gallade, Form 01
+3EE3A0;0;0;0;0;#0478,01 Froslass, Form 01
+3EE470;0;0;0;0;#0479,06 Rotom, Form 06
+3EE540;0;0;0;0;#0483,01 Dialga, Form 01
+3EE610;0;0;0;0;#0484,01 Palkia, Form 01
+3EE6E0;0;0;0;0;#0485,01 Heatran, Form 01
+3EE7B0;0;0;0;0;#0491,01 Darkrai, Form 01
+3EE880;0;0;0;0;#0494,00 Victini
+3EE950;0;0;0;0;#0495,00 Snivy
+3EEA20;0;0;0;0;#0496,00 Servine
+3EEAF0;0;0;0;0;#0497,00 Serperior
+3EEBC0;0;0;0;0;#0498,00 Tepig
+3EEC90;0;0;0;0;#0499,00 Pignite
+3EED60;0;0;0;0;#0500,00 Emboar
+3EEE30;0;0;0;0;#0500,01 Emboar, Form 01
+3EEF00;0;0;0;0;#0501,00 Oshawott
+3EEFD0;0;0;0;0;#0502,00 Dewott
+3EF0A0;0;0;0;0;#0503,00 Samurott
+3EF170;0;0;0;0;#0503,01 Samurott, Form 01
+3EF240;0;0;0;0;#0504,00 Patrat
+3EF310;0;0;0;0;#0505,00 Watchog
+3EF3E0;0;0;0;0;#0506,00 Lillipup
+3EF4B0;0;0;0;0;#0507,00 Herdier
+3EF580;0;0;0;0;#0508,00 Stoutland
+3EF650;0;0;0;0;#0509,00 Purrloin
+3EF720;0;0;0;0;#0510,00 Liepard
+3EF7F0;0;0;0;0;#0511,00 Pansage
+3EF8C0;0;0;0;0;#0512,00 Simisage
+3EF990;0;0;0;0;#0513,00 Pansear
+3EFA60;0;0;0;0;#0514,00 Simisear
+3EFB30;0;0;0;0;#0515,00 Panpour
+3EFC00;0;0;0;0;#0516,00 Simipour
+3EFCD0;0;0;0;0;#0517,00 Munna
+3EFDA0;0;0;0;0;#0518,00 Musharna
+3EFE70;0;0;0;0;#0519,00 Pidove
+3EFF40;0;0;0;0;#0520,00 Tranquill
+3F0010;0;0;0;0;#0521,00 Unfezant
+3F00E0;0;0;0;0;#0521,01 Unfezant, Form 01
+3F01B0;0;0;0;0;#0522,00 Blitzle
+3F0280;0;0;0;0;#0523,00 Zebstrika
+3F0350;0;0;0;0;#0524,00 Roggenrola
+3F0420;0;0;0;0;#0525,00 Boldore
+3F04F0;0;0;0;0;#0526,00 Gigalith
+3F05C0;0;0;0;0;#0527,00 Woobat
+3F0690;0;0;0;0;#0528,00 Swoobat
+3F0760;0;0;0;0;#0529,00 Drilbur
+3F0830;0;0;0;0;#0530,00 Excadrill
+3F0900;0;0;0;0;#0530,01 Excadrill, Form 01
+3F09D0;0;0;0;0;#0531,00 Audino
+3F0AA0;0;0;0;0;#0531,01 Audino, Form 01
+3F0B70;0;0;0;0;#0532,00 Timburr
+3F0C40;0;0;0;0;#0533,00 Gurdurr
+3F0D10;0;0;0;0;#0534,00 Conkeldurr
+3F0DE0;0;0;0;0;#0535,00 Tympole
+3F0EB0;0;0;0;0;#0536,00 Palpitoad
+3F0F80;0;0;0;0;#0537,00 Seismitoad
+3F1050;0;0;0;0;#0538,00 Throh
+3F1120;0;0;0;0;#0539,00 Sawk
+3F11F0;0;0;0;0;#0540,00 Sewaddle
+3F12C0;0;0;0;0;#0541,00 Swadloon
+3F1390;0;0;0;0;#0542,00 Leavanny
+3F1460;0;0;0;0;#0543,00 Venipede
+3F1530;0;0;0;0;#0544,00 Whirlipede
+3F1600;0;0;0;0;#0545,00 Scolipede
+3F16D0;0;0;0;0;#0545,01 Scolipede, Form 01
+3F17A0;0;0;0;0;#0546,00 Cottonee
+3F1870;0;0;0;0;#0547,00 Whimsicott
+3F1940;0;0;0;0;#0548,00 Petilil
+3F1A10;0;0;0;0;#0549,00 Lilligant
+3F1AE0;0;0;0;0;#0549,01 Lilligant, Form 01
+3F1BB0;0;0;0;0;#0550,00 Basculin
+3F1C80;0;0;0;0;#0550,01 Basculin, Form 01
+3F1D50;0;0;0;0;#0550,02 Basculin, Form 02
+3F1E20;0;0;0;0;#0551,00 Sandile
+3F1EF0;0;0;0;0;#0552,00 Krokorok
+3F1FC0;0;0;0;0;#0553,00 Krookodile
+3F2090;0;0;0;0;#0554,00 Darumaka
+3F2160;0;0;0;0;#0555,00 Darmanitan
+3F2230;0;0;0;0;#0555,01 Darmanitan, Form 01
+3F2300;0;0;0;0;#0555,02 Darmanitan, Form 02
+3F23D0;0;0;0;0;#0555,03 Darmanitan, Form 03
+3F24A0;0;0;0;0;#0556,00 Maractus
+3F2570;0;0;0;0;#0557,00 Dwebble
+3F2640;0;0;0;0;#0558,00 Crustle
+3F2710;0;0;0;0;#0559,00 Scraggy
+3F27E0;0;0;0;0;#0560,00 Scrafty
+3F28B0;0;0;0;0;#0560,01 Scrafty, Form 01
+3F2980;0;0;0;0;#0561,00 Sigilyph
+3F2A50;0;0;0;0;#0562,00 Yamask
+3F2B20;0;0;0;0;#0562,01 Yamask, Form 01
+3F2BF0;0;0;0;0;#0563,00 Cofagrigus
+3F2CC0;0;0;0;0;#0564,00 Tirtouga
+3F2D90;0;0;0;0;#0565,00 Carracosta
+3F2E60;0;0;0;0;#0566,00 Archen
+3F2F30;0;0;0;0;#0567,00 Archeops
+3F3000;0;0;0;0;#0568,00 Trubbish
+3F30D0;0;0;0;0;#0569,00 Garbodor
+3F31A0;0;0;0;0;#0570,00 Zorua
+3F3270;0;0;0;0;#0571,00 Zoroark
+3F3340;0;0;0;0;#0572,00 Minccino
+3F3410;0;0;0;0;#0573,00 Cinccino
+3F34E0;0;0;0;0;#0574,00 Gothita
+3F35B0;0;0;0;0;#0575,00 Gothorita
+3F3680;0;0;0;0;#0576,00 Gothitelle
+3F3750;0;0;0;0;#0577,00 Solosis
+3F3820;0;0;0;0;#0578,00 Duosion
+3F38F0;0;0;0;0;#0579,00 Reuniclus
+3F39C0;0;0;0;0;#0580,00 Ducklett
+3F3A90;0;0;0;0;#0581,00 Swanna
+3F3B60;0;0;0;0;#0582,00 Vanillite
+3F3C30;0;0;0;0;#0583,00 Vanillish
+3F3D00;0;0;0;0;#0584,00 Vanilluxe
+3F3DD0;0;0;0;0;#0585,00 Deerling
+3F3EA0;0;0;0;0;#0585,01 Deerling, Form 01
+3F3F70;0;0;0;0;#0585,02 Deerling, Form 02
+3F4040;0;0;0;0;#0585,03 Deerling, Form 03
+3F4110;0;0;0;0;#0586,00 Sawsbuck
+3F41E0;0;0;0;0;#0586,01 Sawsbuck, Form 01
+3F42B0;0;0;0;0;#0586,02 Sawsbuck, Form 02
+3F4380;0;0;0;0;#0586,03 Sawsbuck, Form 03
+3F4450;0;0;0;0;#0587,00 Emolga
+3F4520;0;0;0;0;#0588,00 Karrablast
+3F45F0;0;0;0;0;#0589,00 Escavalier
+3F46C0;0;0;0;0;#0590,00 Foongus
+3F4790;0;0;0;0;#0591,00 Amoonguss
+3F4860;0;0;0;0;#0592,00 Frillish
+3F4930;0;0;0;0;#0592,01 Frillish, Form 01
+3F4A00;0;0;0;0;#0593,00 Jellicent
+3F4AD0;0;0;0;0;#0593,01 Jellicent, Form 01
+3F4BA0;0;0;0;0;#0594,00 Alomomola
+3F4C70;0;0;0;0;#0595,00 Joltik
+3F4D40;0;0;0;0;#0596,00 Galvantula
+3F4E10;0;0;0;0;#0597,00 Ferroseed
+3F4EE0;0;0;0;0;#0598,00 Ferrothorn
+3F4FB0;0;0;0;0;#0599,00 Klink
+3F5080;0;0;0;0;#0600,00 Klang
+3F5150;0;0;0;0;#0601,00 Klinklang
+3F5220;0;0;0;0;#0602,00 Tynamo
+3F52F0;0;0;0;0;#0603,00 Eelektrik
+3F53C0;0;0;0;0;#0604,00 Eelektross
+3F5490;0;0;0;0;#0604,01 Eelektross, Form 01
+3F5560;0;0;0;0;#0605,00 Elgyem
+3F5630;0;0;0;0;#0606,00 Beheeyem
+3F5700;0;0;0;0;#0607,00 Litwick
+3F57D0;0;0;0;0;#0608,00 Lampent
+3F58A0;0;0;0;0;#0609,00 Chandelure
+3F5970;0;0;0;0;#0609,01 Chandelure, Form 01
+3F5A40;0;0;0;0;#0610,00 Axew
+3F5B10;0;0;0;0;#0611,00 Fraxure
+3F5BE0;0;0;0;0;#0612,00 Haxorus
+3F5CB0;0;0;0;0;#0613,00 Cubchoo
+3F5D80;0;0;0;0;#0614,00 Beartic
+3F5E50;0;0;0;0;#0615,00 Cryogonal
+3F5F20;0;0;0;0;#0616,00 Shelmet
+3F5FF0;0;0;0;0;#0617,00 Accelgor
+3F60C0;0;0;0;0;#0618,00 Stunfisk
+3F6190;0;0;0;0;#0618,01 Stunfisk, Form 01
+3F6260;0;0;0;0;#0619,00 Mienfoo
+3F6330;0;0;0;0;#0620,00 Mienshao
+3F6400;0;0;0;0;#0621,00 Druddigon
+3F64D0;0;0;0;0;#0622,00 Golett
+3F65A0;0;0;0;0;#0623,00 Golurk
+3F6670;0;0;0;0;#0623,01 Golurk, Form 01
+3F6740;0;0;0;0;#0624,00 Pawniard
+3F6810;0;0;0;0;#0625,00 Bisharp
+3F68E0;0;0;0;0;#0626,00 Bouffalant
+3F69B0;0;0;0;0;#0627,00 Rufflet
+3F6A80;0;0;0;0;#0628,00 Braviary
+3F6B50;0;0;0;0;#0629,00 Vullaby
+3F6C20;0;0;0;0;#0630,00 Mandibuzz
+3F6CF0;0;0;0;0;#0631,00 Heatmor
+3F6DC0;0;0;0;0;#0632,00 Durant
+3F6E90;0;0;0;0;#0633,00 Deino
+3F6F60;0;0;0;0;#0634,00 Zweilous
+3F7030;0;0;0;0;#0635,00 Hydreigon
+3F7100;0;0;0;0;#0636,00 Larvesta
+3F71D0;0;0;0;0;#0637,00 Volcarona
+3F72A0;0;0;0;0;#0638,00 Cobalion
+3F7370;0;0;0;0;#0639,00 Terrakion
+3F7440;0;0;0;0;#0640,00 Virizion
+3F7510;0;0;0;0;#0641,00 Tornadus
+3F75E0;0;0;0;0;#0641,01 Tornadus, Form 01
+3F76B0;0;0;0;0;#0642,00 Thundurus
+3F7780;0;0;0;0;#0642,01 Thundurus, Form 01
+3F7850;0;0;0;0;#0643,00 Reshiram
+3F7920;0;0;0;0;#0644,00 Zekrom
+3F79F0;0;0;0;0;#0645,00 Landorus
+3F7AC0;0;0;0;0;#0645,01 Landorus, Form 01
+3F7B90;0;0;0;0;#0646,00 Kyurem
+3F7C60;0;0;0;0;#0646,01 Kyurem, Form 01
+3F7D30;0;0;0;0;#0646,02 Kyurem, Form 02
+3F7E00;0;0;0;0;#0646,03 Kyurem, Form 03
+3F7ED0;0;0;0;0;#0647,00 Keldeo
+3F7FA0;0;0;0;0;#0647,01 Keldeo, Form 01
+3F8070;0;0;0;0;#0648,00 Meloetta
+3F8140;0;0;0;0;#0648,01 Meloetta, Form 01
+3F8210;0;0;0;0;#0649,00 Genesect
+3F82E0;0;0;0;0;#0649,01 Genesect, Form 01
+3F83B0;0;0;0;0;#0649,02 Genesect, Form 02
+3F8480;0;0;0;0;#0649,03 Genesect, Form 03
+3F8550;0;0;0;0;#0649,04 Genesect, Form 04
+3F8620;0;0;0;0;#0650,00 Chespin
+3F86F0;0;0;0;0;#0651,00 Quilladin
+3F87C0;0;0;0;0;#0652,00 Chesnaught
+3F8890;0;0;0;0;#0652,01 Chesnaught, Form 01
+3F8960;0;0;0;0;#0653,00 Fennekin
+3F8A30;0;0;0;0;#0654,00 Braixen
+3F8B00;0;0;0;0;#0655,00 Delphox
+3F8BD0;0;0;0;0;#0655,01 Delphox, Form 01
+3F8CA0;0;0;0;0;#0656,00 Froakie
+3F8D70;0;0;0;0;#0657,00 Frogadier
+3F8E40;0;0;0;0;#0658,00 Greninja
+3F8F10;0;0;0;0;#0658,01 Greninja, Form 01
+3F8FE0;0;0;0;0;#0658,02 Greninja, Form 02
+3F90B0;0;0;0;0;#0659,00 Bunnelby
+3F9180;0;0;0;0;#0660,00 Diggersby
+3F9250;0;0;0;0;#0661,00 Fletchling
+3F9320;0;0;0;0;#0662,00 Fletchinder
+3F93F0;0;0;0;0;#0663,00 Talonflame
+3F94C0;0;0;0;0;#0664,00 Scatterbug
+3F9590;0;0;0;0;#0665,00 Spewpa
+3F9660;0;0;0;0;#0666,00 Vivillon
+3F9730;0;0;0;0;#0666,01 Vivillon, Form 01
+3F9800;0;0;0;0;#0666,02 Vivillon, Form 02
+3F98D0;0;0;0;0;#0666,03 Vivillon, Form 03
+3F99A0;0;0;0;0;#0666,04 Vivillon, Form 04
+3F9A70;0;0;0;0;#0666,05 Vivillon, Form 05
+3F9B40;0;0;0;0;#0666,06 Vivillon, Form 06
+3F9C10;0;0;0;0;#0666,07 Vivillon, Form 07
+3F9CE0;0;0;0;0;#0666,08 Vivillon, Form 08
+3F9DB0;0;0;0;0;#0666,09 Vivillon, Form 09
+3F9E80;0;0;0;0;#0666,10 Vivillon, Form 10
+3F9F50;0;0;0;0;#0666,11 Vivillon, Form 11
+3FA020;0;0;0;0;#0666,12 Vivillon, Form 12
+3FA0F0;0;0;0;0;#0666,13 Vivillon, Form 13
+3FA1C0;0;0;0;0;#0666,14 Vivillon, Form 14
+3FA290;0;0;0;0;#0666,15 Vivillon, Form 15
+3FA360;0;0;0;0;#0666,16 Vivillon, Form 16
+3FA430;0;0;0;0;#0666,17 Vivillon, Form 17
+3FA500;0;0;0;0;#0666,18 Vivillon, Form 18
+3FA5D0;0;0;0;0;#0666,19 Vivillon, Form 19
+3FA6A0;0;0;0;0;#0667,00 Pyroar
+3FA770;0;0;0;0;#0668,00 Pyroar
+3FA840;0;0;0;0;#0668,01 Pyroar, Form 01
+3FA910;0;0;0;0;#0669,00 Flabébé
+3FA9E0;0;0;0;0;#0669,01 Flabébé, Form 01
+3FAAB0;0;0;0;0;#0669,02 Flabébé, Form 02
+3FAB80;0;0;0;0;#0669,03 Flabébé, Form 03
+3FAC50;0;0;0;0;#0669,04 Flabébé, Form 04
+3FAD20;0;0;0;0;#0670,00 Floette
+3FADF0;0;0;0;0;#0670,01 Floette, Form 01
+3FAEC0;0;0;0;0;#0670,02 Floette, Form 02
+3FAF90;0;0;0;0;#0670,03 Floette, Form 03
+3FB060;0;0;0;0;#0670,04 Floette, Form 04
+3FB130;0;0;0;0;#0670,05 Floette, Form 05
+3FB200;0;0;0;0;#0670,06 Floette, Form 06
+3FB2D0;0;0;0;0;#0671,00 Florges
+3FB3A0;0;0;0;0;#0671,01 Florges, Form 01
+3FB470;0;0;0;0;#0671,02 Florges, Form 02
+3FB540;0;0;0;0;#0671,03 Florges, Form 03
+3FB610;0;0;0;0;#0671,04 Florges, Form 04
+3FB6E0;0;0;0;0;#0672,00 Skiddo
+3FB7B0;0;0;0;0;#0673,00 Gogoat
+3FB880;0;0;0;0;#0674,00 Pancham
+3FB950;0;0;0;0;#0675,00 Pangoro
+3FBA20;0;0;0;0;#0676,00 Furfrou
+3FBAF0;0;0;0;0;#0676,01 Furfrou, Form 01
+3FBBC0;0;0;0;0;#0676,02 Furfrou, Form 02
+3FBC90;0;0;0;0;#0676,03 Furfrou, Form 03
+3FBD60;0;0;0;0;#0676,04 Furfrou, Form 04
+3FBE30;0;0;0;0;#0676,05 Furfrou, Form 05
+3FBF00;0;0;0;0;#0676,06 Furfrou, Form 06
+3FBFD0;0;0;0;0;#0676,07 Furfrou, Form 07
+3FC0A0;0;0;0;0;#0676,08 Furfrou, Form 08
+3FC170;0;0;0;0;#0676,09 Furfrou, Form 09
+3FC240;0;0;0;0;#0677,00 Espurr
+3FC310;0;0;0;0;#0678,00 Meowstic
+3FC3E0;0;0;0;0;#0678,01 Meowstic, Form 01
+3FC4B0;0;0;0;0;#0678,02 Meowstic, Form 02
+3FC580;0;0;0;0;#0679,00 Honedge
+3FC650;0;0;0;0;#0680,00 Doublade
+3FC720;0;0;0;0;#0681,00 Aegislash
+3FC7F0;0;0;0;0;#0681,01 Aegislash, Form 01
+3FC8C0;0;0;0;0;#0682,00 Spritzee
+3FC990;0;0;0;0;#0683,00 Aromatisse
+3FCA60;0;0;0;0;#0684,00 Swirlix
+3FCB30;0;0;0;0;#0685,00 Slurpuff
+3FCC00;0;0;0;0;#0686,00 Inkay
+3FCCD0;0;0;0;0;#0687,00 Malamar
+3FCDA0;0;0;0;0;#0687,01 Malamar, Form 01
+3FCE70;0;0;0;0;#0688,00 Binacle
+3FCF40;0;0;0;0;#0689,00 Barbaracle
+3FD010;0;0;0;0;#0689,01 Barbaracle, Form 01
+3FD0E0;0;0;0;0;#0690,00 Skrelp
+3FD1B0;0;0;0;0;#0691,00 Dragalge
+3FD280;0;0;0;0;#0691,01 Dragalge, Form 01
+3FD350;0;0;0;0;#0692,00 Clauncher
+3FD420;0;0;0;0;#0693,00 Clawitzer
+3FD4F0;0;0;0;0;#0694,00 Helioptile
+3FD5C0;0;0;0;0;#0695,00 Heliolisk
+3FD690;0;0;0;0;#0696,00 Tyrunt
+3FD760;0;0;0;0;#0697,00 Tyrantrum
+3FD830;0;0;0;0;#0698,00 Amaura
+3FD900;0;0;0;0;#0699,00 Aurorus
+3FD9D0;0;0;0;0;#0700,00 Sylveon
+3FDAA0;0;0;0;0;#0701,00 Hawlucha
+3FDB70;0;0;0;0;#0701,01 Hawlucha, Form 01
+3FDC40;0;0;0;0;#0702,00 Dedenne
+3FDD10;0;0;0;0;#0703,00 Carbink
+3FDDE0;0;0;0;0;#0704,00 Goomy
+3FDEB0;0;0;0;0;#0705,00 Sliggoo
+3FDF80;0;0;0;0;#0705,01 Sliggoo, Form 01
+3FE050;0;0;0;0;#0706,00 Goodra
+3FE120;0;0;0;0;#0706,01 Goodra, Form 01
+3FE1F0;0;0;0;0;#0707,00 Klefki
+3FE2C0;0;0;0;0;#0708,00 Phantump
+3FE390;0;0;0;0;#0709,00 Trevenant
+3FE460;0;0;0;0;#0710,00 Pumpkaboo
+3FE530;0;0;0;0;#0710,01 Pumpkaboo, Form 01
+3FE600;0;0;0;0;#0710,02 Pumpkaboo, Form 02
+3FE6D0;0;0;0;0;#0710,03 Pumpkaboo, Form 03
+3FE7A0;0;0;0;0;#0711,00 Gourgeist
+3FE870;0;0;0;0;#0711,01 Gourgeist, Form 01
+3FE940;0;0;0;0;#0711,02 Gourgeist, Form 02
+3FEA10;0;0;0;0;#0711,03 Gourgeist, Form 03
+3FEAE0;0;0;0;0;#0712,00 Bergmite
+3FEBB0;0;0;0;0;#0713,00 Avalugg
+3FEC80;0;0;0;0;#0713,01 Avalugg, Form 01
+3FED50;0;0;0;0;#0714,00 Noibat
+3FEE20;0;0;0;0;#0715,00 Noivern
+3FEEF0;0;0;0;0;#0716,00 Xerneas
+3FEFC0;0;0;0;0;#0716,01 Xerneas, Form 01
+3FF090;0;0;0;0;#0717,00 Yveltal
+3FF160;0;0;0;0;#0718,00 Zygarde
+3FF230;0;0;0;0;#0718,01 Zygarde, Form 01
+3FF300;0;0;0;0;#0718,02 Zygarde, Form 02
+3FF3D0;0;0;0;0;#0718,03 Zygarde, Form 03
+3FF4A0;0;0;0;0;#0719,00 Diancie
+3FF570;0;0;0;0;#0719,01 Diancie, Form 01
+3FF640;0;0;0;0;#0720,00 Hoopa
+3FF710;0;0;0;0;#0720,01 Hoopa, Form 01
+3FF7E0;0;0;0;0;#0721,00 Volcanion
+3FF8B0;0;0;0;0;#0722,00 Rowlet
+3FF980;0;0;0;0;#0723,00 Dartrix
+3FFA50;0;0;0;0;#0724,00 Decidueye
+3FFB20;0;0;0;0;#0724,01 Decidueye, Form 01
+3FFBF0;0;0;0;0;#0725,00 Litten
+3FFCC0;0;0;0;0;#0726,00 Torracat
+3FFD90;0;0;0;0;#0727,00 Incineroar
+3FFE60;0;0;0;0;#0728,00 Popplio
+3FFF30;0;0;0;0;#0729,00 Brionne
+400000;0;0;0;0;#0730,00 Primarina
+4000D0;0;0;0;0;#0731,00 Pikipek
+4001A0;0;0;0;0;#0732,00 Trumbeak
+400270;0;0;0;0;#0733,00 Toucannon
+400340;0;0;0;0;#0734,00 Yungoos
+400410;0;0;0;0;#0735,00 Gumshoos
+4004E0;0;0;0;0;#0736,00 Grubbin
+4005B0;0;0;0;0;#0737,00 Charjabug
+400680;0;0;0;0;#0738,00 Vikavolt
+400750;0;0;0;0;#0739,00 Crabrawler
+400820;0;0;0;0;#0740,00 Crabominable
+4008F0;0;0;0;0;#0741,00 Oricorio
+4009C0;0;0;0;0;#0741,01 Oricorio, Form 01
+400A90;0;0;0;0;#0741,02 Oricorio, Form 02
+400B60;0;0;0;0;#0741,03 Oricorio, Form 03
+400C30;0;0;0;0;#0742,00 Cutiefly
+400D00;0;0;0;0;#0743,00 Ribombee
+400DD0;0;0;0;0;#0744,00 Rockruff
+400EA0;0;0;0;0;#0745,00 Lycanroc
+400F70;0;0;0;0;#0745,01 Lycanroc, Form 01
+401040;0;0;0;0;#0745,02 Lycanroc, Form 02
+401110;0;0;0;0;#0746,00 Wishiwashi
+4011E0;0;0;0;0;#0746,01 Wishiwashi, Form 01
+4012B0;0;0;0;0;#0746,02 Wishiwashi, Form 02
+401380;0;0;0;0;#0747,00 Mareanie
+401450;0;0;0;0;#0748,00 Toxapex
+401520;0;0;0;0;#0749,00 Mudbray
+4015F0;0;0;0;0;#0750,00 Mudsdale
+4016C0;0;0;0;0;#0751,00 Dewpider
+401790;0;0;0;0;#0752,00 Araquanid
+401860;0;0;0;0;#0753,00 Fomantis
+401930;0;0;0;0;#0754,00 Lurantis
+401A00;0;0;0;0;#0755,00 Morelull
+401AD0;0;0;0;0;#0756,00 Shiinotic
+401BA0;0;0;0;0;#0757,00 Salandit
+401C70;0;0;0;0;#0758,00 Salazzle
+401D40;0;0;0;0;#0759,00 Stufful
+401E10;0;0;0;0;#0760,00 Bewear
+401EE0;0;0;0;0;#0761,00 Bounsweet
+401FB0;0;0;0;0;#0762,00 Steenee
+402080;0;0;0;0;#0763,00 Tsareena
+402150;0;0;0;0;#0764,00 Comfey
+402220;0;0;0;0;#0765,00 Oranguru
+4022F0;0;0;0;0;#0766,00 Passimian
+4023C0;0;0;0;0;#0767,00 Wimpod
+402490;0;0;0;0;#0768,00 Golisopod
+402560;0;0;0;0;#0768,01 Golisopod, Form 01
+402630;0;0;0;0;#0769,00 Sandygast
+402700;0;0;0;0;#0770,00 Palossand
+4027D0;0;0;0;0;#0771,00 Pyukumuku
+4028A0;0;0;0;0;#0772,00 Type: Null
+402970;0;0;0;0;#0773,00 Silvally
+402A40;0;0;0;0;#0773,01 Silvally, Form 01
+402B10;0;0;0;0;#0773,02 Silvally, Form 02
+402BE0;0;0;0;0;#0773,03 Silvally, Form 03
+402CB0;0;0;0;0;#0773,04 Silvally, Form 04
+402D80;0;0;0;0;#0773,05 Silvally, Form 05
+402E50;0;0;0;0;#0773,06 Silvally, Form 06
+402F20;0;0;0;0;#0773,07 Silvally, Form 07
+402FF0;0;0;0;0;#0773,08 Silvally, Form 08
+4030C0;0;0;0;0;#0773,09 Silvally, Form 09
+403190;0;0;0;0;#0773,10 Silvally, Form 10
+403260;0;0;0;0;#0773,11 Silvally, Form 11
+403330;0;0;0;0;#0773,12 Silvally, Form 12
+403400;0;0;0;0;#0773,13 Silvally, Form 13
+4034D0;0;0;0;0;#0773,14 Silvally, Form 14
+4035A0;0;0;0;0;#0773,15 Silvally, Form 15
+403670;0;0;0;0;#0773,16 Silvally, Form 16
+403740;0;0;0;0;#0773,17 Silvally, Form 17
+403810;0;0;0;0;#0774,00 Minior
+4038E0;0;0;0;0;#0774,01 Minior, Form 01
+4039B0;0;0;0;0;#0774,02 Minior, Form 02
+403A80;0;0;0;0;#0774,03 Minior, Form 03
+403B50;0;0;0;0;#0774,04 Minior, Form 04
+403C20;0;0;0;0;#0774,05 Minior, Form 05
+403CF0;0;0;0;0;#0774,06 Minior, Form 06
+403DC0;0;0;0;0;#0774,07 Minior, Form 07
+403E90;0;0;0;0;#0774,08 Minior, Form 08
+403F60;0;0;0;0;#0774,09 Minior, Form 09
+404030;0;0;0;0;#0774,10 Minior, Form 10
+404100;0;0;0;0;#0774,11 Minior, Form 11
+4041D0;0;0;0;0;#0774,12 Minior, Form 12
+4042A0;0;0;0;0;#0774,13 Minior, Form 13
+404370;0;0;0;0;#0775,00 Komala
+404440;0;0;0;0;#0776,00 Turtonator
+404510;0;0;0;0;#0777,00 Togedemaru
+4045E0;0;0;0;0;#0778,00 Mimikyu
+4046B0;0;0;0;0;#0778,01 Mimikyu, Form 01
+404780;0;0;0;0;#0779,00 Bruxish
+404850;0;0;0;0;#0780,00 Drampa
+404920;0;0;0;0;#0781,00 Dhelmise
+4049F0;0;0;0;0;#0782,00 Jangmo-o
+404AC0;0;0;0;0;#0783,00 Hakamo-o
+404B90;0;0;0;0;#0784,00 Kommo-o
+404C60;0;0;0;0;#0785,00 Tapu Koko
+404D30;0;0;0;0;#0786,00 Tapu Lele
+404E00;0;0;0;0;#0787,00 Tapu Bulu
+404ED0;0;0;0;0;#0788,00 Tapu Fini
+404FA0;0;0;0;0;#0789,00 Cosmog
+405070;0;0;0;0;#0790,00 Cosmoem
+405140;0;0;0;0;#0791,00 Solgaleo
+405210;0;0;0;0;#0792,00 Lunala
+4052E0;0;0;0;0;#0793,00 Nihilego
+4053B0;0;0;0;0;#0793,01 Nihilego, Form 01
+405480;0;0;0;0;#0794,00 Buzzwole
+405550;0;0;0;0;#0795,00 Pheromosa
+405620;0;0;0;0;#0796,00 Xurkitree
+4056F0;0;0;0;0;#0797,00 Celesteela
+4057C0;0;0;0;0;#0798,00 Kartana
+405890;0;0;0;0;#0799,00 Guzzlord
+405960;0;0;0;0;#0800,00 Necrozma
+405A30;0;0;0;0;#0800,01 Necrozma, Form 01
+405B00;0;0;0;0;#0800,02 Necrozma, Form 02
+405BD0;0;0;0;0;#0800,03 Necrozma, Form 03
+405CA0;0;0;0;0;#0801,00 Magearna
+405D70;0;0;0;0;#0801,01 Magearna, Form 01
+405E40;0;0;0;0;#0801,02 Magearna, Form 02
+405F10;0;0;0;0;#0801,03 Magearna, Form 03
+405FE0;0;0;0;0;#0802,00 Marshadow
+4060B0;0;0;0;0;#0803,00 Poipole
+406180;0;0;0;0;#0804,00 Naganadel
+406250;0;0;0;0;#0805,00 Stakataka
+406320;0;0;0;0;#0806,00 Blacephalon
+4063F0;0;0;0;0;#0807,00 Zeraora
+4064C0;0;0;0;0;#0807,01 Zeraora, Form 01
+406590;0;0;0;0;#0808,00 Meltan
+406660;0;0;0;0;#0809,00 Melmetal
+406730;0;0;0;0;#0809,01 Melmetal, Form 01
+406800;0;0;0;0;#0810,00 Grookey
+4068D0;0;0;0;0;#0811,00 Thwackey
+4069A0;0;0;0;0;#0812,00 Rillaboom
+406A70;0;0;0;0;#0812,01 Rillaboom, Form 01
+406B40;0;0;0;0;#0813,00 Scorbunny
+406C10;0;0;0;0;#0814,00 Raboot
+406CE0;0;0;0;0;#0815,00 Cinderace
+406DB0;0;0;0;0;#0815,01 Cinderace, Form 01
+406E80;0;0;0;0;#0816,00 Sobble
+406F50;0;0;0;0;#0817,00 Drizzile
+407020;0;0;0;0;#0818,00 Inteleon
+4070F0;0;0;0;0;#0818,01 Inteleon, Form 01
+4071C0;0;0;0;0;#0819,00 Skwovet
+407290;0;0;0;0;#0820,00 Greedent
+407360;0;0;0;0;#0821,00 Rookidee
+407430;0;0;0;0;#0822,00 Corvisquire
+407500;0;0;0;0;#0823,00 Corviknight
+4075D0;0;0;0;0;#0823,01 Corviknight, Form 01
+4076A0;0;0;0;0;#0824,00 Blipbug
+407770;0;0;0;0;#0825,00 Dottler
+407840;0;0;0;0;#0826,00 Orbeetle
+407910;0;0;0;0;#0826,01 Orbeetle, Form 01
+4079E0;0;0;0;0;#0827,00 Nickit
+407AB0;0;0;0;0;#0828,00 Thievul
+407B80;0;0;0;0;#0829,00 Gossifleur
+407C50;0;0;0;0;#0830,00 Eldegoss
+407D20;0;0;0;0;#0831,00 Wooloo
+407DF0;0;0;0;0;#0832,00 Dubwool
+407EC0;0;0;0;0;#0833,00 Chewtle
+407F90;0;0;0;0;#0834,00 Drednaw
+408060;0;0;0;0;#0834,01 Drednaw, Form 01
+408130;0;0;0;0;#0835,00 Yamper
+408200;0;0;0;0;#0836,00 Boltund
+4082D0;0;0;0;0;#0837,00 Rolycoly
+4083A0;0;0;0;0;#0838,00 Carkol
+408470;0;0;0;0;#0839,00 Coalossal
+408540;0;0;0;0;#0839,01 Coalossal, Form 01
+408610;0;0;0;0;#0840,00 Applin
+4086E0;0;0;0;0;#0841,00 Flapple
+4087B0;0;0;0;0;#0841,01 Flapple, Form 01
+408880;0;0;0;0;#0842,00 Appletun
+408950;0;0;0;0;#0842,01 Appletun, Form 01
+408A20;0;0;0;0;#0843,00 Silicobra
+408AF0;0;0;0;0;#0844,00 Sandaconda
+408BC0;0;0;0;0;#0844,01 Sandaconda, Form 01
+408C90;0;0;0;0;#0845,00 Cramorant
+408D60;0;0;0;0;#0845,01 Cramorant, Form 01
+408E30;0;0;0;0;#0845,02 Cramorant, Form 02
+408F00;0;0;0;0;#0846,00 Arrokuda
+408FD0;0;0;0;0;#0847,00 Barraskewda
+4090A0;0;0;0;0;#0848,00 Toxel
+409170;0;0;0;0;#0849,00 Toxtricity
+409240;0;0;0;0;#0849,01 Toxtricity, Form 01
+409310;0;0;0;0;#0849,02 Toxtricity, Form 02
+4093E0;0;0;0;0;#0850,00 Sizzlipede
+4094B0;0;0;0;0;#0851,00 Centiskorch
+409580;0;0;0;0;#0851,01 Centiskorch, Form 01
+409650;0;0;0;0;#0852,00 Clobbopus
+409720;0;0;0;0;#0853,00 Grapploct
+4097F0;0;0;0;0;#0854,00 Sinistea
+4098C0;0;0;0;0;#0854,01 Sinistea, Form 01
+409990;0;0;0;0;#0855,00 Polteageist
+409A60;0;0;0;0;#0855,01 Polteageist, Form 01
+409B30;0;0;0;0;#0856,00 Hatenna
+409C00;0;0;0;0;#0857,00 Hattrem
+409CD0;0;0;0;0;#0858,00 Hatterene
+409DA0;0;0;0;0;#0858,01 Hatterene, Form 01
+409E70;0;0;0;0;#0859,00 Impidimp
+409F40;0;0;0;0;#0860,00 Morgrem
+40A010;0;0;0;0;#0861,00 Grimmsnarl
+40A0E0;0;0;0;0;#0861,01 Grimmsnarl, Form 01
+40A1B0;0;0;0;0;#0862,00 Obstagoon
+40A280;0;0;0;0;#0863,00 Perrserker
+40A350;0;0;0;0;#0864,00 Cursola
+40A420;0;0;0;0;#0865,00 Sirfetch’d
+40A4F0;0;0;0;0;#0866,00 Mr. Rime
+40A5C0;0;0;0;0;#0867,00 Runerigus
+40A690;0;0;0;0;#0868,00 Milcery
+40A760;0;0;0;0;#0869,00 Alcremie
+40A830;0;0;0;0;#0869,01 Alcremie, Form 01
+40A900;0;0;0;0;#0870,00 Falinks
+40A9D0;0;0;0;0;#0871,00 Pincurchin
+40AAA0;0;0;0;0;#0872,00 Snom
+40AB70;0;0;0;0;#0873,00 Frosmoth
+40AC40;0;0;0;0;#0874,00 Stonjourner
+40AD10;0;0;0;0;#0875,00 Eiscue
+40ADE0;0;0;0;0;#0876,00 Indeedee
+40AEB0;0;0;0;0;#0876,01 Indeedee, Form 01
+40AF80;0;0;0;0;#0877,00 Morpeko
+40B050;0;0;0;0;#0877,01 Morpeko, Form 01
+40B120;0;0;0;0;#0878,00 Cufant
+40B1F0;0;0;0;0;#0879,00 Copperajah
+40B2C0;0;0;0;0;#0879,01 Copperajah, Form 01
+40B390;0;0;0;0;#0880,00 Dracozolt
+40B460;0;0;0;0;#0881,00 Arctozolt
+40B530;0;0;0;0;#0882,00 Dracovish
+40B600;0;0;0;0;#0883,00 Arctovish
+40B6D0;0;0;0;0;#0884,00 Duraludon
+40B7A0;0;0;0;0;#0884,01 Duraludon, Form 01
+40B870;0;0;0;0;#0885,00 Dreepy
+40B940;0;0;0;0;#0886,00 Drakloak
+40BA10;0;0;0;0;#0887,00 Dragapult
+40BAE0;0;0;0;0;#0888,00 Zacian
+40BBB0;0;0;0;0;#0888,01 Zacian, Form 01
+40BC80;0;0;0;0;#0889,00 Zamazenta
+40BD50;0;0;0;0;#0889,01 Zamazenta, Form 01
+40BE20;0;0;0;0;#0890,00 Eternatus
+40BEF0;0;0;0;0;#0890,01 Eternatus, Form 01
+40BFC0;0;0;0;0;#0891,00 Kubfu
+40C090;0;0;0;0;#0892,00 Urshifu
+40C160;0;0;0;0;#0892,01 Urshifu, Form 01
+40C230;0;0;0;0;#0892,02 Urshifu, Form 02
+40C300;0;0;0;0;#0892,03 Urshifu, Form 03
+40C3D0;0;0;0;0;#0893,00 Zarude
+40C4A0;0;0;0;0;#0894,00 Regieleki
+40C570;0;0;0;0;#0895,00 Regidrago
+40C640;0;0;0;0;#0896,00 Glastrier
+40C710;0;0;0;0;#0897,00 Spectrier
+40C7E0;0;0;0;0;#0898,00 Calyrex
+40C8B0;0;0;0;0;#0898,01 Calyrex, Form 01
+40C980;0;0;0;0;#0898,02 Calyrex, Form 02
+40CA50;0;0;0;0;#0899,00 Wyrdeer
+40CB20;0;0;0;0;#0900,00 Kleavor
+40CBF0;0;0;0;0;#0901,00 Ursaluna
+40CCC0;0;0;0;0;#0901,01 Ursaluna, Form 01
+40CD90;0;0;0;0;#0902,00 Basculegion
+40CE60;0;0;0;0;#0902,01 Basculegion, Form 01
+40CF30;0;0;0;0;#0903,00 Sneasler
+40D000;0;0;0;0;#0904,00 Overqwil
+40D0D0;0;0;0;0;#0905,00 Enamorus
+40D1A0;0;0;0;0;#0905,01 Enamorus, Form 01
+40D270;0;0;0;0;#0906,00 Sprigatito
+40D340;0;0;0;0;#0907,00 Floragato
+40D410;0;0;0;0;#0908,00 Meowscarada
+40D4E0;0;0;0;0;#0909,00 Fuecoco
+40D5B0;0;0;0;0;#0910,00 Crocalor
+40D680;0;0;0;0;#0911,00 Skeledirge
+40D750;0;0;0;0;#0912,00 Quaxly
+40D820;0;0;0;0;#0913,00 Quaxwell
+40D8F0;0;0;0;0;#0914,00 Quaquaval
+40D9C0;0;0;0;0;#0915,00 Lechonk
+40DA90;0;0;0;0;#0916,00 Oinkologne
+40DB60;0;0;0;0;#0917,00 Tarountula
+40DC30;0;0;0;0;#0918,00 Spidops
+40DD00;0;0;0;0;#0919,00 Nymble
+40DDD0;0;0;0;0;#0920,00 Lokix
+40DEA0;0;0;0;0;#0921,00 Pawmi
+40DF70;0;0;0;0;#0922,00 Pawmo
+40E040;0;0;0;0;#0923,00 Pawmot
+40E110;0;0;0;0;#0924,00 Tandemaus
+40E1E0;0;0;0;0;#0925,00 Maushold
+40E2B0;0;0;0;0;#0925,01 Maushold, Form 01
+40E380;0;0;0;0;#0926,00 Fidough
+40E450;0;0;0;0;#0927,00 Dachsbun
+40E520;0;0;0;0;#0928,00 Smoliv
+40E5F0;0;0;0;0;#0929,00 Dolliv
+40E6C0;0;0;0;0;#0930,00 Arboliva
+40E790;0;0;0;0;#0931,00 Squawkabilly
+40E860;0;0;0;0;#0931,01 Squawkabilly, Form 01
+40E930;0;0;0;0;#0931,02 Squawkabilly, Form 02
+40EA00;0;0;0;0;#0931,03 Squawkabilly, Form 03
+40EAD0;0;0;0;0;#0932,00 Nacli
+40EBA0;0;0;0;0;#0933,00 Naclstack
+40EC70;0;0;0;0;#0934,00 Garganacl
+40ED40;0;0;0;0;#0935,00 Charcadet
+40EE10;0;0;0;0;#0936,00 Armarouge
+40EEE0;0;0;0;0;#0937,00 Ceruledge
+40EFB0;0;0;0;0;#0938,00 Tadbulb
+40F080;0;0;0;0;#0939,00 Bellibolt
+40F150;0;0;0;0;#0940,00 Wattrel
+40F220;0;0;0;0;#0941,00 Kilowattrel
+40F2F0;0;0;0;0;#0942,00 Maschiff
+40F3C0;0;0;0;0;#0943,00 Mabosstiff
+40F490;0;0;0;0;#0944,00 Shroodle
+40F560;0;0;0;0;#0945,00 Grafaiai
+40F630;0;0;0;0;#0946,00 Bramblin
+40F700;0;0;0;0;#0947,00 Brambleghast
+40F7D0;0;0;0;0;#0948,00 Toedscool
+40F8A0;0;0;0;0;#0949,00 Toedscruel
+40F970;0;0;0;0;#0950,00 Klawf
+40FA40;0;0;0;0;#0951,00 Capsakid
+40FB10;0;0;0;0;#0952,00 Scovillain
+40FBE0;0;0;0;0;#0953,00 Rellor
+40FCB0;0;0;0;0;#0954,00 Rabsca
+40FD80;0;0;0;0;#0955,00 Flittle
+40FE50;0;0;0;0;#0956,00 Lady Gaga/Espathra
+40FF20;0;0;0;0;#0957,00 Tinkatink
+40FFF0;0;0;0;0;#0958,00 Tinkatuff
+4100C0;0;0;0;0;#0959,00 Tinkaton
+410190;0;0;0;0;#0960,00 Wiglett
+410260;0;0;0;0;#0961,00 Wugtrio
+410330;0;0;0;0;#0962,00 Bombirdier
+410400;0;0;0;0;#0963,00 Finizen
+4104D0;0;0;0;0;#0964,00 Palafin
+4105A0;0;0;0;0;#0964,01 Palafin, Form 01
+410670;0;0;0;0;#0965,00 Varoom
+410740;0;0;0;0;#0966,00 Revavroom
+410810;0;0;0;0;#0966,01 Revavroom, Form 01
+4108E0;0;0;0;0;#0966,02 Revavroom, Form 02
+4109B0;0;0;0;0;#0966,03 Revavroom, Form 03
+410A80;0;0;0;0;#0966,04 Revavroom, Form 04
+410B50;0;0;0;0;#0967,00 Cyclizar
+410C20;0;0;0;0;#0968,00 Orthworm
+410CF0;0;0;0;0;#0969,00 Glimmet
+410DC0;0;0;0;0;#0970,00 Glimmora
+410E90;0;0;0;0;#0971,00 Greavard
+410F60;0;0;0;0;#0972,00 Houndstone
+411030;0;0;0;0;#0973,00 Flamigo
+411100;0;0;0;0;#0974,00 Cetoddle
+4111D0;0;0;0;0;#0975,00 Cetitan
+4112A0;0;0;0;0;#0976,00 Veluza
+411370;0;0;0;0;#0977,00 Dondozo
+411440;0;0;0;0;#0978,00 Tatsugiri
+411510;0;0;0;0;#0978,01 Tatsugiri, Form 01
+4115E0;0;0;0;0;#0978,02 Tatsugiri, Form 02
+4116B0;0;0;0;0;#0978,03 Tatsugiri, Form 03
+411780;0;0;0;0;#0978,04 Tatsugiri, Form 04
+411850;0;0;0;0;#0978,05 Tatsugiri, Form 05
+411920;0;0;0;0;#0979,00 Annihilape
+4119F0;0;0;0;0;#0980,00 Clodsire
+411AC0;0;0;0;0;#0981,00 Farigiraf
+411B90;0;0;0;0;#0982,00 Dudunsparce
+411C60;0;0;0;0;#0982,01 Dudunsparce, Form 01
+411D30;0;0;0;0;#0983,00 Kingambit
+411E00;0;0;0;0;#0984,00 Great Tusk
+411ED0;0;0;0;0;#0985,00 Scream Tail
+411FA0;0;0;0;0;#0986,00 Brute Bonnet
+412070;0;0;0;0;#0987,00 Flutter Mane
+412140;0;0;0;0;#0988,00 Slither Wing
+412210;0;0;0;0;#0989,00 Sandy Shocks
+4122E0;0;0;0;0;#0990,00 Iron Treads
+4123B0;0;0;0;0;#0991,00 Iron Bundle
+412480;0;0;0;0;#0992,00 Iron Hands
+412550;0;0;0;0;#0993,00 Iron Jugulis
+412620;0;0;0;0;#0994,00 Iron Moth
+4126F0;0;0;0;0;#0995,00 Iron Thorns
+4127C0;0;0;0;0;#0996,00 Frigibax
+412890;0;0;0;0;#0997,00 Arctibax
+412960;0;0;0;0;#0998,00 Baxcalibur
+412A30;0;0;0;0;#0999,00 Gimmighoul
+412B00;0;0;0;0;#0999,01 Gimmighoul, Form 01
+412BD0;0;0;0;0;#1000,00 Gholdengo
+412CA0;0;0;0;0;#1001,00 Wo-Chien
+412D70;0;0;0;0;#1002,00 Chien-Pao
+412E40;0;0;0;0;#1003,00 Ting-Lu
+412F10;0;0;0;0;#1004,00 Chi-Yu
+412FE0;0;0;0;0;#1005,00 Roaring Moon
+4130B0;0;0;0;0;#1006,00 Iron Valiant
+413180;0;0;0;0;#1007,00 Koraidon
+413250;0;0;0;0;#1007,01 Koraidon, Form 01
+413320;0;0;0;0;#1008,00 Miraidon
+4133F0;0;0;0;0;#1008,01 Miraidon, Form 01
+4134C0;0;0;0;0;#1009,00 Walking Wake
+413590;0;0;0;0;#1010,00 Iron Leaves
+413660;0;0;0;0;#1011,00 Dipplin
+413730;0;0;0;0;#1012,00 Poltchageist
+413800;0;0;0;0;#1012,01 Poltchageist, Form 01
+4138D0;0;0;0;0;#1013,00 Sinistcha
+4139A0;0;0;0;0;#1013,01 Sinistcha, Form 01
+413A70;0;0;0;0;#1014,00 Okidogi
+413B40;0;0;0;0;#1015,00 Munkidori
+413C10;0;0;0;0;#1016,00 Fezandipiti
+413CE0;0;0;0;0;#1017,00 Ogerpon
+413DB0;0;0;0;0;#1017,01 Ogerpon, Form 01
+413E80;0;0;0;0;#1017,02 Ogerpon, Form 02
+413F50;0;0;0;0;#1017,03 Ogerpon, Form 03
+414020;0;0;0;0;#1017,04 Ogerpon, Form 04
+4140F0;0;0;0;0;#1018,00 Archaludon
+4141C0;0;0;0;0;#1019,00 Hydrapple
+414290;0;0;0;0;#1020,00 Gouging Fire
+414360;0;0;0;0;#1021,00 Raging Bolt
+414430;0;0;0;0;#1022,00 Iron Boulder
+414500;0;0;0;0;#1023,00 Iron Crown
+4145D0;0;0;0;0;#1024,00 Terapagos
+4146A0;0;0;0;0;#1024,01 Terapagos, Form 01
+414770;0;0;0;0;#1024,02 Terapagos, Form 02
+414840;0;0;0;0;#1025,00 Pecharunt"""
+
+EXTRA_OFFSETS_FILENAMES = []
 
 
-
-TYPE_VALUE_TO_NAME = {
-	0x00: "Normal",
-	0x04: "Fighting",
-	0x08: "Flying",
-	0x0C: "Poison",
-	0x10: "Ground",
-	0x14: "Rock",
-	0x18: "Bug",
-	0x1C: "Ghost",
-	0x20: "Steel",
-	0x24: "???",
-	0x28: "Fire",
-	0x2C: "Water",
-	0x30: "Grass",
-	0x34: "Electric",
-	0x38: "Psychic",
-	0x3C: "Ice",
-	0x40: "Dragon",
-	0x44: "Dark",
-}
-
-ANM_TYPE_VALUE_TO_NAME = {
-	0: "bird",
-	1: "bound",
-	2: "butterfly",
-	3: "fish",
-	4: "float",
-	5: "fourleg",
-	6: "glide",
-	7: "insect",
-	8: "nomove",
-	9: "rolling",
-	10: "seal",
-	11: "slime",
-	12: "twoleg",
-}
-
-GENDER_RATIO_VALUE_TO_NAME = {
-	0: "100% Male",
-	31: "87.5% Male",
-	63: "75% Male",
-	127: "50% Male",
-	191: "25% Male",
-	254: "0% Male",
-	255: "Genderless",
-}
-
-SCALE_MODIFIER_FIELD_NAME = "f16_ScaleModifier"
-SCALE_MODIFIER_UI_MULTIPLIER = 10000.0
-
-
-def _build_dropdown_def(value_to_name, bit_size: int, description: str):
-	ordered = {int(key): str(value) for key, value in value_to_name.items()}
-	return {
-		"value_to_name": ordered,
-		"name_to_value": {value: key for key, value in ordered.items()},
-		"bit_size": int(bit_size),
-		"description": str(description),
-	}
-
-
-DROPDOWN_FIELD_DEFS = {
-	"Int_Type1": _build_dropdown_def(TYPE_VALUE_TO_NAME, 8, "Readonly dropdown"),
-	"Int_Type2": _build_dropdown_def(TYPE_VALUE_TO_NAME, 8, "Readonly dropdown"),
-	"Int_AnmType": _build_dropdown_def(ANM_TYPE_VALUE_TO_NAME, 6, "Readonly dropdown"),
-	"Int_GenderRatio": _build_dropdown_def(GENDER_RATIO_VALUE_TO_NAME, 9, "Readonly dropdown"),
-}
-
-DROPDOWN_FIELD_NAMES = set(DROPDOWN_FIELD_DEFS.keys())
 
 @dataclass
 class FieldRule:
@@ -662,19 +1572,21 @@ class FieldRule:
 @dataclass
 class OffsetRule:
 	offset: int
-	male_pointer: int
-	male_substitute: int
-	female_pointer: int
-	female_substitute: int
 	name: str
+	male_pointer_value: Optional[int] = None
+	male_pointer_substitute: Optional[int] = None
+	female_pointer_value: Optional[int] = None
+	female_pointer_substitute: Optional[int] = None
+	male_pointer_subtraction_value: Optional[int] = None
+	female_pointer_subtraction_value: Optional[int] = None
 
 
 @dataclass
 class ResolvedStringInfo:
 	kind: str
 	pointer_value: int
-	expected_pointer: int
-	substitute_offset: int
+	pointer_base: int
+	actual_offset: int
 	current_text: str
 	capacity: int
 	can_edit: bool
@@ -712,7 +1624,22 @@ class BinaryRecordEditor:
 		self.logic = logic
 		self.offsets = offsets
 
+	def is_new_format_record(self, blob: bytes, offset: int) -> bool:
+		if offset < 0 or offset + len(NEW_FORMAT_IDENTIFIER_BYTES) > len(blob):
+			return False
+		return blob[offset:offset + len(NEW_FORMAT_IDENTIFIER_BYTES)] == NEW_FORMAT_IDENTIFIER_BYTES
+
+	def required_record_size(self, blob: bytes, offset: int) -> int:
+		if self.is_new_format_record(blob, offset):
+			return NEW_FORMAT_RECORD_SIZE
+		return RECORD_SIZE
+
 	def decode_record(self, blob: bytes, offset_rule: OffsetRule) -> Dict[str, object]:
+		if self.is_new_format_record(blob, offset_rule.offset):
+			return self._decode_new_format_record(blob, offset_rule)
+		return self._decode_legacy_record(blob, offset_rule)
+
+	def _decode_legacy_record(self, blob: bytes, offset_rule: OffsetRule) -> Dict[str, object]:
 		chunk = self._get_record_chunk(blob, offset_rule.offset)
 		bit_stream_value = int.from_bytes(chunk, "big")
 		field_values = {}
@@ -721,11 +1648,65 @@ class BinaryRecordEditor:
 			field_values[field.raw_name] = decode_field_value(field, raw_value)
 		male_pointer_value = int(field_values[self.logic.male_pointer_field.raw_name])
 		female_pointer_value = int(field_values[self.logic.female_pointer_field.raw_name])
-		male_info = self._resolve_string_info(blob, "male", male_pointer_value, offset_rule.male_pointer, offset_rule.male_substitute)
-		female_info = self._resolve_string_info(blob, "female", female_pointer_value, offset_rule.female_pointer, offset_rule.female_substitute)
+		male_info = self._resolve_string_info(blob, "male", male_pointer_value, offset_rule)
+		female_info = self._resolve_string_info(blob, "female", female_pointer_value, offset_rule)
 		return {
 			"offset": offset_rule.offset,
 			"name": offset_rule.name,
+			"format_kind": "legacy",
+			"field_values": field_values,
+			"male_info": male_info,
+			"female_info": female_info,
+			"raw_hex": chunk.hex().upper(),
+		}
+
+	def _decode_new_format_record(self, blob: bytes, offset_rule: OffsetRule) -> Dict[str, object]:
+		chunk = self._get_new_format_chunk(blob, offset_rule.offset)
+		field_values = {field.raw_name: 0 for field in self.logic.fields}
+		field_values["Int_NDexID"] = int.from_bytes(self._slice_new_field(chunk, "Int_NDexID"), "big")
+		field_values["Int_FormID"] = self._slice_new_field(chunk, "Int_FormID")[0]
+		anm_text = read_fixed_ascii_field(chunk, *NEW_FORMAT_FIELD_OFFSETS["Str_AnmType"])
+		field_values["Int_AnmType"] = ANM_TYPE_NAME_TO_VALUE.get(anm_text, anm_text)
+		field_values["Int_FlyHeight"] = self._slice_new_field(chunk, "Int_FlyHeight")[0]
+		field_values["Int_Unk1"] = self._slice_new_field(chunk, "Int_Unk1")[0]
+		field_values["f16_ScaleModifier"] = struct.unpack(">e", self._slice_new_field(chunk, "f16_ScaleModifier"))[0]
+		field_values["Int_Unk2"] = self._slice_new_field(chunk, "Int_Unk2")[0]
+		field_values["Int_Unk3"] = self._slice_new_field(chunk, "Int_Unk3")[0]
+		field_values["Int_Type1"] = self._slice_new_field(chunk, "Int_Type1")[0]
+		field_values["Int_Type2"] = self._slice_new_field(chunk, "Int_Type2")[0]
+		field_values["Int_GenderRatio"] = int.from_bytes(self._slice_new_field(chunk, "Int_GenderRatio"), "big")
+		field_values["f16_UnkFloat"] = struct.unpack(">e", self._slice_new_field(chunk, "f16_UnkFloat"))[0]
+		field_values["f32_MaleArchiveNameStringPointer"] = 0
+		field_values["f32_FemaleArchiveNameStringPointer"] = 0
+		field_values["f32__deprecated__WalkSpeedCoEff"] = struct.unpack(">f", self._slice_new_field(chunk, "f32__deprecated__WalkSpeedCoEff"))[0]
+		field_values["f32_WalkAnmRate"] = struct.unpack(">f", self._slice_new_field(chunk, "f32_WalkAnmRate"))[0]
+
+		male_text = read_fixed_ascii_field(chunk, *NEW_FORMAT_FIELD_OFFSETS["f32_MaleArchiveNameString"])
+		female_text = read_fixed_ascii_field(chunk, *NEW_FORMAT_FIELD_OFFSETS["f32_FemaleArchiveNameString"])
+		male_info = ResolvedStringInfo(
+			kind="male",
+			pointer_value=0,
+			pointer_base=0,
+			actual_offset=offset_rule.offset + NEW_FORMAT_FIELD_OFFSETS["f32_MaleArchiveNameString"][0],
+			current_text=male_text,
+			capacity=NEW_FORMAT_ARCHIVE_MAX_CHARS,
+			can_edit=True,
+			status="Embedded NewFormat archive string field.",
+		)
+		female_info = ResolvedStringInfo(
+			kind="female",
+			pointer_value=0,
+			pointer_base=0,
+			actual_offset=offset_rule.offset + NEW_FORMAT_FIELD_OFFSETS["f32_FemaleArchiveNameString"][0],
+			current_text=female_text,
+			capacity=NEW_FORMAT_ARCHIVE_MAX_CHARS,
+			can_edit=True,
+			status="Embedded NewFormat archive string field.",
+		)
+		return {
+			"offset": offset_rule.offset,
+			"name": offset_rule.name,
+			"format_kind": "new",
 			"field_values": field_values,
 			"male_info": male_info,
 			"female_info": female_info,
@@ -733,6 +1714,18 @@ class BinaryRecordEditor:
 		}
 
 	def apply_record_changes(
+		self,
+		blob: bytearray,
+		offset_rule: OffsetRule,
+		field_values: Dict[str, object],
+		male_text: str,
+		female_text: str,
+	) -> Dict[str, object]:
+		if self.is_new_format_record(bytes(blob), offset_rule.offset):
+			return self._apply_new_format_changes(blob, offset_rule, field_values, male_text, female_text)
+		return self._apply_legacy_changes(blob, offset_rule, field_values, male_text, female_text)
+
+	def _apply_legacy_changes(
 		self,
 		blob: bytearray,
 		offset_rule: OffsetRule,
@@ -756,58 +1749,193 @@ class BinaryRecordEditor:
 		if (
 			male_info.can_edit
 			and female_info.can_edit
-			and male_info.substitute_offset == female_info.substitute_offset
+			and male_info.actual_offset == female_info.actual_offset
 		):
 			if normalize_newlines(male_text) != normalize_newlines(female_text):
 				raise ValidationError(
-					"Male and female archive strings resolve to the same substitute offset in this entry, so both values must match."
+					"Male and female archive strings resolve to the same offset in this entry, so both values must match."
 				)
-			write_fixed_ascii_cstring(blob, male_info.substitute_offset, male_text, max(male_info.capacity, female_info.capacity))
+			write_fixed_ascii_cstring(blob, male_info.actual_offset, male_text, max(male_info.capacity, female_info.capacity))
 		else:
 			if male_info.can_edit:
-				write_fixed_ascii_cstring(blob, male_info.substitute_offset, male_text, male_info.capacity)
+				write_fixed_ascii_cstring(blob, male_info.actual_offset, male_text, male_info.capacity)
 			elif normalize_newlines(male_text) != normalize_newlines(male_info.current_text):
 				raise ValidationError(
-					"Male archive string cannot be edited because the current pointer does not match the configured pointer/substitute pair."
+					"Male archive string cannot be edited because the current pointer resolves to an invalid offset."
 				)
 
 			if female_info.can_edit:
-				write_fixed_ascii_cstring(blob, female_info.substitute_offset, female_text, female_info.capacity)
+				write_fixed_ascii_cstring(blob, female_info.actual_offset, female_text, female_info.capacity)
 			elif normalize_newlines(female_text) != normalize_newlines(female_info.current_text):
 				raise ValidationError(
-					"Female archive string cannot be edited because the current pointer does not match the configured pointer/substitute pair."
+					"Female archive string cannot be edited because the current pointer resolves to an invalid offset."
 				)
 
 		return self.decode_record(bytes(blob), offset_rule)
+
+	def _apply_new_format_changes(
+		self,
+		blob: bytearray,
+		offset_rule: OffsetRule,
+		field_values: Dict[str, object],
+		male_text: str,
+		female_text: str,
+	) -> Dict[str, object]:
+		chunk = bytearray(self._get_new_format_chunk(blob, offset_rule.offset))
+		chunk[0:len(NEW_FORMAT_IDENTIFIER_BYTES)] = NEW_FORMAT_IDENTIFIER_BYTES
+
+		self._write_new_int(chunk, "Int_NDexID", coerce_uint_value(field_values.get("Int_NDexID"), 16, "National Dex ID"))
+		self._write_new_int(chunk, "Int_FormID", coerce_uint_value(field_values.get("Int_FormID"), 8, "Form ID"))
+		write_fixed_ascii_field(chunk, *NEW_FORMAT_FIELD_OFFSETS["Str_AnmType"], coerce_anmtype_text(field_values.get("Int_AnmType")), "Animation Type")
+		self._write_new_int(chunk, "Int_FlyHeight", coerce_uint_value(field_values.get("Int_FlyHeight"), 8, "Fly Height"))
+		self._write_new_int(chunk, "Int_Unk1", coerce_uint_value(field_values.get("Int_Unk1"), 8, "Unknown 1"))
+		self._write_new_float16(chunk, "f16_ScaleModifier", coerce_scale_storage_float(field_values.get("f16_ScaleModifier"), "Scale Modifier"))
+		self._write_new_int(chunk, "Int_Unk2", coerce_uint_value(field_values.get("Int_Unk2"), 8, "Unknown 2"))
+		self._write_new_int(chunk, "Int_Unk3", coerce_uint_value(field_values.get("Int_Unk3"), 8, "Unknown 3"))
+		self._write_new_int(chunk, "Int_Type1", coerce_type_value(field_values.get("Int_Type1"), 8, "Type 1"))
+		self._write_new_int(chunk, "Int_Type2", coerce_type_value(field_values.get("Int_Type2"), 8, "Type 2"))
+		self._write_new_int(chunk, "Int_GenderRatio", coerce_gender_ratio_value(field_values.get("Int_GenderRatio"), 16, "Gender Ratio"))
+		self._write_new_float16(chunk, "f16_UnkFloat", parse_float(field_values.get("f16_UnkFloat"), "Unknown Float"))
+		self._write_new_float32(chunk, "f32__deprecated__WalkSpeedCoEff", parse_float(field_values.get("f32__deprecated__WalkSpeedCoEff"), "Deprecated Walk Speed Coefficient"))
+		self._write_new_float32(chunk, "f32_WalkAnmRate", parse_float(field_values.get("f32_WalkAnmRate"), "Walk Animation Rate"))
+		write_fixed_ascii_field(chunk, *NEW_FORMAT_FIELD_OFFSETS["f32_MaleArchiveNameString"], male_text, "Male Archive String")
+		write_fixed_ascii_field(chunk, *NEW_FORMAT_FIELD_OFFSETS["f32_FemaleArchiveNameString"], female_text, "Female Archive String")
+		self._set_new_format_chunk(blob, offset_rule.offset, bytes(chunk))
+		return self.decode_record(bytes(blob), offset_rule)
+
+	def _slice_new_field(self, chunk: bytes, field_name: str) -> bytes:
+		offset, size = NEW_FORMAT_FIELD_OFFSETS[field_name]
+		return chunk[offset:offset + size]
+
+	def _write_new_int(self, chunk: bytearray, field_name: str, value: int):
+		offset, size = NEW_FORMAT_FIELD_OFFSETS[field_name]
+		chunk[offset:offset + size] = int(value).to_bytes(size, "big")
+
+	def _write_new_float16(self, chunk: bytearray, field_name: str, value: float):
+		offset, size = NEW_FORMAT_FIELD_OFFSETS[field_name]
+		if size != 2:
+			raise ValidationError(f"{field_name} does not have a 16-bit storage size")
+		chunk[offset:offset + size] = struct.pack(">e", float(value))
+
+	def _write_new_float32(self, chunk: bytearray, field_name: str, value: float):
+		offset, size = NEW_FORMAT_FIELD_OFFSETS[field_name]
+		if size != 4:
+			raise ValidationError(f"{field_name} does not have a 32-bit storage size")
+		chunk[offset:offset + size] = struct.pack(">f", float(value))
 
 	def _resolve_string_info(
 		self,
 		blob: bytes,
 		kind: str,
 		pointer_value: int,
-		expected_pointer: int,
-		substitute_offset: int,
+		offset_rule: OffsetRule,
 	) -> ResolvedStringInfo:
-		can_edit = pointer_value in {expected_pointer, substitute_offset}
 		text = ""
 		capacity = 0
-		status = (
-			f"Pointer 0x{pointer_value:08X} matched configured value 0x{expected_pointer:08X}. Using substitute offset 0x{substitute_offset:06X}."
-			if can_edit
-			else f"Pointer 0x{pointer_value:08X} does not match configured value 0x{expected_pointer:08X}. Showing substitute string at 0x{substitute_offset:06X} as read-only reference."
-		)
-		try:
-			text, capacity = read_ascii_cstring_with_capacity(blob, substitute_offset)
-		except Exception as exc:
-			status = f"Could not read substitute string at 0x{substitute_offset:06X}: {exc}"
-			text = ""
-			capacity = 0
-			can_edit = False
+		can_edit = False
+		pointer_base = ARCHIVE_POINTER_BASE_PRIMARY
+		actual_offset = pointer_value - pointer_base
+
+		if kind == "male":
+			configured_pointer_value = offset_rule.male_pointer_value
+			configured_substitute = offset_rule.male_pointer_substitute
+			configured_subtraction = offset_rule.male_pointer_subtraction_value
+		else:
+			configured_pointer_value = offset_rule.female_pointer_value
+			configured_substitute = offset_rule.female_pointer_substitute
+			configured_subtraction = offset_rule.female_pointer_subtraction_value
+
+		if pointer_value == 0:
+			status = "Pointer is 0x00000000, so it does not resolve to an archive string."
+		elif (
+			configured_pointer_value is not None
+			and configured_substitute is not None
+			and pointer_value == configured_pointer_value
+		):
+			actual_offset = int(configured_substitute)
+			pointer_base = pointer_value - actual_offset
+			if not (0 <= actual_offset < len(blob)):
+				status = (
+					f"Pointer 0x{pointer_value:08X} uses configured\nmanual substitution to file offset 0x{actual_offset:06X}, "
+					"but that offset is outside the file."
+				)
+			else:
+				try:
+					text, capacity = read_ascii_cstring_with_capacity(blob, actual_offset)
+					can_edit = True
+					status = (
+						f"Pointer 0x{pointer_value:08X} resolves via configured\nmanual substitution to file offset 0x{actual_offset:06X}."
+					)
+				except ValidationError as exc:
+					status = (
+						f"Pointer 0x{pointer_value:08X} resolves via configured\nmanual substitution to file offset 0x{actual_offset:06X}, "
+						f"but the string could not be read: {exc}"
+					)
+		elif configured_subtraction is not None:
+			pointer_base = int(configured_subtraction)
+			actual_offset = pointer_value - pointer_base
+			if not (0 <= actual_offset < len(blob)):
+				status = (
+					f"Pointer 0x{pointer_value:08X} resolves outside the file when subtracting configured value 0x{pointer_base:08X}: "
+					f"0x{actual_offset & 0xFFFFFFFF:08X}."
+				)
+			else:
+				try:
+					text, capacity = read_ascii_cstring_with_capacity(blob, actual_offset)
+					can_edit = True
+					status = (
+						f"Pointer 0x{pointer_value:08X} resolves with configured subtraction 0x{pointer_base:08X} to file offset 0x{actual_offset:06X}."
+					)
+				except ValidationError as exc:
+					status = (
+						f"Pointer 0x{pointer_value:08X} resolves with configured subtraction 0x{pointer_base:08X} to file offset 0x{actual_offset:06X}, "
+						f"but the string could not be read: {exc}"
+					)
+		else:
+			primary_offset = pointer_value - ARCHIVE_POINTER_BASE_PRIMARY
+			fallback_offset = pointer_value - ARCHIVE_POINTER_BASE_FALLBACK
+			if 0 <= primary_offset < len(blob):
+				pointer_base = ARCHIVE_POINTER_BASE_PRIMARY
+				actual_offset = primary_offset
+			elif 0 <= fallback_offset < len(blob):
+				pointer_base = ARCHIVE_POINTER_BASE_FALLBACK
+				actual_offset = fallback_offset
+			else:
+				pointer_base = ARCHIVE_POINTER_BASE_PRIMARY
+				actual_offset = primary_offset
+				status = (
+					f"Pointer 0x{pointer_value:08X} resolves outside the file with both supported bases: "
+					f"0x{ARCHIVE_POINTER_BASE_PRIMARY:08X} -> 0x{primary_offset & 0xFFFFFFFF:08X}, "
+					f"0x{ARCHIVE_POINTER_BASE_FALLBACK:08X} -> 0x{fallback_offset & 0xFFFFFFFF:08X}."
+				)
+				return ResolvedStringInfo(
+					kind=kind,
+					pointer_value=pointer_value,
+					pointer_base=pointer_base,
+					actual_offset=actual_offset,
+					current_text=text,
+					capacity=capacity,
+					can_edit=can_edit,
+					status=status,
+				)
+
+			try:
+				text, capacity = read_ascii_cstring_with_capacity(blob, actual_offset)
+				can_edit = True
+				status = (
+					f"Pointer 0x{pointer_value:08X} resolves with base 0x{pointer_base:08X} to file offset 0x{actual_offset:06X}."
+				)
+			except ValidationError as exc:
+				status = (
+					f"Pointer 0x{pointer_value:08X} resolves with base 0x{pointer_base:08X} to file offset 0x{actual_offset:06X}, "
+					f"but the string could not be read: {exc}"
+				)
+
 		return ResolvedStringInfo(
 			kind=kind,
 			pointer_value=pointer_value,
-			expected_pointer=expected_pointer,
-			substitute_offset=substitute_offset,
+			pointer_base=pointer_base,
+			actual_offset=actual_offset,
 			current_text=text,
 			capacity=capacity,
 			can_edit=can_edit,
@@ -830,6 +1958,23 @@ class BinaryRecordEditor:
 			)
 		blob[offset:end] = chunk
 
+	def _get_new_format_chunk(self, blob: bytes, offset: int) -> bytes:
+		end = offset + NEW_FORMAT_RECORD_SIZE
+		if end > len(blob):
+			raise BinaryTooSmallError(
+				f"File is too small to read a full {NEW_FORMAT_RECORD_SIZE}-byte NewFormat record at offset 0x{offset:06X}."
+			)
+		return blob[offset:end]
+
+	def _set_new_format_chunk(self, blob: bytearray, offset: int, chunk: bytes):
+		end = offset + len(chunk)
+		if end > len(blob):
+			raise BinaryTooSmallError(
+				f"File is too small to write a full {len(chunk)}-byte NewFormat record at offset 0x{offset:06X}."
+			)
+		blob[offset:end] = chunk
+
+
 
 class App:
 	def __init__(self, root: tk.Tk):
@@ -846,18 +1991,36 @@ class App:
 		self.binary_data: Optional[bytearray] = None
 		self.current_offset_rule: Optional[OffsetRule] = None
 		self.current_record_snapshot: Optional[Dict[str, object]] = None
-		self.filtered_offsets: List[OffsetRule] = list(self.offsets)
+		self.available_offsets: List[OffsetRule] = list(self.offsets)
+		self.filtered_offsets: List[OffsetRule] = list(self.available_offsets)
 		self.suppress_selection_event = False
+		self.species_icon_image = None
+		self.image_cache: Dict[Tuple[str, int], Optional[tk.PhotoImage]] = {}
+		self.sidebar_images: Dict[str, Optional[tk.PhotoImage]] = {}
+		self.sidebar_item_to_offset: Dict[str, Tuple[int, str]] = {}
+		self.sidebar_refresh_scheduled = False
+		self.sidebar_sort_cache: Dict[Tuple[int, str], Tuple[int, int, str, int]] = {}
 
 		self.status_var = tk.StringVar()
 		self.file_label_var = tk.StringVar(value="No binary file loaded")
 		self.search_var = tk.StringVar()
-		self.search_var.trace_add("write", lambda *_: self.refresh_listbox())
+		self.search_var.trace_add("write", lambda *_: self.refresh_sidebar())
 
 		self.field_vars: Dict[str, tk.StringVar] = {}
-		self.field_widgets: Dict[str, tk.Widget] = {}
 		for field in self.logic.fields:
 			self.field_vars[field.raw_name] = tk.StringVar()
+
+		self.combobox_values_by_field = {
+			"Int_AnmType": ANM_TYPE_COMBO_VALUES,
+			"Int_Type1": TYPE_COMBO_VALUES,
+			"Int_Type2": TYPE_COMBO_VALUES,
+			"Int_GenderRatio": GENDER_RATIO_COMBO_VALUES,
+		}
+
+		if "Int_NDexID" in self.field_vars:
+			self.field_vars["Int_NDexID"].trace_add("write", lambda *_: self.update_species_icon())
+		if "Int_FormID" in self.field_vars:
+			self.field_vars["Int_FormID"].trace_add("write", lambda *_: self.update_species_icon())
 
 		self.record_name_var = tk.StringVar(value="No entry selected")
 		self.record_offset_var = tk.StringVar(value="Offset: -")
@@ -879,7 +2042,6 @@ class App:
 		ttk.Button(topbar, text="Open Binary", command=self.open_binary).pack(side="left")
 		ttk.Button(topbar, text="Save Binary", command=self.save_binary).pack(side="left", padx=(8, 0))
 		ttk.Button(topbar, text="Save Binary As", command=self.save_binary_as).pack(side="left", padx=(8, 0))
-		ttk.Button(topbar, text="Randomizer", command=self.open_randomizer_dialog).pack(side="left", padx=(8, 0))
 		ttk.Button(topbar, text="Reload Binary", command=self.reload_binary).pack(side="left", padx=(8, 0))
 		ttk.Button(topbar, text="Revert Current Entry", command=self.reload_current_entry).pack(side="left", padx=(8, 0))
 
@@ -899,14 +2061,22 @@ class App:
 		search_entry.pack(fill="x", pady=(6, 6))
 		search_entry.insert(0, "")
 
+		self.sidebar_tree_style = "PiiCodeSidebar.Treeview"
+		style = ttk.Style(self.root)
+		style.configure(self.sidebar_tree_style, rowheight=SIDEBAR_ROWHEIGHT)
+
 		list_frame = ttk.Frame(left_frame)
 		list_frame.pack(fill="both", expand=True)
-		self.entry_listbox = tk.Listbox(list_frame, exportselection=False)
-		self.entry_listbox.pack(side="left", fill="both", expand=True)
-		left_scrollbar = ttk.Scrollbar(list_frame, orient="vertical", command=self.entry_listbox.yview)
-		left_scrollbar.pack(side="left", fill="y")
-		self.entry_listbox.config(yscrollcommand=left_scrollbar.set)
-		self.entry_listbox.bind("<<ListboxSelect>>", self.on_listbox_select)
+		self.entry_tree = ttk.Treeview(list_frame, show="tree", selectmode="browse", style=self.sidebar_tree_style)
+		self.entry_tree.pack(side="left", fill="both", expand=True)
+		self.left_scroll = ttk.Scrollbar(list_frame, orient="vertical", command=self.on_sidebar_scrollbar)
+		self.left_scroll.pack(side="left", fill="y")
+		self.entry_tree.config(yscrollcommand=self.on_sidebar_treeview_scroll)
+		self.entry_tree.bind("<<TreeviewSelect>>", self.on_treeview_select)
+		self.entry_tree.bind("<Configure>", lambda _event: self.schedule_sidebar_visible_refresh())
+		self.entry_tree.bind("<MouseWheel>", lambda _event: self.schedule_sidebar_visible_refresh())
+		self.entry_tree.bind("<Button-4>", lambda _event: self.schedule_sidebar_visible_refresh())
+		self.entry_tree.bind("<Button-5>", lambda _event: self.schedule_sidebar_visible_refresh())
 
 		right_canvas = tk.Canvas(right_frame, highlightthickness=0)
 		right_scrollbar = ttk.Scrollbar(right_frame, orient="vertical", command=right_canvas.yview)
@@ -939,36 +2109,37 @@ class App:
 		row += 1
 		ttk.Label(parent, textvariable=self.record_offset_var).grid(row=row, column=0, columnspan=4, sticky="w")
 		row += 1
-		ttk.Label(parent, textvariable=self.record_raw_hex_var, wraplength=1000).grid(row=row, column=0, columnspan=4, sticky="w", pady=(0, 12))
+
+		self.species_icon_label = ttk.Label(parent)
+		self.species_icon_label.grid(row=row, column=0, columnspan=4, sticky="w", pady=(0, 8))
 		row += 1
 
 		for field in self.logic.fields:
 			label_text = f"{field.display_name} - {field.kind} - {field.bit_size} bits"
 			ttk.Label(parent, text=label_text).grid(row=row, column=0, sticky="w", padx=(0, 8), pady=3)
-			if field.raw_name in DROPDOWN_FIELD_NAMES:
-				dropdown_def = DROPDOWN_FIELD_DEFS[field.raw_name]
-				widget = ttk.Combobox(
+			if field.kind in {"anmtype", "type_enum", "gender_ratio"}:
+				entry = ttk.Combobox(
 					parent,
 					textvariable=self.field_vars[field.raw_name],
+					values=self.combobox_values_by_field.get(field.raw_name, []),
 					state="readonly",
-					values=list(dropdown_def["name_to_value"].keys()),
-					width=35,
+					width=38,
 				)
-				widget.grid(row=row, column=1, sticky="ew", pady=3)
-				self.field_widgets[field.raw_name] = widget
-				ttk.Label(parent, text=dropdown_def["description"]).grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
 			else:
-				widget = ttk.Entry(parent, textvariable=self.field_vars[field.raw_name], width=38)
-				widget.grid(row=row, column=1, sticky="ew", pady=3)
-				self.field_widgets[field.raw_name] = widget
-				if field.raw_name == SCALE_MODIFIER_FIELD_NAME:
-					ttk.Label(parent, text="Displayed as stored value × 100 × 100").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
-				elif field.kind == "pointer32":
-					ttk.Label(parent, text="Use 0x12345678 or decimal").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
-				elif field.kind in {"float16", "float32"}:
-					ttk.Label(parent, text="Accepts decimals").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
-				else:
-					ttk.Label(parent, text="Unsigned integer").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
+				entry = ttk.Entry(parent, textvariable=self.field_vars[field.raw_name], width=38)
+			entry.grid(row=row, column=1, sticky="ew", pady=3)
+			if field.kind == "pointer32":
+				ttk.Label(parent, text="Use 0x12345678 or decimal").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
+			elif field.kind in {"float16", "float32", "scale_display_x10000"}:
+				ttk.Label(parent, text="Accepts decimals").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
+			elif field.kind == "type_enum":
+				ttk.Label(parent, text="Select a type").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
+			elif field.kind == "anmtype":
+				ttk.Label(parent, text="Select an animation type").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
+			elif field.kind == "gender_ratio":
+				ttk.Label(parent, text="Select a gender ratio").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
+			else:
+				ttk.Label(parent, text="Unsigned integer").grid(row=row, column=2, sticky="w", padx=(8, 0), pady=3)
 			row += 1
 
 		row += 1
@@ -998,6 +2169,10 @@ class App:
 		button_row.grid(row=row, column=0, columnspan=4, sticky="w", pady=(10, 0))
 		ttk.Button(button_row, text="Apply Changes to Current Entry", command=self.apply_current_entry).pack(side="left")
 		ttk.Button(button_row, text="Refresh Current Entry From Buffer", command=self.reload_current_entry).pack(side="left", padx=(8, 0))
+		row += 1
+		ttk.Separator(parent, orient="horizontal").grid(row=row, column=0, columnspan=4, sticky="ew", pady=10)
+		row += 1
+		ttk.Label(parent, textvariable=self.record_raw_hex_var, wraplength=1000).grid(row=row, column=0, columnspan=4, sticky="w", pady=(0, 12))
 
 		for column in range(4):
 			parent.grid_columnconfigure(column, weight=1)
@@ -1015,15 +2190,6 @@ class App:
 		try:
 			with open(path, "rb") as infile:
 				data = bytearray(infile.read())
-		except Exception as exc:
-			messagebox.showerror("Open failed", str(exc))
-			return
-
-		if len(data) < MIN_OPEN_BINARY_SIZE:
-			messagebox.showerror("Open failed", "Compressed app file detected\nPlease decompress it using lzss3.py first")
-			return
-
-		try:
 			self.validate_binary_size(data)
 		except Exception as exc:
 			messagebox.showerror("Open failed", str(exc))
@@ -1031,31 +2197,41 @@ class App:
 
 		self.binary_path = path
 		self.binary_data = data
+		self.available_offsets = self.get_available_offsets(data)
+		self.sidebar_sort_cache.clear()
 		self.file_label_var.set(path)
 		self.current_offset_rule = None
 		self.current_record_snapshot = None
-		self.refresh_listbox(reset_selection=True)
+		self.refresh_sidebar(reset_selection=True)
 		if self.filtered_offsets:
 			self.select_offset_rule(self.filtered_offsets[0])
+			self.schedule_sidebar_visible_refresh()
 		self.set_status(f"Loaded {os.path.basename(path)}.")
 
 	def validate_binary_size(self, data: bytearray):
-		max_needed = 0
-		for offset_rule in self.offsets:
-			max_needed = max(max_needed, offset_rule.offset + RECORD_SIZE)
-			max_needed = max(max_needed, offset_rule.male_substitute + 1)
-			max_needed = max(max_needed, offset_rule.female_substitute + 1)
-		if len(data) < max_needed:
+		if len(data) < RECORD_SIZE:
 			raise BinaryTooSmallError(
-				f"Binary size 0x{len(data):X} is too small for configured offsets. Need at least 0x{max_needed:X}."
+				f"Binary size 0x{len(data):X} is too small to contain even one record."
 			)
+
+	def get_available_offsets(self, data: bytearray) -> List[OffsetRule]:
+		available: List[OffsetRule] = []
+		blob = bytes(data)
+		for offset_rule in self.offsets:
+			if offset_rule.offset + len(NEW_FORMAT_IDENTIFIER_BYTES) <= len(blob) and self.editor.is_new_format_record(blob, offset_rule.offset):
+				record_size = NEW_FORMAT_RECORD_SIZE
+			else:
+				record_size = RECORD_SIZE
+			if offset_rule.offset + record_size <= len(blob):
+				available.append(offset_rule)
+		return available
 
 	def save_binary(self):
 		if self.binary_data is None or self.binary_path is None:
 			messagebox.showinfo("Nothing to save", "Open a binary file first.")
 			return
 		try:
-			self.apply_current_entry(show_message=False)
+			self.apply_current_entry()
 			with open(self.binary_path, "wb") as outfile:
 				outfile.write(self.binary_data)
 		except Exception as exc:
@@ -1067,18 +2243,15 @@ class App:
 		if self.binary_data is None:
 			messagebox.showinfo("Nothing to save", "Open a binary file first.")
 			return
-		default_ext = ""
-		if self.binary_path and "." in self.binary_path:
-			default_ext = "." + self.binary_path.rsplit(".", 1)[-1]
 		path = filedialog.asksaveasfilename(
 			title="Save binary as",
-			defaultextension=default_ext,
+			defaultextension=(f".{self.binary_path.rsplit(".", 1)[-1]}" if self.binary_path and "." in self.binary_path else ""),
 			filetypes=[("All files", "*.*")],
 		)
 		if not path:
 			return
 		try:
-			self.apply_current_entry(show_message=False)
+			self.apply_current_entry()
 			with open(path, "wb") as outfile:
 				outfile.write(self.binary_data)
 		except Exception as exc:
@@ -1093,131 +2266,188 @@ class App:
 			return
 		self.load_binary(self.binary_path)
 
-	def open_randomizer_dialog(self):
+	def build_sidebar_sort_key(self, offset_rule: OffsetRule) -> Tuple[int, int, str, int]:
+		cache_key = (offset_rule.offset, offset_rule.name)
+		if cache_key in self.sidebar_sort_cache:
+			return self.sidebar_sort_cache[cache_key]
 		if self.binary_data is None:
-			messagebox.showinfo("Randomizer", "Open a binary file first.")
-			return
-
-		dialog = tk.Toplevel(self.root)
-		dialog.title("Randomizer")
-		dialog.transient(self.root)
-		dialog.resizable(False, False)
-		dialog.grab_set()
-
-		content = ttk.Frame(dialog, padding=12)
-		content.pack(fill="both", expand=True)
-
-		allow_types_var = tk.BooleanVar(value=True)
-		allow_anm_type_var = tk.BooleanVar(value=True)
-
-		ttk.Label(content, text="Choose which values to randomize.").pack(anchor="w", pady=(0, 10))
-		ttk.Checkbutton(content, text="Allow all Pokemon Types to be randomized", variable=allow_types_var).pack(anchor="w")
-		ttk.Checkbutton(content, text="Allow the Pokemon's AnmType to be randomized", variable=allow_anm_type_var).pack(anchor="w", pady=(6, 0))
-
-		button_row = ttk.Frame(content)
-		button_row.pack(fill="x", pady=(12, 0))
-
-		def run_randomizer():
+			sort_key = (10**9, 10**9, offset_rule.name.casefold(), offset_rule.offset)
+		else:
 			try:
-				self.apply_randomization_options(allow_types_var.get(), allow_anm_type_var.get())
-			except Exception as exc:
-				messagebox.showerror("Randomizer failed", str(exc), parent=dialog)
-				return
-			dialog.destroy()
+				record = self.editor.decode_record(bytes(self.binary_data), offset_rule)
+				field_values = record.get("field_values", {})
+				dex = safe_int(field_values.get("Int_NDexID"), 10**9)
+				form = safe_int(field_values.get("Int_FormID"), 0)
+				sort_key = (dex if dex is not None else 10**9, form if form is not None else 0, offset_rule.name.casefold(), offset_rule.offset)
+			except Exception:
+				sort_key = (10**9, 10**9, offset_rule.name.casefold(), offset_rule.offset)
+		self.sidebar_sort_cache[cache_key] = sort_key
+		return sort_key
 
-		ttk.Button(button_row, text="Randomize", command=run_randomizer).pack(side="right")
-		ttk.Button(button_row, text="Cancel", command=dialog.destroy).pack(side="right", padx=(0, 8))
+	def build_sidebar_item_text(self, offset_rule: OffsetRule) -> str:
+		return f"{offset_rule.name} - 0x{offset_rule.offset:06X}"
 
-		dialog.wait_window()
+	def _sidebar_layout_matches_filtered_offsets(self) -> bool:
+		item_ids = list(self.entry_tree.get_children())
+		if len(item_ids) != len(self.filtered_offsets):
+			return False
+		for item_id, offset_rule in zip(item_ids, self.filtered_offsets):
+			if self.sidebar_item_to_offset.get(item_id) != (offset_rule.offset, offset_rule.name):
+				return False
+		return True
 
-	def apply_randomization_options(self, allow_types: bool, allow_anm_type: bool):
-		if self.binary_data is None:
-			raise ValidationError("Open a binary file first.")
-		if not allow_types and not allow_anm_type:
-			raise ValidationError("At least one randomizer option must be enabled.")
+	def _rebuild_sidebar_items(self):
+		for item_id in self.entry_tree.get_children():
+			self.entry_tree.delete(item_id)
+		self.sidebar_item_to_offset = {}
+		self.sidebar_images = {}
+		for offset_rule in self.filtered_offsets:
+			item_id = self.entry_tree.insert("", "end", text=self.build_sidebar_item_text(offset_rule))
+			self.sidebar_item_to_offset[item_id] = (offset_rule.offset, offset_rule.name)
 
-		if self.current_offset_rule is not None:
-			self.apply_current_entry(show_message=False)
+	def _update_sidebar_items_without_rebuild(self):
+		for item_id, offset_rule in zip(self.entry_tree.get_children(), self.filtered_offsets):
+			self.entry_tree.item(item_id, text=self.build_sidebar_item_text(offset_rule))
+			self.sidebar_item_to_offset[item_id] = (offset_rule.offset, offset_rule.name)
 
-		type_values = list(TYPE_VALUE_TO_NAME.keys())
-		anm_type_values = list(ANM_TYPE_VALUE_TO_NAME.keys())
-		randomized_entries = 0
-		changed_fields = 0
-
-		for offset_rule in self.offsets:
-			record = self.editor.decode_record(bytes(self.binary_data), offset_rule)
-			field_values = dict(record["field_values"])
-
-			if allow_types:
-				field_values["Int_Type1"] = random.choice(type_values)
-				field_values["Int_Type2"] = random.choice(type_values)
-				changed_fields += 2
-
-			if allow_anm_type:
-				field_values["Int_AnmType"] = random.choice(anm_type_values)
-				changed_fields += 1
-
-			self.editor.apply_record_changes(
-				self.binary_data,
-				offset_rule,
-				field_values,
-				record["male_info"].current_text,
-				record["female_info"].current_text,
-			)
-			randomized_entries += 1
-
-		if self.current_offset_rule is not None:
-			record = self.editor.decode_record(bytes(self.binary_data), self.current_offset_rule)
-			self.current_record_snapshot = record
-			self.populate_form(record)
-			self.restore_current_listbox_selection()
-
-		self.set_status(
-			f"Randomized {changed_fields} field values across {randomized_entries} entries."
-		)
-
-	def refresh_listbox(self, reset_selection: bool = False):
+	def refresh_sidebar(self, reset_selection: bool = False):
 		query = self.search_var.get().strip().casefold()
 		if query:
 			self.filtered_offsets = [
 				offset_rule
-				for offset_rule in self.offsets
+				for offset_rule in self.available_offsets
 				if query in offset_rule.name.casefold() or query in f"{offset_rule.offset:06X}".casefold()
 			]
 		else:
-			self.filtered_offsets = list(self.offsets)
+			self.filtered_offsets = list(self.available_offsets)
+
+		self.filtered_offsets.sort(key=self.build_sidebar_sort_key)
 
 		current_name = self.current_offset_rule.name if self.current_offset_rule else None
 		current_offset = self.current_offset_rule.offset if self.current_offset_rule else None
 
 		self.suppress_selection_event = True
-		self.entry_listbox.delete(0, tk.END)
-		for offset_rule in self.filtered_offsets:
-			self.entry_listbox.insert(tk.END, f"{offset_rule.name} - 0x{offset_rule.offset:06X}")
+		if self._sidebar_layout_matches_filtered_offsets():
+			self._update_sidebar_items_without_rebuild()
+		else:
+			self._rebuild_sidebar_items()
 		self.suppress_selection_event = False
+		self.schedule_sidebar_visible_refresh()
 
 		if reset_selection:
 			return
 
 		if current_name is None or current_offset is None:
 			return
-		for index, offset_rule in enumerate(self.filtered_offsets):
-			if offset_rule.name == current_name and offset_rule.offset == current_offset:
+		for item_id, (offset, name) in self.sidebar_item_to_offset.items():
+			if name == current_name and offset == current_offset:
 				self.suppress_selection_event = True
-				self.entry_listbox.selection_clear(0, tk.END)
-				self.entry_listbox.selection_set(index)
-				self.entry_listbox.see(index)
+				self.entry_tree.selection_set(item_id)
+				self.entry_tree.focus(item_id)
+				self.entry_tree.see(item_id)
 				self.suppress_selection_event = False
+				self.schedule_sidebar_visible_refresh()
 				return
 
-	def on_listbox_select(self, _event=None):
+	def on_sidebar_scrollbar(self, *args):
+		self.entry_tree.yview(*args)
+		self.schedule_sidebar_visible_refresh()
+
+	def on_sidebar_treeview_scroll(self, first, last):
+		self.left_scroll.set(first, last)
+		self.schedule_sidebar_visible_refresh()
+
+	def schedule_sidebar_visible_refresh(self):
+		if self.sidebar_refresh_scheduled:
+			return
+		self.sidebar_refresh_scheduled = True
+		self.root.after_idle(self.refresh_visible_sidebar_icons)
+
+	def refresh_visible_sidebar_icons(self):
+		self.sidebar_refresh_scheduled = False
+		self.sidebar_sort_cache: Dict[Tuple[int, str], Tuple[int, int, str, int]] = {}
+		if self.binary_data is None or not hasattr(self, "entry_tree"):
+			return
+		item_ids = list(self.entry_tree.get_children())
+		if not item_ids:
+			return
+
+		height = max(1, int(self.entry_tree.winfo_height()))
+		top_item = self.entry_tree.identify_row(0)
+		bottom_item = self.entry_tree.identify_row(height)
+
+		if not top_item:
+			top_item = item_ids[0]
+		if not bottom_item:
+			bottom_item = item_ids[-1]
+
+		try:
+			start_index = item_ids.index(top_item)
+		except ValueError:
+			start_index = 0
+		try:
+			end_index = item_ids.index(bottom_item)
+		except ValueError:
+			end_index = len(item_ids) - 1
+		if end_index < start_index:
+			end_index = start_index
+
+		visible_ids = set(item_ids[start_index:end_index + 1])
+
+		for item_id in item_ids:
+			if item_id in visible_ids:
+				self._apply_sidebar_icon(item_id)
+			else:
+				self.entry_tree.item(item_id, image="")
+				self.sidebar_images.pop(item_id, None)
+
+	def _apply_sidebar_icon(self, item_id: str):
+		if item_id in self.sidebar_images:
+			image = self.sidebar_images[item_id]
+			self.entry_tree.item(item_id, image=image if image is not None else "")
+			return
+
+		offset_name = self.sidebar_item_to_offset.get(item_id)
+		if not offset_name or self.binary_data is None:
+			return
+
+		offset, name = offset_name
+		offset_rule = None
+		for candidate in self.offsets:
+			if candidate.offset == offset and candidate.name == name:
+				offset_rule = candidate
+				break
+		if offset_rule is None:
+			return
+
+		try:
+			record = self.editor.decode_record(bytes(self.binary_data), offset_rule)
+			field_values = record.get("field_values", {})
+			species_id = safe_int(field_values.get("Int_NDexID"))
+			form_id = safe_int(field_values.get("Int_FormID"))
+			icon_path = self.find_species_icon_path(species_id, form_id, kind="side")
+			image = self.load_icon_image(icon_path, max_dim=SIDEBAR_ICON_SIZE)
+		except Exception:
+			image = None
+
+		self.sidebar_images[item_id] = image
+		self.entry_tree.item(item_id, image=image if image is not None else "")
+
+	def on_treeview_select(self, _event=None):
 		if self.suppress_selection_event:
 			return
-		selection = self.entry_listbox.curselection()
+		selection = self.entry_tree.selection()
 		if not selection:
 			return
-		offset_rule = self.filtered_offsets[selection[0]]
-		self.select_offset_rule(offset_rule)
+		item_id = selection[0]
+		offset_name = self.sidebar_item_to_offset.get(item_id)
+		if not offset_name:
+			return
+		offset, name = offset_name
+		for offset_rule in self.filtered_offsets:
+			if offset_rule.offset == offset and offset_rule.name == name:
+				self.select_offset_rule(offset_rule)
+				return
 
 	def select_offset_rule(self, offset_rule: OffsetRule):
 		if self.binary_data is None:
@@ -1229,6 +2459,7 @@ class App:
 				self.apply_current_entry(show_message=False)
 			except Exception as exc:
 				messagebox.showerror("Entry contains invalid data", str(exc))
+				self.restore_current_sidebar_selection()
 				return
 		try:
 			record = self.editor.decode_record(bytes(self.binary_data), offset_rule)
@@ -1238,19 +2469,20 @@ class App:
 		self.current_offset_rule = offset_rule
 		self.current_record_snapshot = record
 		self.populate_form(record)
-		self.restore_current_listbox_selection()
+		self.restore_current_sidebar_selection()
 		self.set_status(f"Loaded entry {offset_rule.name}.")
 
-	def restore_current_listbox_selection(self):
+	def restore_current_sidebar_selection(self):
 		if self.current_offset_rule is None:
 			return
-		for index, offset_rule in enumerate(self.filtered_offsets):
-			if offset_rule.offset == self.current_offset_rule.offset and offset_rule.name == self.current_offset_rule.name:
+		for item_id, (offset, name) in self.sidebar_item_to_offset.items():
+			if offset == self.current_offset_rule.offset and name == self.current_offset_rule.name:
 				self.suppress_selection_event = True
-				self.entry_listbox.selection_clear(0, tk.END)
-				self.entry_listbox.selection_set(index)
-				self.entry_listbox.see(index)
+				self.entry_tree.selection_set(item_id)
+				self.entry_tree.focus(item_id)
+				self.entry_tree.see(item_id)
 				self.suppress_selection_event = False
+				self.schedule_sidebar_visible_refresh()
 				return
 
 	def populate_form(self, record: Dict[str, object]):
@@ -1261,10 +2493,7 @@ class App:
 		field_values = record["field_values"]
 		for field in self.logic.fields:
 			value = field_values[field.raw_name]
-			formatted_value = format_value_for_ui(field, value)
-			if field.raw_name in DROPDOWN_FIELD_NAMES:
-				ensure_dropdown_value(self.field_widgets[field.raw_name], formatted_value)
-			self.field_vars[field.raw_name].set(formatted_value)
+			self.field_vars[field.raw_name].set(format_value_for_ui(field, value))
 
 		male_info: ResolvedStringInfo = record["male_info"]
 		female_info: ResolvedStringInfo = record["female_info"]
@@ -1278,6 +2507,7 @@ class App:
 		self.female_capacity_var.set(
 			f"Editable max chars: {female_info.capacity}" if female_info.can_edit else "Read-only reference"
 		)
+		self.update_species_icon()
 
 	def reload_current_entry(self):
 		if self.binary_data is None or self.current_offset_rule is None:
@@ -1301,6 +2531,7 @@ class App:
 	def apply_current_entry(self, show_message: bool = True):
 		if self.binary_data is None or self.current_offset_rule is None:
 			return
+		old_sort_key = self.build_sidebar_sort_key(self.current_offset_rule)
 		field_values = self.gather_form_field_values()
 		record = self.editor.apply_record_changes(
 			self.binary_data,
@@ -1310,9 +2541,78 @@ class App:
 			self.female_string_var.get(),
 		)
 		self.current_record_snapshot = record
+		self.sidebar_sort_cache.pop((self.current_offset_rule.offset, self.current_offset_rule.name), None)
 		self.populate_form(record)
+		new_sort_key = self.build_sidebar_sort_key(self.current_offset_rule)
+		if new_sort_key != old_sort_key:
+			self.refresh_sidebar()
+		else:
+			self.restore_current_sidebar_selection()
 		if show_message:
 			self.set_status(f"Applied changes to {self.current_offset_rule.name}.")
+
+	def get_current_species_and_form_ids(self) -> Tuple[Optional[int], Optional[int]]:
+		species_value = self.field_vars["Int_NDexID"].get() if "Int_NDexID" in self.field_vars else ""
+		form_value = self.field_vars["Int_FormID"].get() if "Int_FormID" in self.field_vars else ""
+		species_id = safe_int(species_value)
+		form_id = safe_int(form_value)
+		return species_id, form_id
+
+	def find_species_icon_path(self, species_id: Optional[int], form_id: Optional[int] = None, kind: str = "main") -> str:
+		candidates = []
+		if species_id is not None and form_id not in (None, ""):
+			candidates.append(os.path.join(ICON_DIR, f"{species_id}_{form_id}_{kind}.png"))
+		if species_id is not None:
+			candidates.append(os.path.join(ICON_DIR, f"{species_id}_{kind}.png"))
+		if kind == "main":
+			fallback = os.path.join(ICON_DIR, FALLBACK_MAIN_ICON_NAME)
+		elif kind == "side":
+			fallback = os.path.join(ICON_DIR, FALLBACK_SIDEBAR_ICON_NAME)
+		else:
+			fallback = os.path.join(ICON_DIR, FALLBACK_ICON_NAME)
+		candidates.append(fallback)
+		legacy_fallback = os.path.join(ICON_DIR, FALLBACK_ICON_NAME)
+		if legacy_fallback != fallback:
+			candidates.append(legacy_fallback)
+		for candidate in candidates:
+			if os.path.isfile(candidate):
+				return candidate
+		return fallback
+
+	def load_icon_image(self, path: str, max_dim: int) -> Optional[tk.PhotoImage]:
+		cache_key = (path, int(max_dim))
+		if cache_key in self.image_cache:
+			return self.image_cache[cache_key]
+		if not os.path.isfile(path):
+			self.image_cache[cache_key] = None
+			return None
+		try:
+			image = tk.PhotoImage(file=path)
+			width = image.width()
+			height = image.height()
+			if width > max_dim or height > max_dim:
+				scale = max(1, math.ceil(max(width / max_dim, height / max_dim)))
+				image = image.subsample(scale, scale)
+			self.image_cache[cache_key] = image
+			return image
+		except Exception:
+			self.image_cache[cache_key] = None
+			return None
+
+	def update_species_icon(self):
+		if not hasattr(self, "species_icon_label"):
+			return
+		species_id, form_id = self.get_current_species_and_form_ids()
+		if species_id is None:
+			self.species_icon_label.configure(image="", text="")
+			self.species_icon_image = None
+			return
+		icon_path = self.find_species_icon_path(species_id, form_id, kind="main")
+		self.species_icon_image = self.load_icon_image(icon_path, max_dim=MAIN_ICON_SIZE)
+		if self.species_icon_image is not None:
+			self.species_icon_label.configure(image=self.species_icon_image, text="")
+		else:
+			self.species_icon_label.configure(image="", text=os.path.basename(icon_path))
 
 	def set_status(self, message: str):
 		self.status_var.set(message)
@@ -1349,7 +2649,7 @@ def load_offsets_config_from_text(text: str) -> List[OffsetRule]:
 	if not lines:
 		raise ConfigError("Embedded offsets data is empty")
 	headers = [part.strip() for part in lines[0].split(";")]
-	expected_headers = [
+	legacy_headers = [
 		"Offset",
 		"Male_Archive_String_Name_Pointer",
 		"Male_Archive_String_Name_Substitute",
@@ -1357,27 +2657,101 @@ def load_offsets_config_from_text(text: str) -> List[OffsetRule]:
 		"Female_Archive_String_Name_Substitute",
 		"NAME",
 	]
-	if headers[:6] != expected_headers:
-		raise ConfigError("Embedded offsets header row does not match the expected format")
+	new_headers = [
+		"Offset",
+		"Male_Archive_String_Name_Pointer",
+		"Male_Archive_String_Name_Pointer_Subtraction_Value",
+		"Female_Archive_String_Name_Pointer",
+		"Female_Archive_String_Name_Pointer_Subtraction_Value",
+		"NAME",
+	]
+	simple_headers = ["Offset", "NAME"]
+	if headers[:len(legacy_headers)] == legacy_headers:
+		header_mode = "legacy"
+	elif headers[:len(new_headers)] == new_headers:
+		header_mode = "new"
+	elif headers[:len(simple_headers)] == simple_headers:
+		header_mode = "simple"
+	else:
+		raise ConfigError("Embedded offsets header row does not match a supported format")
 
 	offsets: List[OffsetRule] = []
 	for line_number, line in enumerate(lines[1:], start=2):
 		parts = [part.strip() for part in line.split(";")]
-		if len(parts) < 6:
-			raise ConfigError(f"Embedded offsets line {line_number} has fewer than 6 columns")
-		offsets.append(
-			OffsetRule(
-				offset=parse_hex_int(parts[0]),
-				male_pointer=parse_hex_int(parts[1]),
-				male_substitute=parse_hex_int(parts[2]),
-				female_pointer=parse_hex_int(parts[3]),
-				female_substitute=parse_hex_int(parts[4]),
-				name=parts[5],
+		if header_mode == "legacy":
+			if len(parts) < 6:
+				raise ConfigError(f"Embedded offsets line {line_number} has fewer than 6 columns")
+			offsets.append(
+				OffsetRule(
+					offset=parse_hex_int(parts[0]),
+					name=parts[5],
+					male_pointer_value=parse_hex_int(parts[1]) if parts[1] else None,
+					male_pointer_substitute=parse_hex_int(parts[2]) if parts[2] else None,
+					female_pointer_value=parse_hex_int(parts[3]) if parts[3] else None,
+					female_pointer_substitute=parse_hex_int(parts[4]) if parts[4] else None,
+				)
 			)
-		)
+		elif header_mode == "new":
+			if len(parts) < 6:
+				raise ConfigError(f"Embedded offsets line {line_number} has fewer than 6 columns")
+			offsets.append(
+				OffsetRule(
+					offset=parse_hex_int(parts[0]),
+					name=parts[5],
+					male_pointer_value=parse_hex_int(parts[1]) if parts[1] else None,
+					female_pointer_value=parse_hex_int(parts[3]) if parts[3] else None,
+					male_pointer_subtraction_value=parse_hex_int(parts[2]) if parts[2] else None,
+					female_pointer_subtraction_value=parse_hex_int(parts[4]) if parts[4] else None,
+				)
+			)
+		else:
+			if len(parts) < 2:
+				raise ConfigError(f"Embedded offsets line {line_number} has fewer than 2 columns")
+			offsets.append(
+				OffsetRule(
+					offset=parse_hex_int(parts[0]),
+					name=parts[1],
+				)
+			)
 	if not offsets:
 		raise ConfigError("Embedded offsets data did not contain any data rows")
 	return offsets
+
+
+def load_simple_offsets_file(path: str) -> List[OffsetRule]:
+	with open(path, "r", encoding="utf-8") as infile:
+		lines = [line.rstrip("\r\n") for line in infile if line.strip()]
+	offsets: List[OffsetRule] = []
+	for line_number, line in enumerate(lines, start=1):
+		parts = [part.strip() for part in line.split(";")]
+		if len(parts) < 2:
+			raise ConfigError(f"Offsets file {os.path.basename(path)!r} line {line_number} has fewer than 2 columns")
+		offsets.append(
+			OffsetRule(
+				offset=parse_hex_int(parts[0]),
+				name=parts[1],
+			)
+		)
+	return offsets
+
+
+def load_optional_extra_offsets(script_dir: str) -> List[OffsetRule]:
+	extra_offsets: List[OffsetRule] = []
+	for filename in EXTRA_OFFSETS_FILENAMES:
+		path = os.path.join(script_dir, filename)
+		if not os.path.isfile(path):
+			continue
+		extra_offsets.extend(load_simple_offsets_file(path))
+	return extra_offsets
+
+
+def merge_offset_rules(primary: List[OffsetRule], extra: List[OffsetRule]) -> List[OffsetRule]:
+	merged: Dict[int, OffsetRule] = {}
+	for offset_rule in primary:
+		merged[int(offset_rule.offset)] = offset_rule
+	for offset_rule in extra:
+		merged[int(offset_rule.offset)] = offset_rule
+	return [merged[offset] for offset in sorted(merged)]
 
 
 def parse_bit_size(text: str) -> int:
@@ -1390,6 +2764,20 @@ def parse_bit_size(text: str) -> int:
 
 
 def infer_field_kind(raw_name: str) -> str:
+	if raw_name == "Int_AnmType":
+		return "anmtype"
+	if raw_name == "Str_AnmType":
+		return "anmtype_text"
+	if raw_name in {"Int_Type1", "Int_Type2"}:
+		return "type_enum"
+	if raw_name == "Int_GenderRatio":
+		return "gender_ratio"
+	if raw_name == SPECIAL_SCALE_FIELD_NAME:
+		return "scale_display_x10000"
+	if raw_name == "Str_NewFormatIdentifier":
+		return "identifier_text"
+	if raw_name.endswith("ArchiveNameString"):
+		return "fixed_ascii"
 	if "StringPointer" in raw_name or raw_name.endswith("Pointer"):
 		return "pointer32"
 	if raw_name.startswith("Int_"):
@@ -1398,6 +2786,8 @@ def infer_field_kind(raw_name: str) -> str:
 		return "float16"
 	if raw_name.startswith("f32_"):
 		return "float32"
+	if raw_name.startswith("Str_"):
+		return "fixed_ascii"
 	return "uint"
 
 
@@ -1445,11 +2835,11 @@ def insert_bits(stream_value: int, bit_offset: int, bit_size: int, raw_value: in
 
 
 def decode_field_value(field: FieldRule, raw_value: int):
-	if field.kind == "uint":
+	if field.kind in {"uint", "anmtype", "type_enum", "gender_ratio"}:
 		return raw_value
 	if field.kind == "pointer32":
 		return raw_value
-	if field.kind == "float16":
+	if field.kind in {"float16", "scale_display_x10000"}:
 		return struct.unpack(">e", raw_value.to_bytes(2, "big"))[0]
 	if field.kind == "float32":
 		return struct.unpack(">f", raw_value.to_bytes(4, "big"))[0]
@@ -1458,59 +2848,32 @@ def decode_field_value(field: FieldRule, raw_value: int):
 
 
 def encode_field_value(field: FieldRule, value) -> int:
+	if field.kind == "anmtype":
+		integer_value = coerce_anmtype_value(value, field.bit_size, field.display_name)
+		return integer_value
+	if field.kind == "type_enum":
+		integer_value = coerce_type_value(value, field.bit_size, field.display_name)
+		return integer_value
+	if field.kind == "gender_ratio":
+		integer_value = coerce_gender_ratio_value(value, field.bit_size, field.display_name)
+		return integer_value
 	if field.kind == "uint":
-		integer_value = parse_int_maybe_hex(value)
-		max_value = (1 << field.bit_size) - 1
-		if not 0 <= integer_value <= max_value:
-			raise ValidationError(f"{field.display_name} must be between 0 and {max_value}")
+		integer_value = coerce_uint_value(value, field.bit_size, field.display_name)
 		return integer_value
 	if field.kind == "pointer32":
 		integer_value = parse_int_maybe_hex(value)
 		if not 0 <= integer_value <= 0xFFFFFFFF:
 			raise ValidationError(f"{field.display_name} must be between 0 and 0xFFFFFFFF")
 		return integer_value
-	if field.kind == "float16":
+	if field.kind in {"float16", "scale_display_x10000"}:
 		float_value = parse_float(value, field.display_name)
+		if field.kind == "scale_display_x10000":
+			float_value = float_value / 10000.0
 		return int.from_bytes(struct.pack(">e", float_value), "big")
 	if field.kind == "float32":
 		float_value = parse_float(value, field.display_name)
 		return int.from_bytes(struct.pack(">f", float_value), "big")
 	return parse_int_maybe_hex(value)
-
-
-
-def parse_int_maybe_hex(value) -> int:
-	if isinstance(value, bool):
-		return int(value)
-	if isinstance(value, int):
-		return value
-	text = str(value).strip()
-	if not text:
-		raise ValidationError("Value cannot be empty")
-	if text.lower().startswith("0x"):
-		return int(text, 16)
-	return int(text, 10)
-
-
-
-def parse_float(value, field_name: str) -> float:
-	text = str(value).strip()
-	if not text:
-		raise ValidationError(f"{field_name} cannot be empty")
-	try:
-		return float(text)
-	except ValueError as exc:
-		raise ValidationError(f"{field_name} must be a valid number") from exc
-
-
-
-def format_float(value: float) -> str:
-	if not math.isfinite(value):
-		return str(value)
-	text = f"{float(value):.15g}"
-	if text == "-0":
-		return "0"
-	return text
 
 
 
@@ -1552,65 +2915,178 @@ def write_fixed_ascii_cstring(blob: bytearray, offset: int, text: str, max_chars
 # UI value helpers
 # -------------------------
 
-def dropdown_value_to_label(field: FieldRule, value: int) -> str:
-	integer_value = int(value)
-	dropdown_def = DROPDOWN_FIELD_DEFS[field.raw_name]
-	value_to_name = dropdown_def["value_to_name"]
-	bit_size = int(dropdown_def["bit_size"])
-	hex_width = max(2, (bit_size + 3) // 4)
-	if integer_value in value_to_name:
-		return value_to_name[integer_value]
-	return f"Unknown - 0b{integer_value:0{bit_size}b} - 0x{integer_value:0{hex_width}X} - {integer_value}"
-
-
-
-def dropdown_label_to_value(field: FieldRule, label: str) -> int:
-	text = str(label).strip()
-	name_to_value = DROPDOWN_FIELD_DEFS[field.raw_name]["name_to_value"]
-	if text in name_to_value:
-		return name_to_value[text]
-	if text.startswith("Unknown - 0b"):
-		parts = [part.strip() for part in text.split("-")]
-		if len(parts) >= 4:
-			return parse_int_maybe_hex(parts[-1])
-	raise ValidationError(f"Invalid selection for {field.display_name}: {text!r}")
-
-
-
-def ensure_dropdown_value(widget: tk.Widget, label: str):
-	if not isinstance(widget, ttk.Combobox):
-		return
-	current_values = list(widget.cget("values"))
-	if label not in current_values:
-		widget.configure(values=current_values + [label])
-
-
-
 def format_value_for_ui(field: FieldRule, value) -> str:
-	if field.raw_name in DROPDOWN_FIELD_NAMES:
-		return dropdown_value_to_label(field, int(value))
-	if field.raw_name == SCALE_MODIFIER_FIELD_NAME:
-		return format_float(float(value) * SCALE_MODIFIER_UI_MULTIPLIER)
+	if value is None:
+		return ""
 	if field.kind == "pointer32":
 		return f"0x{int(value):08X}"
+	if field.kind == "type_enum":
+		if isinstance(value, str):
+			return value
+		return TYPE_VALUE_TO_NAME.get(int(value), str(int(value)))
+	if field.kind == "anmtype":
+		if isinstance(value, str):
+			return value
+		return ANM_TYPE_VALUE_TO_NAME.get(int(value), str(int(value)))
+	if field.kind == "gender_ratio":
+		if isinstance(value, str):
+			return value
+		return GENDER_RATIO_VALUE_TO_NAME.get(int(value), str(int(value)))
+	if field.kind == "scale_display_x10000":
+		return format_float(float(value) * 10000.0)
 	if field.kind in {"float16", "float32"}:
 		return format_float(value)
+	if isinstance(value, str):
+		return value
 	return str(int(value))
 
 
 
 def parse_value_from_ui(field: FieldRule, text: str):
-	if field.raw_name in DROPDOWN_FIELD_NAMES:
-		return dropdown_label_to_value(field, text)
-	if field.raw_name == SCALE_MODIFIER_FIELD_NAME:
-		return parse_float(text, field.display_name) / SCALE_MODIFIER_UI_MULTIPLIER
 	if field.kind == "pointer32":
 		return parse_int_maybe_hex(text)
+	if field.kind in {"type_enum", "anmtype", "gender_ratio"}:
+		return text
 	if field.kind == "uint":
 		return parse_int_maybe_hex(text)
-	if field.kind in {"float16", "float32"}:
+	if field.kind in {"float16", "float32", "scale_display_x10000"}:
 		return parse_float(text, field.display_name)
 	return text
+
+
+
+def coerce_uint_value(value, bit_size: int, field_name: str) -> int:
+	integer_value = parse_int_maybe_hex(value)
+	max_value = (1 << bit_size) - 1
+	if not 0 <= integer_value <= max_value:
+		raise ValidationError(f"{field_name} must be between 0 and {max_value}")
+	return integer_value
+
+
+
+def coerce_type_value(value, bit_size: int, field_name: str) -> int:
+	if isinstance(value, str):
+		text = value.strip()
+		if text in TYPE_NAME_TO_VALUE:
+			value = TYPE_NAME_TO_VALUE[text]
+	return coerce_uint_value(value, bit_size, field_name)
+
+
+
+def coerce_anmtype_value(value, bit_size: int, field_name: str) -> int:
+	if isinstance(value, str):
+		text = value.strip()
+		if text in ANM_TYPE_NAME_TO_VALUE:
+			value = ANM_TYPE_NAME_TO_VALUE[text]
+	return coerce_uint_value(value, bit_size, field_name)
+
+
+
+def coerce_gender_ratio_value(value, bit_size: int, field_name: str) -> int:
+	if isinstance(value, str):
+		text = value.strip()
+		if text in GENDER_RATIO_NAME_TO_VALUE:
+			value = GENDER_RATIO_NAME_TO_VALUE[text]
+	return coerce_uint_value(value, bit_size, field_name)
+
+
+
+def coerce_anmtype_text(value) -> str:
+	if isinstance(value, str):
+		text = value.strip()
+		if not text:
+			raise ValidationError("Animation Type is empty")
+		if text in ANM_TYPE_NAME_TO_VALUE:
+			return text
+		if text.lower().startswith("0x") or text.isdigit():
+			parsed = parse_int_maybe_hex(text)
+			return ANM_TYPE_VALUE_TO_NAME.get(parsed, str(parsed))
+		return text
+	parsed = parse_int_maybe_hex(value)
+	return ANM_TYPE_VALUE_TO_NAME.get(parsed, str(parsed))
+
+
+
+def coerce_scale_storage_float(value, field_name: str) -> float:
+	return parse_float(value, field_name) / 10000.0
+
+
+
+def read_fixed_ascii_field(blob: bytes, offset: int, size: int) -> str:
+	if offset < 0 or offset + size > len(blob):
+		raise ValidationError(f"Fixed ASCII field at 0x{offset:06X} is outside the file")
+	raw = blob[offset:offset + size]
+	end = raw.find(b"\x00")
+	if end >= 0:
+		raw = raw[:end]
+	try:
+		return raw.decode("ascii")
+	except UnicodeDecodeError:
+		return raw.decode("latin-1")
+
+
+
+def write_fixed_ascii_field(blob: bytearray, offset: int, size: int, text: str, field_name: str):
+	ascii_text = normalize_newlines(text)
+	try:
+		raw = ascii_text.encode("ascii")
+	except UnicodeEncodeError as exc:
+		raise ValidationError(f"{field_name} must be ASCII") from exc
+	if len(raw) > size:
+		raise ValidationError(f"{field_name} is too long. Max allowed length here is {size} characters.")
+	end = offset + size
+	if end > len(blob):
+		raise ValidationError(f"{field_name} write at 0x{offset:06X} would run past the end of the file")
+	blob[offset:end] = raw + (b"\x00" * (size - len(raw)))
+
+
+
+def parse_int_maybe_hex(value) -> int:
+	if isinstance(value, int):
+		return value
+	text = str(value).strip()
+	if not text:
+		raise ValidationError("A numeric field is empty")
+	base = 16 if text.lower().startswith("0x") else 10
+	try:
+		return int(text, base)
+	except ValueError as exc:
+		raise ValidationError(f"Invalid integer value: {text!r}") from exc
+
+
+
+def parse_float(value, field_name: str) -> float:
+	text = str(value).strip()
+	if not text:
+		raise ValidationError(f"{field_name} is empty")
+	try:
+		result = float(text)
+	except ValueError as exc:
+		raise ValidationError(f"Invalid float for {field_name}: {text!r}") from exc
+	if not math.isfinite(result):
+		raise ValidationError(f"{field_name} must be a finite number")
+	return result
+
+
+
+def format_float(value: float) -> str:
+	text = repr(float(value))
+	if text == "-0.0":
+		return "0.0"
+	return text
+
+
+
+def safe_int(value, default=None):
+	try:
+		text = str(value).strip()
+		if not text:
+			return default
+		base = 16 if text.lower().startswith("0x") else 10
+		return int(text, base)
+	except Exception:
+		return default
+
 
 
 def parse_hex_int(text: str) -> int:
