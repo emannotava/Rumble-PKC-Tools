@@ -8,12 +8,15 @@ Custom:
 	Shadow Mega Mewtwo X
 	Shadow Mega Mewtwo Y
 	Shadow Mewtwo
+	Galarian Dustox
 
 SwSh:
-	Alcremie, GMax Alcremie
+	Alcremie
+	GMax Alcremie
 	Antique Polteageist
 	Antique Sinistea
-	Appletun, GMax Appletun
+	Appletun
+	GMax Appletun
 	Applin
 	Arctovish
 	Arctozolt
@@ -23,11 +26,14 @@ SwSh:
 	Boltund
 	Calyrex
 	Carkol
-	Centiskorch, GMax Centiskorch
+	Centiskorch
+	GMax Centiskorch
 	Chewtle
-	Cinderace, GMax Cinderace
-	Coalossal, GMax Coalossal
-	Copperajah, GMax Copperajah
+	GMax Cinderace
+	Coalossal
+	GMax Coalossal
+	Copperajah
+	GMax Copperajah
 	Cramorant
 	Cufant
 	Cursola
@@ -36,30 +42,19 @@ SwSh:
 	Dracozolt
 	Dragapult
 	Drakloak
-	Drednaw, GMax Drednaw
+	Drednaw
+	GMax Drednaw
 	Dreepy
-	Drizzile
 	Dubwool
-	Duraludon, GMax Duraludon
+	Duraludon
+	GMax Duraludon
 	Eiscue
 	Eldegoss
 	EMax Eternatus
 	Eternatus
-	Flapple, GMax Flapple
+	Flapple
+	GMax Flapple
 	Frosmoth
-	Galarian Articuno
-	Galarian Corsola
-	Galarian Darmanitan Standard Mode
-	Galarian Darmanitan Zen Mode
-	Galarian Darumaka
-	Galarian Dustox
-	Galarian Linoone
-	Galarian Moltres
-	Galarian Ponyta
-	Galarian Rapidash
-	Galarian Weezing
-	Galarian Zapdos
-	Galarian Zigzagoon
 	Glastrier
 	GMax Blastoise
 	GMax Butterfree
@@ -80,192 +75,63 @@ SwSh:
 	Gorging Cramorant
 	Gossifleur
 	Greedent
-	Grimmsnarl, GMax Grimmsnarl
-	Grookey
+	Grimmsnarl
+	GMax Grimmsnarl
 	Gulping Cramorant
 	Hatenna
-	Hatterene, GMax Hatterene
+	Hatterene
+	GMax Hatterene
 	Hattrem
 	Ice Rider Calyrex
 	Impidimp
-	Inteleon, GMax Inteleon
+	GMax Inteleon
 	Kubfu
 	Milcery
 	Morgrem
 	Obstagoon
-	Orbeetle, GMax Orbeetle
+	Orbeetle
+	GMax Orbeetle
 	Phony Polteageist
 	Phony Sinistea
 	Pincurchin
-	Raboot
-	Rapid Strike Urshifu, GMax Rapid Strike Urshifu
+	Rapid Strike Urshifu
+	GMax Rapid Strike Urshifu
 	Regidrago
 	Regieleki
-	Rillaboom, GMax Rillaboom
+	GMax Rillaboom
 	Rolycoly
-	Sandaconda, GMax Sandaconda
-	Scorbunny
+	Sandaconda
+	GMax Sandaconda
 	Shadow Rider Calyrex
 	Silicobra
-	Single Strike Urshifu, GMax Single Strike Urshifu
+	Single Strike Urshifu
+	GMax Single Strike Urshifu
 	Sizzlipede
 	Skwovet
 	Snom
-	Sobble
 	Spectrier
 	Stonjourner
 	Thievul
-	Thwackey
 	Wooloo
 	Yamper
 	Zacian Hero of Many Battle
 	Zamazenta Hero of Many Battle
 	Zarude
 	Zarude Dada
-
-ScVi:
-	Arboliva
-	Archaludon
-	Artisan Poltchageist
-	Artisan Sinistcha
-	Bellibolt
-	Bloodmoon Ursaluna
-	Bombirdier
-	Brambleghast
-	Bramblin
-	Brute Bonnet
-	Ceruledge
-	Cetitan
-	Cetoddle
-	Chi-Yu
-	Chien-Pao
-	Clodsire
-	Counterfeit Poltchageist
-	Counterfeit Sinistcha
-	Crocalor
-	Dipplin
-	Dolliv
-	Dudunsparce Two-Segment Form
-	Dudunsparce, Three-Segment Form
-	Espathra
-	Farigiraf
-	Fezandipiti
-	Finizen
-	Flittle
-	Floragato
-	Flutter Mane
-	Fuecoco
-	Gouging Fire
-	Great Tusk
-	Hydrapple
-	Iron Boulder
-	Iron Bundle
-	Iron Crown
-	Iron Hands
-	Iron Jugulis
-	Iron Leaves
-	Iron Moth
-	Iron Thorns
-	Iron Treads
-	Iron Valiant
-	Kilowattrel
-	Kingambit
-	Klawf
-	Koraidon
-	Koraidon Apex Build
-	Lechonk
-	Lokix
-	Maushold Family of Four
-	Maushold Family of Three
-	Meowscarada
-	Miraidon
-	Miraidon Ultimate Mode
-	Munkidori
-	Nymble
-	Ogerpon Cornerstone Mask
-	Ogerpon Hearthflame Mask
-	Ogerpon No Cornerstone Mask
-	Ogerpon No Hearthflame Mask
-	Ogerpon No Teal Mask
-	Ogerpon No Wellspring Mask
-	Ogerpon Teal Mask
-	Ogerpon Terastallized Cornerstone Mask
-	Ogerpon Terastallized Hearthflame Mask
-	Ogerpon Terastallized Teal Mask
-	Ogerpon Terastallized Wellspring Mask
-	Ogerpon Wellspring Mask
-	Oinkologne
-	Okidogi
-	Orthworm
-	Palafin Hero Form
-	Palafin Zero Form
-	Paldean Tauros - Aqua Breed
-	Paldean Tauros - Blaze Breed
-	Paldean Tauros - Combat Breed
-	Paldean Wooper
-	Pawmi
-	Pawmo
-	Pawmot
-	Pecharunt
-	Quaquaval
-	Quaxly
-	Quaxwell
-	Rabsca
-	Raging Bolt
-	Rellor
-	Revavroom
-	Revavroom Caph Starmobile
-	Revavroom Navi Starmobile
-	Revavroom Ruchbah Starmobile
-	Revavroom Schedar Starmobile
-	Revavroom Segin Starmobile
-	Roaring Moon
-	Sandy Shocks
-	Scream Tail
-	Skeledirge
-	Slither Wing
-	Smoliv
-	Spidops
-	Sprigatito
-	Stellar Terapagos
-	Tadbulb
-	Tandemaus
-	Tarountula
-	Terapagos
-	Terastal Terapagos
-	Ting-Lu
-	Toedscool
-	Toedscruel
-	Varoom
-	Veluza
-	Walking Wake
-	Wattrel
-	Wiglett
-	Wo-Chien
-	Wugtrio
-
-PLA:
 	Basculegion Female
 	Basculegion Male
-	Basculin White-Striped
 	Crowned Shield Zamazenta
 	Crowned Sword Zacian
 	Enamorus
 	Enamorus Therian Forme
-	Hisuian Arcanine
-	Hisuian Braviary
-	Hisuian Decidueye
-	Hisuian Electrode
-	Hisuian Growlithe
-	Hisuian Lilligant
-	Hisuian Samurott
-	Hisuian Sneasel
-	Hisuian Typhlosion
-	Hisuian Voltorb
-	Hisuian Zoroark
-	Hisuian Zorua
-	Origin Dialga
-	Origin Palkia
+	
+	
+
+
+
+
+
+
 	Sneasler
 	Ursaluna
 	Wyrdeer
