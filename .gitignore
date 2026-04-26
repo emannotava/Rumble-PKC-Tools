@@ -1,4 +1,5 @@
 *.pkc
 *.json
+!Editors With GUIs/PiiDesc (Optimized).json
 *.out
 /Editors With GUIs/Scripts/__pycache__
