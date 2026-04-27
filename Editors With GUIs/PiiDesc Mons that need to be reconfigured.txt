@@ -1,143 +1,398 @@
 Custom:
-	Kyurem God Stone Form
-	Mega Flygon
-	Mega Jynx
-	Pink Butterfree
-	Shadow Ho-Oh
-	Shadow Lugia
-	Shadow Mega Mewtwo X
-	Shadow Mega Mewtwo Y
-	Shadow Mewtwo
-	Galarian Dustox
+	Mega Flygon (Stats taken from Pokemon Insurgence)
+	Mega Tropius  (Stats taken from pokemonpets.com, whatever the heck that is)
+	Mega Jynx (Stats taken from Pokemon Wack)
 
-SwSh:
-	Alcremie
-	GMax Alcremie
-	Antique Polteageist
-	Antique Sinistea
-	Appletun
-	GMax Appletun
-	Applin
-	Arctovish
-	Arctozolt
-	Arrokuda
-	Barraskewda
-	Blipbug
-	Boltund
-	Calyrex
-	Carkol
-	Centiskorch
-	GMax Centiskorch
-	Chewtle
-	GMax Cinderace
-	Coalossal
-	GMax Coalossal
-	Copperajah
-	GMax Copperajah
-	Cramorant
-	Cufant
-	Cursola
-	Dottler
-	Dracovish
-	Dracozolt
-	Dragapult
-	Drakloak
-	Drednaw
-	GMax Drednaw
-	Dreepy
-	Dubwool
-	Duraludon
-	GMax Duraludon
-	Eiscue
-	Eldegoss
-	EMax Eternatus
-	Eternatus
-	Flapple
-	GMax Flapple
-	Frosmoth
-	Glastrier
-	GMax Blastoise
-	GMax Butterfree
-	GMax Charizard
-	GMax Corviknight
-	GMax Eevee
-	GMax Garbodor
-	GMax Gengar
-	GMax Kingler
-	GMax Lapras
-	GMax Machamp
-	GMax Melmetal
-	GMax Meowth
-	GMax Pikachu
-	GMax Snorlax
-	GMax Toxtricity
-	GMax Venusaur
-	Gorging Cramorant
-	Gossifleur
-	Greedent
-	Grimmsnarl
-	GMax Grimmsnarl
-	Gulping Cramorant
-	Hatenna
-	Hatterene
-	GMax Hatterene
-	Hattrem
-	Ice Rider Calyrex
-	Impidimp
-	GMax Inteleon
-	Kubfu
-	Milcery
-	Morgrem
-	Obstagoon
-	Orbeetle
-	GMax Orbeetle
-	Phony Polteageist
-	Phony Sinistea
-	Pincurchin
-	Rapid Strike Urshifu
-	GMax Rapid Strike Urshifu
-	Regidrago
-	Regieleki
-	GMax Rillaboom
-	Rolycoly
-	Sandaconda
-	GMax Sandaconda
-	Shadow Rider Calyrex
-	Silicobra
-	Single Strike Urshifu
-	GMax Single Strike Urshifu
-	Sizzlipede
-	Skwovet
-	Snom
-	Spectrier
-	Stonjourner
-	Thievul
-	Wooloo
-	Yamper
-	Zacian Hero of Many Battle
-	Zamazenta Hero of Many Battle
-	Zarude
-	Zarude Dada
-	Basculegion Female
-	Basculegion Male
-	Crowned Shield Zamazenta
-	Crowned Sword Zacian
-	Enamorus
-	Enamorus Therian Forme
-	
-	
+AnmTypes:
+"m_boneType": [0, "bird"],
+"m_boneType": [1, "bound"],
+"m_boneType": [2, "butterfly"],
+"m_boneType": [3, "fish"],
+"m_boneType": [4, "float"],
+"m_boneType": [5, "fourleg"],
+"m_boneType": [6, "glide"],
+"m_boneType": [7, "insect"],
+"m_boneType": [9, "rolling"],
+"m_boneType": [10, "seal"],
+"m_boneType": [11, "slime"],
+"m_boneType": [12, "twoleg"],
 
-
-
-
-
-
-	Sneasler
-	Ursaluna
-	Wyrdeer
-
-Pokopia (Fan stats from Twitter):
-	DJ Rotom
-	Mosslax
-	Professor Tangrowth
-	Smearguru
+Mons whos AnmType Needs to be corrected
+Meltan	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Melmetal	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Melmetal	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Grookey	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Thwackey	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Rillaboom	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Rillaboom	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Scorbunny	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Raboot	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Cinderace	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Cinderace	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Sobble	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Drizzile	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Inteleon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Inteleon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Skwovet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Greedent	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Rookidee	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Corvisquire	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Corviknight	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Corviknight	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Blipbug	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dottler	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Orbeetle	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Orbeetle	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Nickit	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Thievul	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Gossifleur	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Eldegoss	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Wooloo	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dubwool	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Chewtle	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Drednaw	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Drednaw	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Yamper	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Boltund	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Rolycoly	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Carkol	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Coalossal	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Coalossal	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Applin	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Flapple	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Flapple	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Appletun	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Appletun	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Silicobra	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Sandaconda	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Sandaconda	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Cramorant	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Gulping Cramorant	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Gorging Cramorant	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Arrokuda	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Barraskewda	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Toxel	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Amped Toxtricity	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Low Key Toxtricity	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Toxtricity	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Sizzlipede	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Centiskorch	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Centiskorch	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Clobbopus	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Grapploct	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Phony Sinistea	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Antique Sinistea	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Phony Polteageist	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Antique Polteageist	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Hatenna	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Hattrem	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Hatterene	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Hatterene	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Impidimp	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Morgrem	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Grimmsnarl	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Grimmsnarl	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Obstagoon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Perrserker	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Cursola	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Sirfetch'd	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mr. Rime	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Runerigus	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Milcery	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Vanilla Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Vanilla Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Vanilla Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Vanilla Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Vanilla Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Vanilla Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Vanilla Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Ruby Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Ruby Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Ruby Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Ruby Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Ruby Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Ruby Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Ruby Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Matcha Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Matcha Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Matcha Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Matcha Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Matcha Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Matcha Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Matcha Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Mint Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Mint Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Mint Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Mint Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Mint Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Mint Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Mint Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Lemon Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Lemon Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Lemon Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Lemon Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Lemon Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Lemon Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Lemon Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Salted Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Salted Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Salted Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Salted Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Salted Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Salted Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Alcremie Salted Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Vanilla Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Vanilla Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Vanilla Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Vanilla Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Vanilla Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Vanilla Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Vanilla Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Ruby Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Ruby Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Ruby Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Ruby Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Ruby Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Ruby Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Ruby Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Matcha Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Matcha Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Matcha Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Matcha Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Matcha Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Matcha Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Matcha Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Mint Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Mint Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Mint Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Mint Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Mint Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Mint Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Mint Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Lemon Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Lemon Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Lemon Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Lemon Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Lemon Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Lemon Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Lemon Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Salted Cream - Strawberry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Salted Cream - Berry Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Salted Cream - Love Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Salted Cream - Star Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Salted Cream - Clover Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Salted Cream - Flower Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Alcremie Salted Cream - Ribbon Sweet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Falinks	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mega Falinks	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Pincurchin	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Snom	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Frosmoth	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Stonjourner	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Eiscue Ice Face	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Eiscue Noice Face	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Indeedee Male	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Indeedee Female	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Morpeko	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Hangry Morpeko	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Cufant	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Copperajah	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Copperajah	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dracozolt	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Arctozolt	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dracovish	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Arctovish	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Duraludon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Duraludon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dreepy	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Drakloak	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dragapult	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Zacian Hero of Many Battles	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Crowned Sword Zacian	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Zamazenta Hero of Many Battles	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Crowned Shield Zamazenta	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Eternatus	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+EMax Eternatus	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Kubfu	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Single Strike Urshifu	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Rapid Strike Urshifu	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Single Strike Urshifu	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+GMax Rapid Strike Urshifu	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Zarude	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Zarude Dada	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Regieleki	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Regidrago	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Glastrier	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Spectrier	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Calyrex	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ice Rider Calyrex	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Shadow Rider Calyrex	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Wyrdeer	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Kleavor	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ursaluna	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Bloodmoon Ursaluna	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Basculegion Male	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Basculegion Female	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Sneasler	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Overqwil	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Enamorus	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Enamorus Therian Forme	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Sprigatito	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Floragato	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Meowscarada	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Fuecoco	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Crocalor	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Skeledirge	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Quaxly	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Quaxwell	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Quaquaval	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Lechonk	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Oinkologne	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Oinkologne	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Tarountula	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Spidops	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Nymble	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Lokix	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Pawmi	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Pawmo	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Pawmot	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Tandemaus	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Maushold Family of Four	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Maushold Family of Three	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Fidough	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dachsbun	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Smoliv	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dolliv	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Arboliva	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Squawkabilly Green Plumage	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Squawkabilly Blue Plumage	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Squawkabilly Yellow Plumage	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Squawkabilly White Plumage	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Nacli	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Naclstack	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Garganacl	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Charcadet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Armarouge	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ceruledge	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Tadbulb	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Bellibolt	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Wattrel	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Kilowattrel	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Maschiff	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mabosstiff	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Shroodle	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Grafaiai	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Bramblin	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Brambleghast	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Toedscool	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Toedscruel	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Klawf	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Capsakid	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Scovillain	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mega Scovillain	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Rellor	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Rabsca	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Flittle	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Espathra	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Tinkatink	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Tinkatuff	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Tinkaton	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Tinkaton Engineer	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Wiglett	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Wugtrio	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Bombirdier	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Finizen	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Palafin Zero Form	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Palafin Hero Form	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Varoom	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Revavroom	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Revavroom Segin Starmobile	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Revavroom Schedar Starmobile	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Revavroom Navi Starmobile	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Revavroom Ruchbah Starmobile	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Revavroom Caph Starmobile	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Cyclizar	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Orthworm	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Glimmet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Glimmora	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mega Glimmora	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Greavard	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Houndstone	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Flamigo	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Cetoddle	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Cetitan	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Veluza	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dondozo	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Curly Tatsugiri	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Droopy Tatsugiri	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Stretchy Tatsugiri	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mega Curly Tatsugiri	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mega Droopy Tatsugiri	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mega Stretchy Tatsugiri	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Annihilape	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Clodsire	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Farigiraf	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dudunsparce Two-Segment Form	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dudunsparce, Three-Segment Form	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Kingambit	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Great Tusk	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Scream Tail	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Brute Bonnet	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Flutter Mane	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Slither Wing	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Sandy Shocks	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Treads	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Bundle	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Hands	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Jugulis	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Moth	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Thorns	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Frigibax	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Arctibax	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Baxcalibur	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Mega Baxcalibur	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Chest Gimmighoul	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Roaming Gimmighoul	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Gholdengo	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Wo-Chien	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Chien-Pao	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ting-Lu	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Chi-Yu	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Roaring Moon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Valiant	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Koraidon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Koraidon Apex Build	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Miraidon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Miraidon Ultimate Mode	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Walking Wake	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Leaves	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Dipplin	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Counterfeit Poltchageist	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Artisan Poltchageist	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Counterfeit Sinistcha	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Artisan Sinistcha	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Okidogi	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Munkidori	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Fezandipiti	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon No Teal Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon No Wellspring Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon No Hearthflame Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon No Cornerstone Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon Teal Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon Wellspring Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon Hearthflame Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon Cornerstone Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon Terastallized Teal Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon Terastallized Wellspring Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon Terastallized Hearthflame Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Ogerpon Terastallized Cornerstone Mask	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Archaludon	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Hydrapple	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Gouging Fire	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Raging Bolt	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Boulder	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Iron Crown	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Terapagos	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Terastal Terapagos	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Stellar Terapagos	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
+Pecharunt	"m_boneType": [5, "fourleg"],	"m_isFlier": 0,
